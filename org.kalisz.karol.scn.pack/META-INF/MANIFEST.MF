@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Design Studio SDK Extension by Karol provided by SCN
+Bundle-SymbolicName: org.kalisz.karol.scn.pack;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk
+Bundle-Vendor: org.kalisz

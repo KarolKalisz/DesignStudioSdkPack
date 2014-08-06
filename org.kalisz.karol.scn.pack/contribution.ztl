@@ -1,0 +1,64 @@
+class org.kalisz.karol.scn.pack.NotificationBar extends Component {
+
+	/**
+	 * Placeholder for Startup Scripts
+	 */
+	void onStartup();
+	
+	/**
+	 * Placeholder for Refresh Scripts
+	 */
+	void onRefresh();
+
+	/** 
+	 * Add Category
+	 * 
+	 */
+	void addCategory (
+			/**Category Key*/String categoryKey, 
+			/**Category Text*/String categoryText, 
+			/**Category Image*/String categoryImage) {*
+		
+		var categoryDef = "{" +
+				"\"key\": \"" + categoryKey + "\", " +
+				"\"text\" : \"" + categoryText + "\", " +
+				"\"image\" : \"" + categoryImage + "\"" +
+				"}";
+		var categoryArray = JSON.parse("[" + categoryDef + "]");
+		
+		var found = false;
+		if (this.categories === undefined || this.categories === ""){
+			this.categories = JSON.stringify(categoryArray);
+		}else{
+			var caregoriesArray = JSON.parse(this.categories);
+			this.categories = JSON.stringify(caregoriesArray.concat(categoryArray));
+		}
+	*}
+	
+	/** 
+	 * Add Notification
+	 * 
+	 */
+	void addNotification (
+			/**Category Key as defined in addCategory*/String categoryKey, 
+			/**Optional: Notification Key for the notification - place empty string if not required (currently only for display)*/String notificationKey, 
+			/**Notification Text*/String notificationText, 
+			/**Notification Level (ERROR|WARNING|INFO|SUCCESS) - influences the image */String notificationLevel) {*	
+		
+		var itemDef = "{" + 
+				"\"category\":\"" 	+ categoryKey 			+ "\", " +
+				"\"key\": \"" 		+ notificationKey 		+ "\", " + 
+				"\"text\" : \"" 	+ notificationText 		+ "\", " + 
+				"\"level\" : \"" 	+ notificationLevel 	+ "\"" +
+				"}";
+		var itemArray = JSON.parse("[" + itemDef + "]");
+		
+		var found = false;
+		if (this.notifications === undefined || this.notifications === ""){
+			this.notifications = JSON.stringify(itemArray);
+		}else{
+			var itemsArray = JSON.parse(this.notifications);
+			this.notifications = JSON.stringify(itemsArray.concat(itemArray));
+		}	
+	*}
+}
