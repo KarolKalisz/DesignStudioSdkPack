@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdkExtension
+	xmlns="http://www.sap.com/bi/zen/sdk"
+	id="org.kalisz.karol.scn.pack"
+	title="Design Studio SDK Extension by Karol provided by SCN"
+	version="1.0"
+	vendor="org.kalisz">
+	<group
+		id="KarolsComponents"
+		title="Karol's SDK Components"/>
+
+	<component
+		id="NotificationBar"
+		title="NotificationBar"
+		icon="res/nb/NotificationBar.png"
+		handlerType="sapui5"
+		group="KarolsComponents">
+		<jsInclude>res/nb/NotificationBar.js</jsInclude>
+		<cssInclude>res/nb/NotificationBar.css</cssInclude>
+		
+	<property
+			id="notifications"
+			title="Notifications"
+			tooltip="The Notifications Pushed to Client"
+			type="String"
+			visible="false"/>
+
+	<property
+			id="categories"
+			title="Categories"
+			tooltip="The Notifications Pushed to Client"
+			type="String"
+			visible="false"/>
+
+	<property
+			id="connectToCommonMessages"
+			title="Connect To Common Messages"
+			tooltip="Setting this to TRUE also the common Messages from messages popup will be handover to this notification bar"
+			type="boolean"/>
+
+	<property
+			id="splitNotificationsByPriority"
+			title="Split Notifications by Priority"
+			tooltip="Setting this to TRUE the Notifications will be displayed in categories by priority"
+			type="boolean"/>
+			
+	<property
+			id="showOnNewNotifications"
+			title="Show Notification Bar when New Notifications are Available"
+			tooltip="Setting this to TRUE shows always Notification Bar when new Notifications are Available"
+			type="boolean"/>
+			
+	<property
+			id="deleteNotificationOnClick"
+			title="Delete Notification when Clicked"
+			tooltip="Setting this to TRUE deletes the Notification on click event"
+			type="boolean"/>
+
+	<property
+			id="removeAllOnMinimize"
+			title="Remove All Notifications when Minimized"
+			tooltip="Setting this to TRUE deletes all Notifications on minimize event"
+			type="boolean"/>
+			
+	<initialization>
+			<defaultValue property="WIDTH">auto</defaultValue>
+			<defaultValue property="HEIGHT">40</defaultValue>
+			<defaultValue property="LEFT_MARGIN">0</defaultValue>
+			<defaultValue property="RIGHT_MARGIN">0</defaultValue>
+			<defaultValue property="TOP_MARGIN">auto</defaultValue>
+			<defaultValue property="BOTTOM_MARGIN">0</defaultValue>
+		</initialization>
+	</component>
+
+	<component
+		id="Date"
+		title="Date"
+		tooltip="Date Functions"
+		icon="res/date/Date.png"
+		handlerType="div"
+		group="KarolsComponents">
+		<jsInclude>res/date/Date.js</jsInclude>
+	</component>
+		
+</sdkExtension>
