@@ -22,13 +22,13 @@
 	<property 
 			id="onStartup" 
 			type="ScriptText" 
-			title="On Startup - Placeholder for Startup Scripts" 
+			title="On Startup Script" 
 			group="Events" />
 
 	<property 
 			id="onRefresh" 
 			type="ScriptText" 
-			title="On Startup - Placeholder for Refresh Scripts" 
+			title="On Refresh Script" 
 			group="Events" />
 
 	<property 
@@ -36,7 +36,7 @@
 			type="Url" 
 			title="Default Image - Needed for Calculation of the Url Prefix for Repository" 
 			group="Display" 
-			visible="false"/>
+			visible="true"/>
 			
 	<property
 			id="notifications"

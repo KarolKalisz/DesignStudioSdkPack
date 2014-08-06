@@ -128,12 +128,12 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		
 		this._oCommonNotifier = new sap.ui.ux3.Notifier({
 			title : "Common Notifications",
-			icon: this._pAccessPath + "open_talk.png"
+			icon: this._pAccessPath + "scat_public.png"
 		});
 		
 		this._oPrivateNotifier = new sap.ui.ux3.Notifier({
 			title : "Private Notifications",
-			icon : this._pAccessPath + "text_talk.png"
+			icon : this._pAccessPath + "scat_private.png"
 		});
 		
 		this._oErrorNotifier = new sap.ui.ux3.Notifier({
@@ -251,7 +251,7 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 					break;
 				case "WARNING":
 					oNotification.setLevel(sap.ui.core.MessageType.Warning);
-					oNotification.setIcon(this._pAccessPath + "warning.png");
+					oNotification.setIcon(this._pAccessPath + "s_warning.png");
 					potentialPriorityNotifier = this._oWarningNotifier;
 					break;
 				case "ERROR":
@@ -299,13 +299,6 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		if (this._oMessageBarHandler) {
 			this._oMessageBarHandler.setMessagePosition = function () {
 				that.fillInAllCommonMessages();
-
-				if(!this._oMessageBar) {
-					this._oMessageBar = sap.zen.Dispatcher.instance.getControlForId("MESSAGE_messageview1_abs");
-					if(this._oMessageBar) {
-						this._oMessageBar.setVisible(false);
-					}
-				}
 			};
 		}
 	},
@@ -357,7 +350,7 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 							potentialPriorityNotifier = this._oInfoNotifier;
 						} else if(level == "WARNING") {
 							oNotification.setLevel(sap.ui.core.MessageType.Warning);
-							oNotification.setIcon(this._pAccessPath + "warning.png");
+							oNotification.setIcon(this._pAccessPath + "s_warning.png");
 							potentialPriorityNotifier = this._oWarningNotifier;
 						} else if(level == "ERROR") {
 							oNotification.setLevel(sap.ui.core.MessageType.Error);
@@ -381,7 +374,7 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		}
 		
 		if(this._ShowOnNewNotifications && this._pNewNotificationsAvailable && this._ConnectToCommonMessages) {
-			this._setVisibleStatus(sap.ui.ux3.NotificationBarStatus.Default);
+			this.setVisibleStatus(sap.ui.ux3.NotificationBarStatus.Default);
 		}
 	}
 });
