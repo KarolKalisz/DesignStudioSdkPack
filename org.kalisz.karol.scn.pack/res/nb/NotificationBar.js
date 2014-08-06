@@ -86,51 +86,39 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		return this._RemoveAllOnMinimize;
 	},
 	
-	setOnLastPropertyUpdate : function(value) {
-		if(!this.__notifiersInitialized) {
-			this._afterDesignStudioUpdateCall();
-		} else if(this.__notifiersInitialized && this._Notifications != null && this._Notifications != ""){
-			this._afterDesignStudioUpdateCall();
-		}
-	},
-
-	getOnLastPropertyUpdate : function() {
-		return null;
-	},
+	/* END OF SETTERS / GETTERS */
 	
+	renderer: {},
+
 	initDesignStudio : function() {
 		var that = this;
 		
-		this._accesspath = sapbi_page.staticMimeUrlPrefix + "zen/mimes/sdk_include/org.kalisz.karol.scn.pack/res/nb/";
+		this._pAccessPath = sapbi_page.staticMimeUrlPrefix + "zen/mimes/sdk_include/org.kalisz.karol.scn.pack/res/nb/";
 		
 		this._oCommonNotifier = new sap.ui.ux3.Notifier({
 			title : "Common Notifications",
-			icon: this._accesspath + "open_talk.png"
+			icon: this._pAccessPath + "open_talk.png"
 		});
 		
 		this._oPrivateNotifier = new sap.ui.ux3.Notifier({
 			title : "Private Notifications",
-			icon : this._accesspath + "text_talk.png"
+			icon : this._pAccessPath + "text_talk.png"
 		});
 		
 		this._oErrorNotifier = new sap.ui.ux3.Notifier({
 			title : "Eror Notifications",
-			icon : this._accesspath + "s_error.png"
+			icon : this._pAccessPath + "s_error.png"
 		});
 
 		this._oWarningNotifier = new sap.ui.ux3.Notifier({
 			title : "Warning Notifications",
-			icon : this._accesspath + "s_warning.png"
+			icon : this._pAccessPath + "s_warning.png"
 		});
 
 		this._oInfoNotifier = new sap.ui.ux3.Notifier({
 			title : "Information Notifications",
-			icon : this._accesspath + "s_info.png"
+			icon : this._pAccessPath + "s_info.png"
 		});
-
-		
-		//this._addStyleClass("sapUiNotificationBarDemokit");
-		//this._addStyleClass("slimNotificationBar");
 
 		this.__notifiersInitialized = false;
 		
@@ -222,23 +210,23 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 				switch (NotificationsArray[i].level) {
 				case "SUCCESS":
 					oNotification.setLevel(sap.ui.core.MessageType.Success);
-					oNotification.setIcon(this._accesspath + "s_success.png");
+					oNotification.setIcon(this._pAccessPath + "s_success.png");
 					potentialPriorityNotifier = this._oInfoNotifier;
 					break;
 				case "INFO":
 					oNotification.setLevel(sap.ui.core.MessageType.Information);
-					oNotification.setIcon(this._accesspath + "s_info.png");
+					oNotification.setIcon(this._pAccessPath + "s_info.png");
 					potentialPriorityNotifier = this._oInfoNotifier;
 					break;
 				case "WARNING":
 					oNotification.setLevel(sap.ui.core.MessageType.Warning);
-					oNotification.setIcon(this._accesspath + "warning.png");
+					oNotification.setIcon(this._pAccessPath + "warning.png");
 					potentialPriorityNotifier = this._oWarningNotifier;
 					break;
 				case "ERROR":
 				default:
 					oNotification.setLevel(sap.ui.core.MessageType.Error);
-					oNotification.setIcon(this._accesspath + "s_error.png");
+					oNotification.setIcon(this._pAccessPath + "s_error.png");
 					potentialPriorityNotifier = this._oErrorNotifier;
 					break;
 				}
@@ -255,15 +243,15 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		this._Notifications = "";
 		
 		// fire event to rerender
-		this._fireDesignStudioPropertiesChanged(["Notifications"]);
+		this.fireDesignStudioPropertiesChanged(["Notifications"]);
 
-		if(!this._initilized) {
+		if(!this._pInitilized) {
 			if(this._ConnectToCommonMessages) {
 				// register to normal handler
-				this._registerToMessageHandler();
+				this.registerToMessageHandler();
 			}
 			
-			this._initilized = true;
+			this._pInitilized = true;
 		}
 		
 		if(this._ShowOnNewNotifications && this._pNewNotificationsAvailable && !this._ConnectToCommonMessages) {
@@ -271,8 +259,8 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		}
 	},
 	
-	renderer: {},
-
+	/* ACCESS TO MESSAGE HANDLER (not an official API) */
+	
 	registerToMessageHandler : function () {
 		var that = this;
 		
@@ -330,23 +318,23 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 						
 						if(level == "SUCCESS") {
 							oNotification.setLevel(sap.ui.core.MessageType.Success);
-							oNotification.setIcon(this._accesspath + "s_success.png");
+							oNotification.setIcon(this._pAccessPath + "s_success.png");
 							potentialPriorityNotifier = this._oInfoNotifier;
 						} else if(level == "INFO") {
 							oNotification.setLevel(sap.ui.core.MessageType.Information);
-							oNotification.setIcon(this._accesspath + "s_info.png");
+							oNotification.setIcon(this._pAccessPath + "s_info.png");
 							potentialPriorityNotifier = this._oInfoNotifier;
 						} else if(level == "WARNING") {
 							oNotification.setLevel(sap.ui.core.MessageType.Warning);
-							oNotification.setIcon(this._accesspath + "warning.png");
+							oNotification.setIcon(this._pAccessPath + "warning.png");
 							potentialPriorityNotifier = this._oWarningNotifier;
 						} else if(level == "ERROR") {
 							oNotification.setLevel(sap.ui.core.MessageType.Error);
-							oNotification.setIcon(this._accesspath + "s_error.png");
+							oNotification.setIcon(this._pAccessPath + "s_error.png");
 							potentialPriorityNotifier = this._oErrorNotifier;
 						} else {
 							oNotification.setLevel(sap.ui.core.MessageType.Error);
-							oNotification.setIcon(this._accesspath + "s_error.png");
+							oNotification.setIcon(this._pAccessPath + "s_error.png");
 						}
 						
 						if(!this._SplitNotificationsByPriority) {
@@ -365,5 +353,4 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 			this._setVisibleStatus(sap.ui.ux3.NotificationBarStatus.Default);
 		}
 	}
-
 });
