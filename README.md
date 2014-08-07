@@ -13,9 +13,6 @@ Content
 * Notification Bar
 ---
 This component is using SAPUI5 NotificationBar UI element and provides functionality for:
-
- ** adding categories which can help to organize notifications
-
- ** adding notifications to categories
-
- ** attaching to message component and showing the Design Studio messages in Notification Bar
+* adding categories which can help to organize notifications
+* adding notifications to categories
+* attaching to message component and showing the Design Studio messages in Notification Bar
