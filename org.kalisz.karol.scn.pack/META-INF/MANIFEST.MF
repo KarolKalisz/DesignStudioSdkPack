@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Karol's SDK Components Pack
+Bundle-Name: Design Studio Karol's Components
 Bundle-SymbolicName: org.kalisz.karol.scn.pack;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk

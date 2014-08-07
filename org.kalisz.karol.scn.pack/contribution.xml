@@ -2,13 +2,13 @@
 <sdkExtension
 	xmlns="http://www.sap.com/bi/zen/sdk"
 	id="org.kalisz.karol.scn.pack"
-	title="Design Studio SDK Extension by Karol provided by SCN"
+	title="Design Studio Karol's Components"
 	version="1.0"
 	vendor="org.kalisz">
 
 	<group
 		id="KarolsComponents"
-		title="Karol's SDK Components"/>
+		title="Design Studio Karol's Components"/>
 
 	<component
 		id="NotificationBar"
