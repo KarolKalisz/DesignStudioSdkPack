@@ -19,20 +19,20 @@ class org.kalisz.karol.scn.pack.NotificationBar extends Component {
 			/**Category Text*/String categoryText, 
 			/**Category Image*/String categoryImage) {*
 		
-		var categoryDef = "{" +
-				"\"key\": \"" + categoryKey + "\", " +
-				"\"text\" : \"" + categoryText + "\", " +
-				"\"image\" : \"" + categoryImage + "\"" +
-				"}";
-		var categoryArray = JSON.parse("[" + categoryDef + "]");
-		
-		var found = false;
-		if (this.categories === undefined || this.categories === ""){
-			this.categories = JSON.stringify(categoryArray);
-		}else{
-			var caregoriesArray = JSON.parse(this.categories);
-			this.categories = JSON.stringify(caregoriesArray.concat(categoryArray));
+		var categoryDef = {
+				"key": categoryKey,
+				"text": categoryText,
+				"image": categoryImage
+				};
+			
+		if (this.categories === undefined || this.categories === "" || this.categories === "<delete>"){
+			this.categories = "[]";
 		}
+
+		var caregoriesJson = JSON.parse(this.categories);
+		caregoriesJson.push(categoryDef)
+		
+		this.categories = JSON.stringify(caregoriesJson);
 	*}
 	
 	/** 
@@ -45,20 +45,20 @@ class org.kalisz.karol.scn.pack.NotificationBar extends Component {
 			/**Notification Text*/String notificationText, 
 			/**Notification Level (ERROR|WARNING|INFO|SUCCESS) - influences the image */String notificationLevel) {*	
 		
-		var itemDef = "{" + 
-				"\"category\":\"" 	+ categoryKey 			+ "\", " +
-				"\"key\": \"" 		+ notificationKey 		+ "\", " + 
-				"\"text\" : \"" 	+ notificationText 		+ "\", " + 
-				"\"level\" : \"" 	+ notificationLevel 	+ "\"" +
-				"}";
-		var itemArray = JSON.parse("[" + itemDef + "]");
+		var itemDef = { 
+				"category": categoryKey,
+				"key": notificationKey, 
+				"text": notificationText, 
+				"level": notificationLevel
+				};
+
+		if (this.notifications === undefined || this.notifications === "" || this.notifications === "<delete>"){
+			this.notifications = "[]";
+		}
 		
-		var found = false;
-		if (this.notifications === undefined || this.notifications === ""){
-			this.notifications = JSON.stringify(itemArray);
-		}else{
-			var itemsArray = JSON.parse(this.notifications);
-			this.notifications = JSON.stringify(itemsArray.concat(itemArray));
-		}	
+		var notificationsJson = JSON.parse(this.notifications);
+		notificationsJson.push(itemDef)
+
+		this.notifications = JSON.stringify(notificationsJson);
 	*}
 }
