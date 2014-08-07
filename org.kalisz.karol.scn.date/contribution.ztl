@@ -1,0 +1,13 @@
+class org.kalisz.karol.scn.date.DateObject extends Component {
+
+	/**
+	 * Placeholder for Startup Scripts
+	 */
+	void onStartup();
+	
+	/**
+	 * Placeholder for Refresh Scripts
+	 */
+	void onRefresh();
+
+}

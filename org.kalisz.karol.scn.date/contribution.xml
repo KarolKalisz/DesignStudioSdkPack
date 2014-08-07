@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdkExtension
+	xmlns="http://www.sap.com/bi/zen/sdk"
+	id="org.kalisz.karol.scn.date"
+	title="Design Studio Karol's Date Object"
+	version="1.1"
+	vendor="Karol Kalisz">
+
+	<group
+		id="KarolsComponents"
+		title="Design Studio Karol's Components"/>
+		
+	<component
+		id="DateObject"
+		title="Date Object"
+		icon="res/date/Date.png"
+		handlerType="div"
+		group="KarolsComponents">
+		
+	<property 
+			id="onStartup" 
+			type="ScriptText" 
+			title="On Startup Script" 
+			group="Events" />
+
+	<property 
+			id="onRefresh" 
+			type="ScriptText" 
+			title="On Refresh Script" 
+			group="Events" />
+
+	<initialization>
+			<defaultValue property="WIDTH">0</defaultValue>
+			<defaultValue property="HEIGHT">0</defaultValue>
+			<defaultValue property="TOP_MARGIN">0</defaultValue>
+			<defaultValue property="LEFT_MARGIN">0</defaultValue>
+			<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
+			<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
+	</initialization>
+
+	</component>
+		
+</sdkExtension>
