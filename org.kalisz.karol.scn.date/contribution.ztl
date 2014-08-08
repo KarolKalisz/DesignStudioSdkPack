@@ -9,5 +9,43 @@ class org.kalisz.karol.scn.date.DateObject extends Component {
 	 * Placeholder for Refresh Scripts
 	 */
 	void onRefresh();
+	
+	void initialize(int year, int month, int day) {*
+		this.date = new Date(year, month - 1, day);	
+		
+		var that = this;
+	
+		Date.prototype.getWeek = function() {
+			var firstJanuary = new Date(this.getFullYear(), 0, 1);
+			that.dayOfFirstJanuary = firstJanuary.getDay();
+			
+			// 0 Sun
+			// 1 Mon
+			// 2 Tue
+			// 3 Wed
+			// 4 Thu
+			// 5 Fri
+			// 6 Sat
+			
+			if(dayOfFirstJanuary > 4) {
+				// after thursday, weeks must be increassed by one
+				return Math.ceil((((this - firstJanuary) / 86400000) + that.dayOfFirstJanuary + 1) / 7) + 1;
+			} else {
+				return Math.ceil((((this - firstJanuary) / 86400000) + that.dayOfFirstJanuary + 1) / 7);
+			}
+		}
+	*}
+	
+	String toLocaleString() {*
+		return this.date.toLocaleString() ; 
+	*}
+	
+	String toString() {*
+		return "First January Day: " + this.dayOfFirstJanuary + "\n"
+		 + "";
+	*}
 
+	int getWeek() {*
+		return this.date.getWeek();
+	*}
 }
