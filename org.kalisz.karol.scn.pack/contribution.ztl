@@ -1,3 +1,22 @@
+/**
+ * Copyright 2014 Karol Kalisz
+ * 
+ * Original Source Code Location:
+ *  https://github.com/KarolKalisz/DesignStudioSdkPack
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ *  
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License. 
+ */
+
 class org.kalisz.karol.scn.pack.NotificationBar extends Component {
 
 	/** 
@@ -7,8 +26,9 @@ class org.kalisz.karol.scn.pack.NotificationBar extends Component {
 	void addCategory (
 			/**Category Key*/String categoryKey, 
 			/**Category Text*/String categoryText, 
-			/**Category Image*/String categoryImage) {*
-		
+			/**Category Image*/String categoryImage)
+	{*
+
 		var categoryDef = {
 				"key": categoryKey,
 				"text": categoryText,
@@ -24,17 +44,61 @@ class org.kalisz.karol.scn.pack.NotificationBar extends Component {
 		
 		this.categories = JSON.stringify(caregoriesJson);
 	*}
-	
+
+	/**
+	 * Add an Error Notification
+	 */
+	void addErrorNotification (
+			/**Notification Text */String notificationText,
+			/**Optional: Category Key as defined in addCategory*/optional String categoryKey 
+			)
+	{*
+		this.addNotification(notificationText, "ERROR", categoryKey, "");
+	*}
+			
+	/**
+	 * Add a Warning Notification
+	 */
+	void addWarningNotification (
+			/**Notification Text */String notificationText,
+			/**Optional: Category Key as defined in addCategory*/optional String categoryKey 
+			)
+	{*
+		this.addNotification(notificationText, "WARNING", categoryKey, "");
+	*}
+
+	/**
+	 * Add an Info Notification
+	 */
+	void addInfoNotification (
+			/**Notification Text */String notificationText,
+			/**Optional: Category Key as defined in addCategory*/optional String categoryKey 
+			)
+	{*
+		this.addNotification(notificationText, "INFO", categoryKey, "");
+	*}
+
+	/**
+	 * Add a Success Notification
+	 */
+	void addSuccessNotification (
+			/**Notification Text */String notificationText,
+			/**Optional: Category Key as defined in addCategory*/optional String categoryKey 
+			)
+	{*
+		this.addNotification(notificationText, "SUCCESS", categoryKey, "");
+	*}
+
 	/** 
 	 * Add Notification
 	 * 
 	 */
 	void addNotification (
-			/**Category Key as defined in addCategory*/String categoryKey, 
-			/**Optional: Notification Key for the notification - place empty string if not required (currently only for display)*/String notificationKey, 
-			/**Notification Text*/String notificationText, 
-			/**Notification Level (ERROR|WARNING|INFO|SUCCESS) - influences the image */String notificationLevel) {*	
-		
+			/**Notification Text */String notificationText, 
+			/**Notification Level (ERROR|WARNING|INFO|SUCCESS) */String notificationLevel, 
+			/**Optional: Category Key as defined in addCategory*/optional String categoryKey, 
+			/**Optional: Notification Key */ optional String notificationKey)
+	{*
 		var itemDef = { 
 				"category": categoryKey,
 				"key": notificationKey, 

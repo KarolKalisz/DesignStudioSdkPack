@@ -19,6 +19,12 @@
 
 jQuery.sap.require("sap.ui.ux3.NotificationBar");
 
+// http://scn.sap.com/message/15268917#15268917
+var lastScriptCalled = $("script:last");
+var fullUrlOfLastScriptCalled = lastScriptCalled.attr("src");
+var cutIndexOnMainEntryPoint = fullUrlOfLastScriptCalled.indexOf("res/nb/");
+var org_kalisz_karol_scn_pack_NotificationBar_accessUrlForRes = fullUrlOfLastScriptCalled.substring(0, cutIndexOnMainEntryPoint) + "res/nb/";
+
 sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 
 	setCategories : function(value) {
@@ -126,7 +132,7 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		this._oNotificationBar = this;
 		var that = this._oNotificationBar;
 		
-		this._pAccessPath = sapbi_page.staticMimeUrlPrefix + "zen/mimes/sdk_include/org.kalisz.karol.scn.pack/res/nb/";
+		this._pAccessPath = org_kalisz_karol_scn_pack_NotificationBar_accessUrlForRes;
 		
 		this._oCommonNotifier = new sap.ui.ux3.Notifier({
 			title : "Common Notifications",
@@ -162,7 +168,6 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 			if(that.DeleteNotificationOnClick) {
 				oNotifier.removeNotification(oNotification);			
 			}
-			// alert("Notification selected: " + oNotification.getText());
 		};
 		
 		this._oResizeListener = function (oEvent) {
@@ -207,8 +212,8 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 				that.addNotifier(this._oWarningNotifier);
 				that.addNotifier(this._oInfoNotifier);
 			} else {
-				that.addNotifier(this._oPrivateNotifier);
 				that.addNotifier(this._oCommonNotifier);
+				that.addNotifier(this._oPrivateNotifier);
 			}
 
 			that.attachResize(this._oResizeListener);
@@ -230,10 +235,17 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 				var text = CategoriesArray[i].text;
 				var image = CategoriesArray[i].image;
 				
+				// in case image is not given, use standard image
+				if(image == "")  {
+					icon = this._pAccessPath + "scat_private.png";
+				} else {
+					icon = this._pImagePrefix + image;
+				}
+				
 				if(!this._oWCustomCategoryNotifier[key]) {
 					this._oWCustomCategoryNotifier[key] = new sap.ui.ux3.Notifier({
 						title : text,
-						icon : this._pImagePrefix + image
+						icon : icon
 					});
 					
 					that.addNotifier(this._oWCustomCategoryNotifier[key]);
@@ -268,9 +280,9 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 					text = text + " [" + NotificationsArray[i].key + "]";
 				}
 				
-				if(NotificationsArray[i].category != undefined && NotificationsArray[i].category != "") {
-					text = NotificationsArray[i].category + ": " + text;
-				}
+				//if(NotificationsArray[i].category != undefined && NotificationsArray[i].category != "") {
+				//	text = NotificationsArray[i].category + ": " + text;
+				//}
 
 				var oNotification = new sap.ui.core.Message({
 					text : text,
@@ -336,12 +348,12 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 			this._pInitilized = true;
 		}
 		
-		if(this._ShowOnNewNotifications && this._pNewNotificationsAvailable && !this._ConnectToCommonMessages) {
+		if(this._ShowOnNewNotifications && this._pNewNotificationsAvailable) {
 			that.setVisibleStatus(sap.ui.ux3.NotificationBarStatus.Default);
 		}
 	},
 	
-	/* ACCESS TO MESSAGE HANDLER (not an official API) */
+	/* ACCESS TO MESSAGE HANDLER (not an official SDK API) */
 	
 	registerToMessageHandler : function () {
 		var that = this._oNotificationBar;
@@ -434,7 +446,7 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 			MessagesModel.removeAll();
 		}
 		
-		if(this._ShowOnNewNotifications && this._pNewNotificationsAvailable && this._ConnectToCommonMessages) {
+		if(this._ShowOnNewNotifications && this._pNewNotificationsAvailable) {
 			that.setVisibleStatus(sap.ui.ux3.NotificationBarStatus.Default);
 		}
 	}
