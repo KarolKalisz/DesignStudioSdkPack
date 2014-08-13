@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sdkExtension
 	xmlns="http://www.sap.com/bi/zen/sdk"
-	id="org.kalisz.karol.scn.pack"
-	title="Design Studio Karol's Components"
+	id="org.kalisz.karol.scn.date"
+	title="Design Studio Karol's Date Object"
 	version="1.0"
 	vendor="Karol Kalisz"
 	eula="Content is free for use and distribution under Apache License Version 2.0. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License. For details refer to https://github.com/KarolKalisz/DesignStudioSdkPack/blob/stable/LICENSE">
@@ -11,8 +11,8 @@
    Apache License
    Version 2.0, January 2004
    http://www.apache.org/licenses/
-	 https://github.com/KarolKalisz/DesignStudioSdkPack/blob/stable/LICENSE
-	 
+   https://github.com/KarolKalisz/DesignStudioSdkPack/blob/stable/LICENSE
+   
    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
    1. Definitions.
@@ -184,96 +184,28 @@
       incurred by, or claims asserted against, such Contributor by reason
       of your accepting any such warranty or additional liability.
   </license>
-
+   
 	<group
 		id="KarolsComponents"
 		title="Design Studio Karol's Components"/>
-
+		
 	<component
-		id="NotificationBar"
-		title="Notification Bar"
-		icon="res/nb/NotificationBar.png"
-		handlerType="sapui5"
+		id="DateObject"
+		title="Date Object"
+		icon="res/date/Date.png"
+		handlerType="div"
 		group="KarolsComponents">
-		<jsInclude>res/nb/NotificationBar.js</jsInclude>
-		<cssInclude>res/nb/NotificationBar.css</cssInclude>
+	<jsInclude>res/date/Date.js</jsInclude>
 
-	<property 
-			id="defaultImage" 
-			type="Url" 
-			title="Default Image - Needed for Calculation of the Url Prefix for Repository" 
-			group="Display" 
-			visible="true"/>
-			
-	<property
-			id="notifications"
-			title="Notifications"
-			tooltip="The Notifications Pushed to Client"
-			type="String"
-			visible="false"/>
-
-	<property
-			id="categories"
-			title="Categories"
-			tooltip="The Notifications Pushed to Client"
-			type="String"
-			visible="false"/>
-
-	<property
-			id="connectToCommonMessages"
-			title="Connect To Common Messages"
-			tooltip="Setting this to TRUE also the common Messages from messages popup will be handover to this notification bar"
-			type="boolean"
-			group="Display">	
-		</property>
-
-	<property
-			id="splitNotificationsByPriority"
-			title="Split Notifications by Priority"
-			tooltip="Setting this to TRUE the Notifications will be displayed in categories by priority"
-			type="boolean"
-			group="Display">	
-		</property>
-			
-	<property
-			id="showOnNewNotifications"
-			title="Show Notification Bar when New Notifications are Available"
-			tooltip="Setting this to TRUE shows always Notification Bar when new Notifications are Available"
-			type="boolean"
-			group="Display">	
-		</property>
-			
-	<property
-			id="deleteNotificationOnClick"
-			title="Delete Notification when Clicked"
-			tooltip="Setting this to TRUE deletes the Notification on click event"
-			type="boolean"
-			group="Display">	
-		</property>
-
-	<property
-			id="removeAllOnMinimize"
-			title="Remove All Notifications when Minimized"
-			tooltip="Setting this to TRUE deletes all Notifications on minimize event"
-			type="boolean"
-			group="Display">	
-		</property>
-			
 	<initialization>
-			<defaultValue property="WIDTH">auto</defaultValue>
-			<defaultValue property="HEIGHT">40</defaultValue>
-			<defaultValue property="TOP_MARGIN">auto</defaultValue>
+			<defaultValue property="WIDTH">0</defaultValue>
+			<defaultValue property="HEIGHT">0</defaultValue>
+			<defaultValue property="TOP_MARGIN">0</defaultValue>
 			<defaultValue property="LEFT_MARGIN">0</defaultValue>
-			<defaultValue property="RIGHT_MARGIN">0</defaultValue>
-			<defaultValue property="BOTTOM_MARGIN">0</defaultValue>
-			<defaultValue property="defaultImage"></defaultValue>
-			
-			<defaultValue property="connectToCommonMessages">false</defaultValue>
-			<defaultValue property="splitNotificationsByPriority">true</defaultValue>
-			<defaultValue property="showOnNewNotifications">true</defaultValue>
-			<defaultValue property="deleteNotificationOnClick">false</defaultValue>
-			<defaultValue property="removeAllOnMinimize">false</defaultValue>
-		</initialization>
+			<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
+			<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
+	</initialization>
+
 	</component>
 		
 </sdkExtension>
