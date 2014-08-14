@@ -196,6 +196,20 @@
 		handlerType="div"
 		group="KarolsComponents">
 	<jsInclude>res/sd/SimpleDate.js</jsInclude>
+
+	<property
+			id="days"
+			title="Days"
+			tooltip=""
+			type="String"
+			visible="false"/>
+
+	<property
+			id="oneDay"
+			title="One Day"
+			tooltip=""
+			type="String"
+			visible="false"/>
 		
 	<initialization>
 			<defaultValue property="WIDTH">0</defaultValue>

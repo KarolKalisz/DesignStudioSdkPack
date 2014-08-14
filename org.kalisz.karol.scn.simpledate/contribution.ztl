@@ -4,11 +4,7 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		this.initializeWithDate(year, month, day);
 	*}
 	
-	void initializeWithDate(int year, int month, int day) {*
-		this.year = year;
-		this.month = month - 1;
-		this.day = day;
-		
+	void initializeWithDate(int year, int month, int day) {*		
 		var monthString = "" + month;
 		if(month < 10) {
 			monthString = "0" + monthString;
@@ -26,7 +22,6 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 	
 	void initializeWithInternalDate(String internalDate) {*
 		this.internal_setup();
-		this.internalDate = internalDate;
 	
 		var daysJson = JSON.parse(this.days);
 	
@@ -42,6 +37,7 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		}
 		
 		this.oneDay = JSON.stringify(lOneDay);
+		this.days = "";
 	*}
 	
 	void rollDays(int days) {*
@@ -63,9 +59,9 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 	void rollMonths(int months) {*
 		var index = this.internal_getIndex();
 	
-		index = index - (months * 31);
+		index = index - (months * 30);
 		
-		internal_setDateByIndex(index);
+		internal_setDateByIndexAdjustingDay(index);
 	*}
 
 	void rollYears(int years) {*
@@ -73,7 +69,7 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 	
 		index = index - (years * 365);
 		
-		internal_setDateByIndex(index);
+		internal_setDateByIndexAdjustingDay(index);
 	*}
 
 	int getYear() {*
@@ -161,6 +157,7 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		if(this.days == undefined || this.days == "") {
 		var lDaysJSON = 
 [
+{"i":5000,"k":20200101,"y":2020,"m":1,"d":1,"w":1,"s":3,"t":1},
 {"i":5001,"k":20191231,"y":2019,"m":12,"d":31,"w":53,"s":2,"t":365},
 {"i":5002,"k":20191230,"y":2019,"m":12,"d":30,"w":53,"s":1,"t":364},
 {"i":5003,"k":20191229,"y":2019,"m":12,"d":29,"w":52,"s":0,"t":363},
@@ -4199,6 +4196,29 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 	*}
 
 	void internal_setDateByIndex(int index) {*
+		this.internal_setup();
+		var daysJson = JSON.parse(this.days);
+	
+		var lOneDay = daysJson[index - daysJson[0].i];
+					
+		this.oneDay = JSON.stringify(lOneDay);
+		this.days = "";
+	*}
+	
+	void internal_setDateByIndexAdjustingDay(int index) {*
+		var dayNow = getDay();
+	
+		internal_setDateByIndex(index);
+
+		var dayAfter = getDay();
+	
+		var difference = dayNow - dayAfter;
+	
+		internal_setDateByIndex(index - difference);
+	*}
+
+	void internal_setDateByIndexSearch(int index) {*
+		this.internal_setup();
 		var daysJson = JSON.parse(this.days);
 	
 		var lOneDay;
@@ -4213,6 +4233,7 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		}
 		
 		this.oneDay = JSON.stringify(lOneDay);
+		this.days = "";
 	*}
 	
 	String internal_toString(){*
@@ -4228,10 +4249,6 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		 + "Formatted: " + this.getDay() + "." + this.getMonth() + "." + this.getYear() + "\n"
 		 + "Formatted [DD.MM.YYYY WW]: " + this.format("DD.MM.YYYY WW") + "\n"
 		 + "Formatted [MM/DD/YYYY WW]: " + this.format("MM/DD/YYYY WW") + "\n\n"
-		 + "Internal Year: " + this.year + "\n"
-		 + "Internal Month: " + this.month + "\n"
-		 + "Internal Day: " + this.day + "\n"
-		 + "Internal Date: " + this.internalDate + "\n"
 		 + "";
 	*}
 
