@@ -3,6 +3,16 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 	/**
 	 * Initialization method with year, month and day
 	 */
+	void initialize(
+			/** Year */int year, 
+			/** Month (1 for January up to 12 for December)*/int month, 
+			/** Day*/int day) {*
+		this.initializeWithDate(year, month, day);
+	*}
+			
+	/**
+	 * Initialization method with year, month and day
+	 */
 	void initializeWithDate(
 			/** Year */int year, 
 			/** Month (1 for January up to 12 for December)*/int month, 
@@ -211,6 +221,13 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		resultString = resultString.replace("Q", this.getQuarter());
 
 		return resultString;
+	*}
+	
+	/**
+	 * Returns currently only internal format as locale handling is not available yet
+	 */
+	String toLocaleString() {*
+		return format("YYYYMMDD");
 	*}
 	
 	/**
