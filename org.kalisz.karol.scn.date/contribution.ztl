@@ -148,9 +148,10 @@ class org.kalisz.karol.scn.date.DateObject extends Component {
 				that.daysFromLastMondayToMondayBeforeFirstJanuary = ((that.lastMondayDate - that.mondayBeforeFirstJanuaryDate) / milisecondsInADay);
 				that.daysFromLastMondayToMondayAfterFirstJanuary = ((that.lastMondayDate - that.mondayAfterFirstJanuaryDate) / milisecondsInADay);
 
-				// ISO conform cal week, if january first is thursday, friday, saturday or sunday -> weeks are counted from next monday.
+				// ISO 8601: First Week is the week with Thurdsay
+
 				// count number of weeks, by substracting the mondays and dividing by 7
-				if(that.dayOfWeekFirstJanuary >= 4 || that.dayOfWeekFirstJanuary == 0) {
+				if(that.dayOfWeekFirstJanuary > 4 || that.dayOfWeekFirstJanuary == 0) {
 					that.calendarWeek = (that.daysFromLastMondayToMondayAfterFirstJanuary / 7) + 1;
 				} else {
 					that.calendarWeek = (that.daysFromLastMondayToMondayBeforeFirstJanuary / 7) + 1;
@@ -158,7 +159,24 @@ class org.kalisz.karol.scn.date.DateObject extends Component {
 
 				// for now simplification, actually last year could have 53 calendar weeks by ISO 8601
 				if(that.calendarWeek == 0) {
-					that.calendarWeek = 52;
+					var lastYear = that.getYear() - 1;
+					
+					// exceptions are manually maintained for 1970 - 2054
+					if(lastYear == 1970 || lastYear == 1981 || lastYear == 1987 || lastYear == 1998
+							|| lastYear == 2009 || lastYear == 2015 || lastYear == 2026 || lastYear == 2037 || lastYear == 2043 || lastYear == 2054) {
+						// http://en.wikipedia.org/wiki/Common_year_starting_on_Thursday
+						that.calendarWeek = 53;
+					} else if(lastYear == 1920 || lastYear == 1948 || lastYear == 1976 
+							|| lastYear ==  2004 || lastYear == 2060 || lastYear == 2088) {
+						// http://en.wikipedia.org/wiki/Leap_year_starting_on_Thursday
+						that.calendarWeek = 53;
+					} else if(lastYear == 1992
+							|| lastYear == 2020 || lastYear == 2048 || lastYear == 2076) {
+						// http://en.wikipedia.org/wiki/Leap_year_starting_on_Wednesday
+						that.calendarWeek = 53;
+					} else {
+						that.calendarWeek = 52;
+					}
 				}
 				
 				// for now names only in EN
