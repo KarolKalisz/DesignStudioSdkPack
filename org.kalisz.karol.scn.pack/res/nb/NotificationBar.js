@@ -19,11 +19,13 @@
 
 jQuery.sap.require("sap.ui.ux3.NotificationBar");
 
-// http://scn.sap.com/message/15268917#15268917
-var lastScriptCalled = $("script:last");
-var fullUrlOfLastScriptCalled = lastScriptCalled.attr("src");
-var cutIndexOnMainEntryPoint = fullUrlOfLastScriptCalled.indexOf("res/nb/");
-var org_kalisz_karol_scn_pack_NotificationBar_accessUrlForRes = fullUrlOfLastScriptCalled.substring(0, cutIndexOnMainEntryPoint) + "res/nb/";
+// 1.0.0, implemented as in http://scn.sap.com/message/15268917#15268917
+// 1.0.1, avoid collisions on global variables - later needs to implement the other way as in thread http://scn.sap.com/community/businessobjects-design-studio/blog/2014/08/15/sdk-tips-and-tricks-resources-and-images
+
+var org_kalisz_karol_scn_pack_NotificationBar_lastScriptCalled = $("script:last");
+var org_kalisz_karol_scn_pack_NotificationBar_fullUrlOfLastScriptCalled = org_kalisz_karol_scn_pack_NotificationBar_lastScriptCalled.attr("src");
+var org_kalisz_karol_scn_pack_NotificationBar_cutIndexOnMainEntryPoint = org_kalisz_karol_scn_pack_NotificationBar_fullUrlOfLastScriptCalled.indexOf("res/nb/");
+var org_kalisz_karol_scn_pack_NotificationBar_accessUrlForRes = org_kalisz_karol_scn_pack_NotificationBar_fullUrlOfLastScriptCalled.substring(0, org_kalisz_karol_scn_pack_NotificationBar_cutIndexOnMainEntryPoint) + "res/nb/";
 
 sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 
@@ -197,6 +199,9 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		this._oErrorNotifier.attachMessageSelected(this._oClickListener);
 		this._oWarningNotifier.attachMessageSelected(this._oClickListener);
 		this._oInfoNotifier.attachMessageSelected(this._oClickListener);
+		
+		// initilize on Min Status * 1.0.1
+		that.setVisibleStatus(sap.ui.ux3.NotificationBarStatus.Min);
 	},
 	
 	afterDesignStudioUpdate : function() {
