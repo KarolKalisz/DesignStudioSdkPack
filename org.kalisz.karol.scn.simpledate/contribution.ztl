@@ -1,10 +1,12 @@
 class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 
-	void initialize(int year, int month, int day) {*
-		this.initializeWithDate(year, month, day);
-	*}
-	
-	void initializeWithDate(int year, int month, int day) {*		
+	/**
+	 * Initialization method with year, month and day
+	 */
+	void initializeWithDate(
+			/** Year */int year, 
+			/** Month (1 for January up to 12 for December)*/int month, 
+			/** Day*/int day) {*		
 		var monthString = "" + month;
 		if(month < 10) {
 			monthString = "0" + monthString;
@@ -20,7 +22,12 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		this.initializeWithInternalDate(internalDate);
 	*}
 	
-	void initializeWithInternalDate(String internalDate) {*
+	/**
+	 * Initialization method with internal date format (YYYYMMDD)
+	 * You can use the APPLICATION.getInfo().dateNowInternalFormat to get the current date
+	 */
+	void initializeWithInternalDate(
+			/**Date in internal format YYYYMMDD, eg. 20140812*/String internalDate) {*
 		this.internal_setup();
 	
 		var daysJson = JSON.parse(this.days);
@@ -40,44 +47,74 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 		this.days = "";
 	*}
 	
-	void rollDays(int days) {*
+	/**
+	 * Roll days up and down, negative numbers are rolling down
+	 */
+	void rollDays(
+			/**Days to Roll*/int days) {*
 		var index = this.internal_getIndex();
 	
 		index = index - days;
 		
 		internal_setDateByIndex(index);
+		this.days = "";
 	*}
 	
-	void rollWeeks(int weeks) {*
+	/**
+	 * Roll days up and down, negative numbers are rolling down.
+	 * Same effect as rollDays(weeks * 7);
+	 */
+	void rollWeeks(
+			/**Weeks to Roll*/int weeks) {*
 		var index = this.internal_getIndex();
 	
 		index = index - (weeks * 7);
 		
 		internal_setDateByIndex(index);
+		this.days = "";
 	*}
 	
-	void rollMonths(int months) {*
-		var index = this.internal_getIndex();
-	
-		index = index - (months * 30);
-		
-		internal_setDateByIndexAdjustingDay(index);
-	*}
+	/**
+	 * Roll months up and down, negative numbers are rolling down.
+	 * This roll is keeping the day, as far it is possible. If the target month does not have this day, it will take the last day. Eg. 31. March 2014 -> rollMonth(-1) will lead to 28. February 2014.
+	 * Same effect as rollDays(weeks * 7);
+	 */
+	void rollMonths(
+			/**Months to Roll*/int months) {*
+		this.internal_setup();
 
-	void rollYears(int years) {*
-		var index = this.internal_getIndex();
-	
-		index = index - (years * 365);
+		internal_rollMonths(months);
 		
-		internal_setDateByIndexAdjustingDay(index);
+		this.days = "";
 	*}
+	
+	/**
+	 * Roll years up and down, negative numbers are rolling down.
+	 * This roll is keeping the day, as far it is possible. If the target month does not have this day, it will take the last day. Eg. 29. March 2012 -> rollYear(-1) will lead to 28. February 2011.
+	 * Same effect as rollMonths(years * 12);
+	 */
+	void rollYears(
+			/**Years to Roll*/int years) {*
+		this.internal_setup();
 
+		internal_rollMonths(years * 12);
+		
+		this.days = "";
+	*}
+	
+	/**
+	 * Simple getter for Year of current date
+	 */
 	int getYear() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.y;
 	*}
 
+	/**
+	 * Simple getter for Quarter of current date
+	 * Months 1-3 are Quarter 1, Months 4-6 are Quarter 2, Months 7-9 are Quarter 3, Months 10-12 are Quarter 4 
+	 */
 	int getQuarter(){*
 		var dayJson = JSON.parse(this.oneDay);
 	
@@ -86,40 +123,65 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 	 	return quarter;
 	*}
 	
+	/**
+	 * Simple getter for Month of current date
+	 * 1 is January, 12 is December
+	 */
 	int getMonth() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.m;
 	*}
 
+	/**
+	 * Simple getter for Day of Month of current date
+	 */
 	int getDay() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.d;
 	*}
 
+	/**
+	 * Simple getter for Calendar Week of current date
+	 */
 	int getCalendarWeek() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.w;
 	*}
 
+	/**
+	 * Simple getter for Day of Week of current date
+	 * 0-Sunday, 1-Monday, 2-Tuesday, 3-Wednesday, 4-Thursday, 5-Friday, 6-Saturday, 7-Sunday
+	 */
 	int getDayOfWeek() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.s;
 	*}
 
+	/**
+	 * Simple getter for Day Year of current date
+	 */
 	int getDayOfYear() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.t;
 	*}
-	
-	String toLocaleString() {*
-		return "N/A";
-	*}
 
+	/**
+	 * Method for custom format by string pattern, supports:
+	 * YYYY: year
+	 * YY: 2-digit year
+	 * MM: 2-digit
+	 * M: month
+	 * DD: 2-digit day
+	 * D: day
+	 * WW: 2-digit calendar week
+	 * W: calendar week
+	 * Q: quarter
+	 */
 	String format(String formatPattern) {*
 		var resultString = formatPattern;
 		resultString = resultString.replace("YYYY", this.getYear());
@@ -146,13 +208,14 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 			resultString = resultString.replace("WW", this.getCalendarWeek());
 		}
 		
-		resultString = resultString.replace("QQQ", "00" + this.getQuarter());
-		resultString = resultString.replace("QQ", "0" + this.getQuarter());
 		resultString = resultString.replace("Q", this.getQuarter());
 
 		return resultString;
 	*}
 	
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
 	void internal_setup(){*
 		if(this.days == undefined || this.days == "") {
 		var lDaysJSON = 
@@ -4181,61 +4244,137 @@ class org.kalisz.karol.scn.simpledate.SimpleDateObject extends Component {
 }
 	*}
 
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
 	String internal_getDays() {*
 		return this.days;
 	*}
 
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
 	String internal_getOneDay() {*
 		return this.oneDay;
 	*}
 
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
 	int internal_getIndex() {*
 		var dayJson = JSON.parse(this.oneDay);
 		
 		return dayJson.i;
 	*}
 
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
 	void internal_setDateByIndex(int index) {*
 		this.internal_setup();
 		var daysJson = JSON.parse(this.days);
 	
-		var lOneDay = daysJson[index - daysJson[0].i];
-					
-		this.oneDay = JSON.stringify(lOneDay);
-		this.days = "";
-	*}
-	
-	void internal_setDateByIndexAdjustingDay(int index) {*
-		var dayNow = getDay();
-	
-		internal_setDateByIndex(index);
-
-		var dayAfter = getDay();
-	
-		var difference = dayNow - dayAfter;
-	
-		internal_setDateByIndex(index - difference);
-	*}
-
-	void internal_setDateByIndexSearch(int index) {*
-		this.internal_setup();
-		var daysJson = JSON.parse(this.days);
-	
 		var lOneDay;
+		
+		if(index > daysJson.lenght - 1) {
+			lOneDay = daysJson[daysJson.lenght - 1];	
+		} else if(index < 0) {
+			lOneDay = daysJson[0];
+		} else {
+			lOneDay = daysJson[index - daysJson[0].i];		
+		}
+
+		this.oneDay = JSON.stringify(lOneDay);
+	*}
+
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
+	void internal_rollMonths(int months) {*
+		var index = this.internal_getIndex();
 	
-		for (var i = 0; i < daysJson.length; i++) {
-			var k = daysJson[i].i;
+		var daysJson = JSON.parse(this.days);
+		
+		var lOneDay;
+		
+		var arrayIndex = index - daysJson[0].i;
+	
+		var beforeYear = getYear();
+		var beforeMonth = getMonth();
+		var beforeDay = getDay();
+	
+		var monthBeforeEnteringLoop = beforeMonth;
 			
-			if(k == index) {
-				lOneDay = daysJson[i];
-				break;
+		if(months < 0) {
+			// index must go up
+			
+			for (var i = arrayIndex + 1; i < daysJson.length; i++) {
+				
+				var year = daysJson[i].y;
+				var month = daysJson[i].m;
+				var day = daysJson[i].d;
+				
+				// we check how many months we already have processed
+				if(month != monthBeforeEnteringLoop) {
+					monthBeforeEnteringLoop = month;
+					months = months + 1;
+				}
+				
+				if(months == 0) {
+					// already in the targeted month, now we search for the day
+					
+					if(day == beforeDay || day < beforeDay) {
+						lOneDay = daysJson[i];
+						break;
+					}
+				}
+			}
+			
+			if(lOneDay == undefined) {
+				lOneDay = daysJson[daysJson.length - 1];		
+			}
+		} else {
+			// index must go down
+	
+			for (var i = arrayIndex - 1; i >= 0; i--) {
+				
+				var year = daysJson[i].y;
+				var month = daysJson[i].m;
+				var day = daysJson[i].d;
+				
+				// we check how many months we already have processed
+				if(month != monthBeforeEnteringLoop) {
+					monthBeforeEnteringLoop = month;
+					months = months - 1;
+				}
+				
+				if(months == 0) {
+					// already in the targeted month, now we search for the day
+					
+					lOneDay = daysJson[i];
+					
+					if(day == beforeDay) {
+						break;
+					}
+				}
+
+				// emergency exit in case this month has lower numbers of days
+				if(months < 0 && lOneDay != undefined) {
+					break;
+				}
+			}
+			
+			if(lOneDay == undefined) {
+				lOneDay = daysJson[0];
 			}
 		}
-		
-		this.oneDay = JSON.stringify(lOneDay);
-		this.days = "";
-	*}
 	
+		this.oneDay = JSON.stringify(lOneDay);
+	*}
+
+	/**
+	 * Internal Method, do not use in Scripts
+	 */
 	String internal_toString(){*
 		return "Day of Year: " + this.getDayOfYear() + "\n"
 		 + "Day of Month: " + this.getDay() + "\n\n"
