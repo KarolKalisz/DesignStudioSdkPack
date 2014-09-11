@@ -1,0 +1,241 @@
+/**
+ * Copyright 2014 Karol Kalisz
+ * 
+ * Original Source Code Location:
+ *  https://github.com/KarolKalisz/DesignStudioSdkPack
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ *  
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License. 
+ */
+
+/**
+ * Class for ApplicationHeader
+ */
+class org.kalisz.karol.scn.ui5basics.ApplicationHeader extends Component {
+	
+	/** Sets the user name that is displayed beside the welcome text. */
+	void setUserName(
+		/** User name */ String userName) {*
+		this.userName = userName;	
+	*}
+	
+	/** Returns the user name that is displayed beside the welcome text. */
+	String getUserName() {*
+		return this.userName;	
+	*}
+
+	/** Sets the text that is displayed beside the logo in the application header. */
+	void setLogoText(
+		/** Logo text */ String logoText) {*
+		this.logoText = logoText;	
+	*}
+	
+	/** Returns the text that is displayed beside the logo in the application header. */
+	String getLogoText() {*
+		return this.logoText;	
+	*}
+}
+
+/**
+ * Class for ColorPicker
+ */
+class org.kalisz.karol.scn.ui5basics.ColorPicker extends Component {
+	
+	/** Sets the color top be shown */
+	void setColor(
+		/** Color value */ String colorString) {*
+		this.colorString = colorString;
+	*}
+	
+	/** Returns the picked color */
+	String getColor() {*
+		return this.colorString;
+	*}
+}
+
+/**
+ * Class for Paginator
+ */
+class org.kalisz.karol.scn.ui5basics.Paginator extends Component {
+	
+	/** Sets the current page number */
+	void setCurrentPage(
+		/** Current page number */ int currentPage) {*
+		this.currentPage = currentPage;	
+	*}
+	
+	/** Returns the current page number */
+	int getCurrentPage() {*
+		return this.currentPage;	
+	*}
+
+	/** Sets the overall number of pages that are embedded into the parent control */
+	void setNumberOfPages(
+		/** Overall number of pages */ int numberOfPages) {*
+		this.numberOfPages = numberOfPages;	
+	*}
+	
+	/** Returns the overall number of pages that are embedded into the parent control */
+	int getNumberOfPages() {*
+		return this.numberOfPages;	
+	*}
+}
+
+/**
+ * Class for ProgressIndicator
+ */
+class org.kalisz.karol.scn.ui5basics.ProgressIndicator extends Component {
+
+	/** Sets the percentage value of the progress bar */
+	void setPercentValue(
+		/** Percent value */ int percentValue) {*
+		this.percentValue = percentValue;	
+	*}
+	
+	/** Returns the percentage value of the progress bar */
+	int getPercentValue() {*
+		return this.percentValue;	
+	*}
+	
+	/** Sets the text value displayed in the bar */
+	void setDisplayValue(
+		/** Display value */ String displayValue) {*
+		this.displayValue = displayValue;	
+	*}
+	
+	/** Returns the text value displayed in the bar */
+	String getDisplayValue() {*
+		return this.displayValue;	
+	*}
+}
+
+/**
+ * Class for RatingIndicator
+ */
+class org.kalisz.karol.scn.ui5basics.RatingIndicator extends Component {
+
+	/** Sets the editable value */
+	void setEditable(
+		/** Editable value */ boolean editable) {*
+		this.editable = editable;
+	*}
+	
+	/** Returns the editable value */
+	boolean isEditable() {*
+		return this.editable;
+	*}
+
+	/** Sets the rating value */
+	void setValue(
+		/** Rating value */ float value) {*
+		this.value = value;	
+	*}
+	
+	/** Returns the rating value */
+	float getValue() {*
+		return this.value;	
+	*}
+}
+
+/**
+ * Class for Slider
+ */
+class org.kalisz.karol.scn.ui5basics.Slider extends Component {
+
+	/** Sets the editable value */
+	void setEditable(
+		/** Editable value */ boolean editable) {*
+		this.editable = editable;
+	*}
+	
+	/** Returns the editable value */
+	boolean isEditable() {*
+		return this.editable;
+	*}
+
+	/** Sets the minimum value. */
+	void setMinimumValue(
+		/** Minimum value */ float min) {*
+		this.min = min;
+	*}
+	
+	/** Returns the minimum value. */
+	float getMinimumValue() {*
+		return this.min;
+	*}
+
+	/** Sets the maximum value. */
+	void setMaximumValue(
+		/** Maximum value */ float max) {*
+		this.max = max;
+	*}
+	
+	/** Returns the maximum value. */
+	float getMaximumValue() {*
+		return this.max;
+	*}
+
+	/** Sets the value. */
+	void setValue(
+		/** Value */ float value) {*
+		this.value = value;
+	*}
+	
+	/** Returns the value. */
+	float getValue() {*
+		return this.value;
+	*}
+	
+	/** Sets the total units value. */
+	void setTotalUnits(
+		/** Total units value */ int totalUnits) {*
+		this.totalUnits = totalUnits;
+	*}
+	
+	/** Returns the total units value. */
+	int getTotalUnits() {*
+		return this.totalUnits;
+	*}
+
+	/** Sets the step labels value. */
+	void setStepLabels(
+		/** Step labels value */ boolean stepLabels) {*
+		this.stepLabels = stepLabels;
+	*}
+	
+	/** Returns the step labels value. */
+	boolean isStepLabels() {*
+		return this.stepLabels;
+	*}
+
+	/** Sets the vertical value. */
+	void setVertical(
+		/** Vertical value */ boolean vertical) {*
+		this.vertical = vertical;
+	*}
+	
+	/** Returns the vertical value. */
+	boolean isVertical() {*
+		return this.vertical;
+	*}
+
+	/** Sets the small step width value. */
+	void setSmallStepWidth(
+		/** Small step width value */ float smallStepWidth) {*
+		this.smallStepWidth = smallStepWidth;
+	*}
+	
+	/** Returns the small step width value. */
+	float getSmallStepWidth() {*
+		return this.smallStepWidth;
+	*}
+}
