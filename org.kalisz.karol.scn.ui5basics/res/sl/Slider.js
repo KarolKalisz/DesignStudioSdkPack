@@ -23,8 +23,22 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.ui5basics.Slider", {
 		var that = this;
 		
 		this.attachChange(function() {
-			that.fireDesignStudioPropertiesChanged(["value"]);
-			that.fireDesignStudioEvent("onChange");
+			var value = that.getValue();
+			
+			var updateRequired = false;
+			if(that._SavedValue == undefined) {
+				that._SavedValue = value;
+				updateRequired = true;
+			}
+			
+			if(!updateRequired && that._SavedValue != value) {
+				updateRequired = true;
+			}
+
+			if(updateRequired) {
+				that.fireDesignStudioPropertiesChanged(["value"]);
+				that.fireDesignStudioEvent("onChange");
+			}
 		});
 	},
 	
