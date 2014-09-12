@@ -236,6 +236,8 @@
 			type="ScriptText"/>
 
 		<initialization>
+			<defaultValue property="TOP_MARGIN">0</defaultValue>
+			<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
 			<defaultValue property="LEFT_MARGIN">0</defaultValue>
 			<defaultValue property="RIGHT_MARGIN">0</defaultValue>
 			<defaultValue property="WIDTH">auto</defaultValue>
@@ -268,6 +270,39 @@
 			<defaultValue property="WIDTH">270</defaultValue>
 			<defaultValue property="HEIGHT">134</defaultValue>
 			<defaultValue property="colorString">red</defaultValue>
+		</initialization>
+	</component>
+
+	<component
+		id="Link"
+		title="Link"
+		handlerType="sapui5"
+		icon="res/li/Link.png"
+		group="KarolsBasicComponents">
+		
+		<jsInclude>res/li/Link.js</jsInclude>
+		
+		<property
+			id="text"
+			title="Link Text"
+			tooltip="Link text to be displayed.."
+			type="String"/>
+
+		<property
+			id="onPress"
+			title="On Press"
+			tooltip="Fires the event when the user clicks the control."
+			group="Events"
+			type="ScriptText"/>
+
+		<initialization>
+			<defaultValue property="TOP_MARGIN">0</defaultValue>
+			<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
+			<defaultValue property="LEFT_MARGIN">0</defaultValue>
+			<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
+			<defaultValue property="WIDTH">100</defaultValue>
+			<defaultValue property="HEIGHT">20</defaultValue>
+			<defaultValue property="text">Go Sap...</defaultValue>
 		</initialization>
 	</component>
 
@@ -418,6 +453,74 @@
 	</component>
 
 	<component
+		id="RangeSlider"
+		title="Range Slider"
+		handlerType="sapui5"
+		icon="res/rsl/RangeSlider.png"
+		group="KarolsBasicComponents">
+		
+		<jsInclude>res/rsl/RangeSlider.js</jsInclude>
+		
+		<property
+			id="min"
+			title="Minimum Value"
+			type="float"/>
+		
+		<property
+			id="max"
+			title="Maximum Value"
+			type="float"/>
+		
+		<property
+			id="value"
+			title="First Value"
+			type="float"/>
+		
+		<property
+			id="value2"
+			title="Second Value"
+			type="float"/>
+
+		<property
+			id="totalUnits"
+			title="Total Units"
+			type="int"/>
+		
+		<property
+			id="stepLabels"
+			title="Step Labels"
+			type="boolean"/>
+
+		<property
+			id="vertical"
+			title="Change to Vertical Orientation"
+			type="boolean"/>
+		
+		<property
+			id="smallStepWidth"
+			title="Small Step Width"
+			type="float"/>
+		
+		<property
+			id="onChange"
+			title="On Change"
+			type="ScriptText"
+			group="Events"/>
+		
+		<initialization>
+			<defaultValue property="WIDTH">300</defaultValue>
+			<defaultValue property="HEIGHT">30</defaultValue>
+			<defaultValue property="min">0.0</defaultValue>
+			<defaultValue property="max">100.0</defaultValue>
+			<defaultValue property="value">0.0</defaultValue>
+			<defaultValue property="value2">100.0</defaultValue>
+			<defaultValue property="totalUnits">10</defaultValue>
+			<defaultValue property="vertical">false</defaultValue>
+			<defaultValue property="smallStepWidth">10</defaultValue>
+		</initialization>
+	</component>
+
+	<component
 		id="Slider"
 		title="Slider"
 		handlerType="sapui5"
@@ -470,9 +573,9 @@
 		<initialization>
 			<defaultValue property="WIDTH">300</defaultValue>
 			<defaultValue property="HEIGHT">30</defaultValue>
-			<defaultValue property="min">0</defaultValue>
-			<defaultValue property="max">100</defaultValue>
-			<defaultValue property="value">0</defaultValue>
+			<defaultValue property="min">0.0</defaultValue>
+			<defaultValue property="max">100.0</defaultValue>
+			<defaultValue property="value">20.0</defaultValue>
 			<defaultValue property="totalUnits">10</defaultValue>
 			<defaultValue property="vertical">false</defaultValue>
 			<defaultValue property="smallStepWidth">10</defaultValue>

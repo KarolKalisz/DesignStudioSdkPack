@@ -2,7 +2,7 @@
 <feature
       id="org.kalisz.karol.scn.sdk"
       label="Design Studio Karol&apos;s Components"
-      version="1.0.4.qualifier"
+      version="1.0.5.qualifier"
       provider-name="Karol Kalisz">
 
    <description url="https://github.com/KarolKalisz/DesignStudioSdkPack/blob/stable/README.md">
@@ -228,6 +228,12 @@ http://www.apache.org/licenses/
    </requires>
 
    <plugin
+         id="org.kalisz.karol.scn.ui5basics"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.kalisz.karol.scn.pack"
          download-size="0"
          install-size="0"
@@ -235,12 +241,6 @@ http://www.apache.org/licenses/
 
    <plugin
          id="org.kalisz.karol.scn.simpledate"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.kalisz.karol.scn.ui5basics"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

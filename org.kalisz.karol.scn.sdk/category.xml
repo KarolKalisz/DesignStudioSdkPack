@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.kalisz.karol.scn.sdk_1.0.4.qualifier.jar" id="org.kalisz.karol.scn.sdk" version="1.0.4.qualifier">
+   <feature url="features/org.kalisz.karol.scn.sdk_1.0.5.qualifier.jar" id="org.kalisz.karol.scn.sdk" version="1.0.5.qualifier">
       <category name="com.sap.ip.bi.zen.sdk"/>
    </feature>
    <category-def name="com.sap.ip.bi.zen.sdk" label="com.sap.ip.bi.zen.sdk"/>
