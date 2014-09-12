@@ -36,6 +36,8 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.ui5basics.Slider", {
 			}
 
 			if(updateRequired) {
+				that._SavedValue = value;
+				
 				that.fireDesignStudioPropertiesChanged(["value"]);
 				that.fireDesignStudioEvent("onChange");
 			}

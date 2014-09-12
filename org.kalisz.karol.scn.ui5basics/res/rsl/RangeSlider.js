@@ -42,6 +42,9 @@ sap.ui.commons.RangeSlider.extend("org.kalisz.karol.scn.ui5basics.RangeSlider", 
 			}
 
 			if(updateRequired) {
+				that._SavedValue = value;
+				that._SavedValue2 = value2;
+				
 				that.fireDesignStudioPropertiesChanged(["value"]);
 				that.fireDesignStudioPropertiesChanged(["value2"]);
 
