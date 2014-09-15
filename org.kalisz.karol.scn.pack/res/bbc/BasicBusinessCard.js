@@ -27,7 +27,15 @@ var org_kalisz_karol_scn_pack_BasicBusinessCard_accessUrlForRes = org_kalisz_kar
 
 sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.BasicBusinessCard", {
 
-	initDesignStudio: function() {
+	metadata: {
+        properties: {
+              "image": {type: "string"},
+              "name": {type: "string"},
+              "title": {type: "string"}
+        }
+	},
+  
+  	initDesignStudio: function() {
 		var that = this;
 		
 		this.addStyleClass("scn-pack-BasicBusinessCard-Card");
@@ -43,7 +51,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.BasicBusi
 
 		this.addContent(
 				this._lNameLink,
-				{left: "42px", top: "2px"}
+				{left: "42px", top: "2px"}	
 		);
 
 		this._lImage = new sap.ui.commons.Image({
@@ -69,54 +77,6 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.BasicBusi
 		);
 	},
 	
-	setImage : function(value) {
-		if(this._Image == value) {
-			return;
-		} else {
-			this._Image = value;
-		}
-	},
-
-	getImage : function() {
-		return this._Image;
-	},
-	
-	setName : function(value) {
-		if(this._Name == value) {
-			return;
-		} else {
-			this._Name = value;
-		}
-	},
-
-	getName : function() {
-		return this._Name;
-	},
-
-	setTitle : function(value) {
-		if(this._Title == value) {
-			return;
-		} else {
-			this._Title = value;
-		}
-	},
-
-	getTitle : function() {
-		return this._Title;
-	},
-
-	setImage : function(value) {
-		if(this._Image == value) {
-			return;
-		} else {
-			this._Image = value;
-		}
-	},
-
-	getImage : function() {
-		return this._Image;
-	},
-
 	renderer: {},
 	
 	afterDesignStudioUpdate : function() {
