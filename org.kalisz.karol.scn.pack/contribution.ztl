@@ -394,4 +394,317 @@ class org.kalisz.karol.scn.pack.FishEye extends Component {
 	*}
 }
 
+class org.kalisz.karol.scn.pack.KeyLabelValue {
+  String key;
+  String label;
+  float value;
+  
+  getValueAsString() {*
+	  return "" + this.value;
+  *}
 }
+
+class org.kalisz.karol.scn.pack.KeyLabelValueArray extends Array {
+	org.kalisz.karol.scn.pack.KeyLabelValueArray (org.kalisz.karol.scn.pack.KeyLabelValue b);
+}
+
+/**
+ * Component created with collaboration with Michael Howles
+ * http://scn.sap.com/people/mike.howles4
+ * 
+ * based on the discussion thread http://scn.sap.com/community/businessobjects-design-studio/blog/2014/09/12/design-studio-sdk--get-topbottom-n-rankings-with-a-little-less-code
+ * 
+ * Authors: Michael Howles, Karol Kalisz
+ */
+class org.kalisz.karol.scn.pack.Collection extends Component {  
+	
+	org.kalisz.karol.scn.pack.KeyLabelValueArray getAsKeyLabelValueArray (
+			/**max members*/ optional int maxMembers) {*
+		var s = this.items;  
+		var items = JSON.parse(s);
+		
+		var a = [];
+		
+		// APPLICATION.createInfoMessage("Max: " + maxMembers); // debug
+		
+		if(maxMembers == undefined || maxMembers <= 0) {
+			maxMembers = items.length;
+		}
+		
+		for(var i=0;i<maxMembers;i++){
+			var itemDef = { 
+				"key": items[i].key, 
+				"label": items[i].label,
+				"value": items[i].value
+			};
+			
+			a.push(itemDef);
+		}
+		
+		return a;
+	*}
+	
+	void setItems (
+			/*keys*/ String keys, 
+			/*labels*/ String labels, 
+			/*values*/ String values,
+			/*separator*/ optional String separator) {*  
+		var items = [];
+	
+		if(separator == undefined) {
+			separator = ",";
+		}
+			
+		var k = keys.split(separator);  
+		var l = labels.split(separator);  
+		var v = values.split(separator);
+		
+		while(k.length>l.length) l.push("");  
+		while(k.length>v.length) v.push("0");
+
+		for(var i=0; i<k.length; i++){
+			var itemDef = {
+				"key" : k[i],
+				"label" : l[i],  
+				"value" : v[i]
+			};
+			
+			items.push(itemDef);
+		}
+		
+		this.items = JSON.stringify(items);  
+	*}  
+
+	void addItem (
+			/*key*/ String key, 
+			/*label*/ String label, 
+			/*value*/ String value) {*  
+		
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		var itemDef = {
+			"key" : key,
+			"label" : label,  
+			"value" : value
+		};
+		
+		a.push(itemDef);
+		
+		this.items = JSON.stringify(a);  
+	*}
+	
+	String getKeys(
+			/*separator*/ optional String separator) {*  
+		var s = this.items;  
+		var items = JSON.parse(s);
+		var a = [];
+		
+		for(var i=0;i<items.length;i++){  
+			a.push(items[i].key);  
+		}
+		
+		if(separator == undefined) {
+			separator = ",";
+		}
+		
+		return a.join(separator);  
+	*}
+	
+	String getLabels(
+			/*separator*/ optional String separator) {*  
+		var s = this.items;  
+		var items = JSON.parse(s);  
+		var a = [];  
+		
+		for(var i=0;i<items.length;i++){  
+			a.push(items[i].label);  
+		}  
+		
+		if(separator == undefined) {
+			separator = ",";
+		}
+		
+		return a.join(separator);  
+	*}
+	
+	String getValues(
+			/*separator*/ optional String separator) {*  
+		var s = this.items;  
+		var items = JSON.parse(s);  
+		var a = [];  
+		
+		for(var i=0;i<items.length;i++){  
+			a.push(items[i].value);  
+		}  
+		
+		if(separator == undefined) {
+			separator = ",";
+		}
+		
+		return a.join(separator);  
+	*}
+
+	void sortByKey() {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		a.sort(function(a,b){  
+			return a.key>b.key;  
+		});  
+		
+		this.items = JSON.stringify(a);  
+	*}  
+		
+	void sortByKeyDescending() {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		a.sort(function(a,b){  
+			return (b.key>a.key);  
+		});  
+		
+		this.items = JSON.stringify(a);  
+	*}
+	
+	void sortByLabel() {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		a.sort(function(a,b){  
+			return a.label>b.label;  
+		});  
+		
+		this.items = JSON.stringify(a);  
+	*}  
+		
+	void sortByLabelDescending() {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		a.sort(function(a,b){  
+			return (b.label>a.label);  
+		});  
+		
+		this.items = JSON.stringify(a);  
+	*}
+		
+	void sortByValue() {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		a.sort(function(a,b){  
+			var newA = parseFloat(a.value);  
+			var newB = parseFloat(b.value);  
+			return newA-newB;  
+		});
+		
+		this.items = JSON.stringify(a);  
+	*}  
+		
+	void sortByValueDescending() {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		a.sort(function(a,b){  
+			var newA = parseFloat(a.value);  
+			var newB = parseFloat(b.value);  
+			return newB-newA;  
+		});
+		
+		this.items = JSON.stringify(a);  
+	*}  
+		
+	int getLength() {*  
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		return a.length;  
+	*}  
+		
+	String getLabelByIndex( 
+			/* index */ int index) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		var r = "";
+		
+		if(a.length>index){  
+			r = a[index].label;  
+		}
+		
+		return r;  
+	*}
+	
+	String getLabelByKey( 
+			/* index */ String key) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		var r = "";
+		
+		for(var i=0;i<a.length;i++){
+			if(a[i].key == key) {
+				r = a[i].label;
+			}
+		}
+		
+		return r;  
+	*}
+		
+	String getValueByIndexAsString( 
+			/* index */ int index) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		var r = "NaN";  
+		
+		if(a.length>index){  
+			r = a[index].value;  
+		}  
+		
+		return r;  
+	*}  
+		
+	float getValueByIndex( 
+			/* index */ int index) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		var r = 0.0;  
+		if(a.length>index){  
+			r = a[index].value;  
+		}
+		
+		return r;  
+	*}
+	
+	String getValueByKeyAsString( 
+			/* key */ String key) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		var r = "NaN";  
+		
+		for(var i=0;i<a.length;i++){
+			if(a[i].key == key) {
+				r = a[i].value;
+			}
+		}
+		
+		return r;  
+	*}  
+		
+	float getValueByKey(
+			/* index */ String key) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		var r = 0.0;  
+		
+		for(var i=0;i<a.length;i++){
+			if(a[i].key == key) {
+				r = a[i].value;
+			}
+		}
+		
+		return r;  
+	*}
+}  
