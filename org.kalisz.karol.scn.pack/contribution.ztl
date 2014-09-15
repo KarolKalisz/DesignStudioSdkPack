@@ -632,7 +632,7 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 			/* index */ int index) {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
-		var r = "";
+		var r = "NA";
 		
 		if(a.length>index){  
 			r = a[index].label;  
@@ -645,7 +645,7 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 			/* index */ String key) {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
-		var r = "";
+		var r = "NA";
 		
 		for(var i=0;i<a.length;i++){
 			if(a[i].key == key) {
@@ -739,7 +739,7 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		return a;
 	*}
 	
-	String getValues(
+	String getValues (
 			/*separator*/ optional String separator) {*  
 		var s = this.items;  
 		var items = JSON.parse(s);  
@@ -817,12 +817,12 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		return a.length;  
 	*}  
 
-	String getValueByIndex( 
+	String getValueByIndex ( 
 			/* index */ int index) {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
 		
-		var r = 0.0;  
+		var r = "NA";  
 		if(a.length>index){  
 			r = a[index].value;  
 		}
