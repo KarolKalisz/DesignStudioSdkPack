@@ -398,14 +398,18 @@ class org.kalisz.karol.scn.pack.KeyLabelValue {
   String key;
   String label;
   float value;
-  
-  getValueAsString() {*
-	  return "" + this.value;
-  *}
 }
 
 class org.kalisz.karol.scn.pack.KeyLabelValueArray extends Array {
 	org.kalisz.karol.scn.pack.KeyLabelValueArray (org.kalisz.karol.scn.pack.KeyLabelValue b);
+}
+
+class org.kalisz.karol.scn.pack.String {
+  String value;
+}
+
+class org.kalisz.karol.scn.pack.StringArray extends Array {
+	org.kalisz.karol.scn.pack.String (org.kalisz.karol.scn.pack.String b);
 }
 
 /**
@@ -707,4 +711,122 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return r;  
 	*}
-}  
+}
+
+class org.kalisz.karol.scn.pack.Array extends Component {  
+	
+	org.kalisz.karol.scn.pack.StringArray getValuesAsStringArray (
+			/**max members*/ optional int maxMembers) {*
+		var s = this.items;  
+		var items = JSON.parse(s);
+		
+		var a = [];
+		
+		// APPLICATION.createInfoMessage("Max: " + maxMembers); // debug
+		
+		if(maxMembers == undefined || maxMembers <= 0) {
+			maxMembers = items.length;
+		}
+		
+		for(var i=0;i<maxMembers;i++){
+			var itemDef = { 
+				"value": items[i].value, 
+			};
+			
+			a.push(itemDef);
+		}
+		
+		return a;
+	*}
+	
+	String getValues(
+			/*separator*/ optional String separator) {*  
+		var s = this.items;  
+		var items = JSON.parse(s);  
+		var a = [];  
+		
+		for(var i=0;i<items.length;i++){  
+			a.push(items[i].value);  
+		}  
+		
+		if(separator == undefined) {
+			separator = ",";
+		}
+		
+		return a.join(separator);  
+	*}
+	
+	void createArray (
+			/**length*/ int lenght) {*
+		var items = [];
+			
+		for(var i=0; i<lenght; i++){
+			var itemDef = {
+				"value" : "" + i
+			};
+			
+			items.push(itemDef);
+		}
+		
+		this.items = JSON.stringify(items);  
+	*}
+	
+	void setValues (
+			/*values*/ String values,
+			/*separator*/ optional String separator) {*  
+		var items = [];
+	
+		if(separator == undefined) {
+			separator = ",";
+		}
+			
+		var v = values.split(separator);
+		
+		for(var i=0; i<v.length; i++){
+			var itemDef = {
+				"value" : v[i]
+			};
+			
+			items.push(itemDef);
+		}
+		
+		this.items = JSON.stringify(items);  
+	*}  
+
+	void addValue (
+			/*value*/ String value) {*  
+		
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		var itemDef = {
+			"value" : value
+		};
+		
+		a.push(itemDef);
+		
+		this.items = JSON.stringify(a);  
+	*}
+	
+	int getLength() {*  
+		var s = this.items;  
+		var a = [];  
+		if(s!="") a = JSON.parse(s);
+		
+		return a.length;  
+	*}  
+
+	String getValueByIndex( 
+			/* index */ int index) {*  
+		var s = this.items;  
+		var a = JSON.parse(s);  
+		
+		var r = 0.0;  
+		if(a.length>index){  
+			r = a[index].value;  
+		}
+		
+		return r;  
+	*}
+}
