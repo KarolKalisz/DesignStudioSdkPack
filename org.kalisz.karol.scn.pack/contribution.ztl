@@ -738,7 +738,28 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		
 		return a;
 	*}
-	
+	/**
+	Generates an array of integers for use in BIAL forEach statement in order to emulate a traditional for loop.
+	<example>
+	Fill a list box with 10 values:
+	<code>ARRAY_1.eachesAsString(0, 9, 1).forEach(function(element, index) {<br>
+	LISTBOX_1.addItem(element, "Item " + (element + "") );<br>
+	});</code>
+	This would be equivalent to a loop in JavaScript:
+	<code>
+	for(var element = 0;element<=9;element++){<br>
+		Your code here.<br>
+	}
+	</code>
+	</example>
+	*/
+	Array eaches(/*Starting int*/ int start, /* Ending int */ int finish, /* Interval increment */int interval) {*
+		var a = [];
+		for(var i=start;i<=finish;i+=interval){
+			a.push(i);
+		}
+		return a;
+	*}
 	String getValues (
 			/*separator*/ optional String separator) {*  
 		var s = this.items;  
