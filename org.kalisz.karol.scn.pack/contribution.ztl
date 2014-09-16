@@ -742,7 +742,7 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 	Generates an array of integers for use in BIAL forEach statement in order to emulate a traditional for loop.
 	<example>
 	Fill a list box with 10 values:
-	<code>ARRAY_1.eachesAsString(0, 9, 1).forEach(function(element, index) {<br>
+	<code>ARRAY_1.eaches(0, 9, 1).forEach(function(element, index) {<br>
 	LISTBOX_1.addItem(element, "Item " + (element + "") );<br>
 	});</code>
 	This would be equivalent to a loop in JavaScript:
