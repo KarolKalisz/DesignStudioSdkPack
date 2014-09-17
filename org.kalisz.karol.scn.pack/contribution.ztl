@@ -394,20 +394,76 @@ class org.kalisz.karol.scn.pack.FishEye extends Component {
 	*}
 }
 
+/**
+	Holder for Key, Label, Value. You can access the content as in below example.
+	<br>
+	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
+	
+	// a loop for all entries<br>
+	// content is of type org.kalisz.karol.scn.pack.KeyLabelValueArray<br>
+	content.forEach(function(element, index) {<br>
+	
+		// element is of type org.kalisz.karol.scn.pack.KeyLabelValue<br>
+		var elKey = element.key;<br>
+		var elLabel = element.label;<br>
+	 	var elValue = "( " + element.value + " )");<br>
+	});
+*/
 class org.kalisz.karol.scn.pack.KeyLabelValue {
   String key;
   String label;
   float value;
 }
 
+/**
+	Array for org.kalisz.karol.scn.pack.KeyLabelValue. You can use this array as in below example.
+	<br>
+	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
+	<br>
+	// a loop for all entries<br>
+	// content is of type org.kalisz.karol.scn.pack.KeyLabelValueArray<br>
+	content.forEach(function(element, index) {<br>
+	
+		// element is of type org.kalisz.karol.scn.pack.KeyLabelValue<br>
+		var elKey = element.key;<br>
+		var elLabel = element.label;<br>
+	 	var elValue = "( " + element.value + " )");<br>
+	});
+ */
 class org.kalisz.karol.scn.pack.KeyLabelValueArray extends Array {
 	org.kalisz.karol.scn.pack.KeyLabelValueArray (org.kalisz.karol.scn.pack.KeyLabelValue b);
 }
 
+/**
+	Holder for value. You can use the content as in below example.
+	<br>
+	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
+	<br>
+	// a loop for all entries<br>
+	// content is of type org.kalisz.karol.scn.pack.StringArray<br>
+	content.forEach(function(element, index) {<br>
+	
+		// element is of type org.kalisz.karol.scn.pack.String<br>
+		var elValue = element.value;<br>
+	});
+*/
 class org.kalisz.karol.scn.pack.String {
   String value;
 }
 
+/**
+	Array for org.kalisz.karol.scn.pack.String. You can use this array as in below example.
+	<br>
+	var content = ARRAY_1.getAsKeyLabelValueArray();<br>
+	<br>
+	// a loop for all entries<br>
+	// content is of type org.kalisz.karol.scn.pack.StringArray<br>
+	content.forEach(function(element, index) {<br>
+	
+		// element is of type org.kalisz.karol.scn.pack.String<br>
+		var elValue = element.value;<br>
+	});
+*/
 class org.kalisz.karol.scn.pack.StringArray extends Array {
 	org.kalisz.karol.scn.pack.String (org.kalisz.karol.scn.pack.String b);
 }
@@ -422,6 +478,24 @@ class org.kalisz.karol.scn.pack.StringArray extends Array {
  */
 class org.kalisz.karol.scn.pack.Collection extends Component {  
 	
+	/**
+	Returns the collection content as loopable array.
+	<example>
+	You want to loop at the "k1;k2;k3", "l1;l2;l3", "12.4;25.1;94.2" collection:
+	<code>
+	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
+	<br>
+	// a loop for all entries<br>
+	content.forEach(function(element, index) {<br>
+		LISTBOX_1.addItem(element.key, element.label + "( " + element.value + " )");<br>
+	});
+	</code>
+	This LISTBOX_1 has now following values entries:<br>
+		<ul><li>key: k1; value: l1 ( 12.4 )</li>
+		<li>key: k2; value: l2 ( 25.1 )</li>
+		<li>key: k3; value: l3 ( 94.2 )</li></ul>
+	</example>
+	*/
 	org.kalisz.karol.scn.pack.KeyLabelValueArray getAsKeyLabelValueArray (
 			/**max members*/ optional int maxMembers) {*
 		var s = this.items;  
@@ -447,7 +521,18 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return a;
 	*}
-	
+
+	/**
+	Sets items of the array by 2 strings: for keys, labels, values. Optionally a given separator can be specified. This implementation of collection allows duplicate keys.
+	Values must be float numbers. The content length is equal with number of keys. in case labels or values are shorter, correspondingly an empty label or 0.0 will be inserted. 
+	<example>
+	You want to set the string "k1;k2;k3" array:
+	<code>
+	COLLECTION_1.setItems("k1;k2;k3", "l1;l2;l3", "12.4;25.1;94.2", ";");<br>
+	</code>
+	This array has now following values: k1,k2,k3
+	</example>
+	*/
 	void setItems (
 			/*keys*/ String keys, 
 			/*labels*/ String labels, 
@@ -479,6 +564,18 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		this.items = JSON.stringify(items);  
 	*}  
 
+	/**
+	Adds a value to new or existing array. This implementation of collection allows duplicate keys. 
+	<example>
+	You want to create an "k1,k2,k3" array:
+	<code>
+	COLLECTION_1.addItem("k1", "l1", 45.75);<br>
+	COLLECTION_1.addItem("k2", "l2", 11.21);<br>
+	COLLECTION_1.addItem("k3", "l3", 85.439);<br>
+	</code>
+	This array has now following elements with keys: k1,k2,k3
+	</example>
+	*/
 	void addItem (
 			/*key*/ String key, 
 			/*label*/ String label, 
@@ -498,7 +595,18 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		this.items = JSON.stringify(a);  
 	*}
+
+	/**
+	Returns all keys as String separated by given optional separator. default separator is comma ,
+	<example>
+	You have an array with 3 elements with keys ["K1", "K2", "K3"]:
+	<code>
+	var keysAsString = COLLECTION_1.getKeys ("|");<br>
+	</code>
 	
+	The "keysAsString" has now "K1|K2|K3" as content.
+	</example>
+	*/
 	String getKeys(
 			/*separator*/ optional String separator) {*  
 		var s = this.items;  
@@ -515,7 +623,18 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return a.join(separator);  
 	*}
+
+	/**
+	Returns all labels as String separated by given optional separator. default separator is comma ,
+	<example>
+	You have an array with 3 elements with labels ["L1", "L2", "L3"]:
+	<code>
+	var labelsAsString = COLLECTION_1.getLabels ("|");<br>
+	</code>
 	
+	The "labelsAsString" has now "L1|L2|L3" as content.
+	</example>
+	*/
 	String getLabels(
 			/*separator*/ optional String separator) {*  
 		var s = this.items;  
@@ -532,7 +651,18 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return a.join(separator);  
 	*}
+
+	/**
+	Returns all values as String separated by given optional separator. default separator is comma ,
+	<example>
+	You have an array with 3 elements with values ["11.4", "87.66", "147.41"]:
+	<code>
+	var valuesAsString = COLLECTION_1.getValues ("|");<br>
+	</code>
 	
+	The "valuesAsString" has now "11.4|87.66|147.41" as content.
+	</example>
+	*/
 	String getValues(
 			/*separator*/ optional String separator) {*  
 		var s = this.items;  
@@ -550,6 +680,9 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		return a.join(separator);  
 	*}
 
+	/**
+	 * Sorts the collection by values (ascending)
+	 */
 	void sortByKey() {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
@@ -560,7 +693,10 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		this.items = JSON.stringify(a);  
 	*}  
-		
+
+	/**
+	 * Sorts the collection by key (descending)
+	 */
 	void sortByKeyDescending() {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
@@ -571,7 +707,10 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		this.items = JSON.stringify(a);  
 	*}
-	
+
+	/**
+	 * Sorts the collection by values (ascending)
+	 */
 	void sortByLabel() {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
@@ -583,6 +722,9 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		this.items = JSON.stringify(a);  
 	*}  
 		
+	/**
+	 * Sorts the collection by labels (descending)
+	 */
 	void sortByLabelDescending() {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
@@ -594,6 +736,9 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		this.items = JSON.stringify(a);  
 	*}
 		
+	/**
+	 * Sorts the collection by values (ascending)
+	 */
 	void sortByValue() {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
@@ -606,7 +751,10 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		this.items = JSON.stringify(a);  
 	*}  
-		
+
+	/**
+	 * Sorts the collection by values (descending)
+	 */
 	void sortByValueDescending() {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
@@ -619,7 +767,10 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		this.items = JSON.stringify(a);  
 	*}  
-		
+	
+	/**
+	 * Returns length of current collection
+	 */
 	int getLength() {*  
 		var s = this.items;  
 		var a = [];  
@@ -627,12 +778,22 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return a.length;  
 	*}  
-		
+
+	/**
+	Returns label by given index. Indices are 0-based. In case the index does not exist, "N/A" is given back.
+	<example>
+	You have a "k1,k2,k3" collection with label "Value for Key 2" at index 1 and want to get value at index 1:
+	<code>
+	var label1 = COLLECTION_1.getLabelByIndex(1);<br>
+	</code>
+	Now "label1" is set to String "Value for Key 2".
+	</example>
+	*/
 	String getLabelByIndex( 
 			/* index */ int index) {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
-		var r = "NA";
+		var r = "N/A";
 		
 		if(a.length>index){  
 			r = a[index].label;  
@@ -640,22 +801,43 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return r;  
 	*}
-	
+
+	/**
+	Returns label by given key. In case the key does not exist, "N/A" is given back.
+	<example>
+	You have a "k1,k2,k3" collection with value "Value for Key 2" at index 1 (key == "k2") and want to get value at key "k2":
+	<code>
+	var label1 = COLLECTION_1.getLabelByKey("k2");<br>
+	</code>
+	Now "label1" is set to float "Value for Key 2".
+	</example>
+	*/
 	String getLabelByKey( 
 			/* index */ String key) {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
-		var r = "NA";
+		var r = "N/A";
 		
 		for(var i=0;i<a.length;i++){
 			if(a[i].key == key) {
 				r = a[i].label;
+				break;
 			}
 		}
 		
 		return r;  
 	*}
-		
+
+	/**
+	Returns value by given index. Indices are 0-based. In case the index does not exist, "NaN" is given back.
+	<example>
+	You have a "k1,k2,k3" collection with value "54.48" at index 1 and want to get value at index 1:
+	<code>
+	var value1 = COLLECTION_1.getValueByIndexAsString(1);<br>
+	</code>
+	Now "value1" is set to String "54.48".
+	</example>
+	*/
 	String getValueByIndexAsString( 
 			/* index */ int index) {*  
 		var s = this.items;  
@@ -668,7 +850,17 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return r;  
 	*}  
-		
+
+	/**
+	Returns value by given index. Indices are 0-based. In case the index does not exist, "0.0" is given back.
+	<example>
+	You have a "k1,k2,k3" collection with value "54.48" at index 1 and want to get value at index 1:
+	<code>
+	var value1 = COLLECTION_1.getValueByIndex(1);<br>
+	</code>
+	Now "value1" is set to float "54.48".
+	</example>
+	*/
 	float getValueByIndex( 
 			/* index */ int index) {*  
 		var s = this.items;  
@@ -681,7 +873,17 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		
 		return r;  
 	*}
-	
+
+	/**
+	Returns value by given key. In case the index does not exist, "NaN" is given back.
+	<example>
+	You have a "k1,k2,k3" collection with value "54.48" at index 1 (key == "k2") and want to get value at key "k2":
+	<code>
+	var value1 = COLLECTION_1.getValueByKeyAsString("k2");<br>
+	</code>
+	Now "value1" is set to String "54.48".
+	</example>
+	*/
 	String getValueByKeyAsString( 
 			/* key */ String key) {*  
 		var s = this.items;  
@@ -691,12 +893,23 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		for(var i=0;i<a.length;i++){
 			if(a[i].key == key) {
 				r = a[i].value;
+				break;
 			}
 		}
 		
 		return r;  
 	*}  
-		
+
+	/**
+	Returns value by given key. In case the index does not exist, "0.0" is given back.
+	<example>
+	You have a "k1,k2,k3" collection with value "54.48" at index 1 (key == "k2") and want to get value at key "k2":
+	<code>
+	var value1 = COLLECTION_1.getValueByKey("k2");<br>
+	</code>
+	Now "value1" is set to float "54.48".
+	</example>
+	*/
 	float getValueByKey(
 			/* index */ String key) {*  
 		var s = this.items;  
@@ -706,6 +919,7 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		for(var i=0;i<a.length;i++){
 			if(a[i].key == key) {
 				r = a[i].value;
+				break;
 			}
 		}
 		
@@ -713,8 +927,34 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 	*}
 }
 
+/**
+ * Component created with collaboration with Michael Howles
+ * http://scn.sap.com/people/mike.howles4
+ * 
+ * based on the blog thread http://scn.sap.com/community/businessobjects-design-studio/blog/2014/09/16/design-studio-sdk--bial-fornext-loop-and-my-first-github-co-author-attempt
+ * 
+ * Authors: Michael Howles, Karol Kalisz
+ */
 class org.kalisz.karol.scn.pack.Array extends Component {  
 	
+	/**
+	Returns the array content as loopable array.
+	<example>
+	You want to loop at the "k1;k2;k3" array:
+	<code>
+	var content = ARRAY_1.getValuesAsStringArray();<br>
+	<br>
+	// a loop for all values<br>
+	content.forEach(function(element, index) {<br>
+		LISTBOX_1.addItem(""+ index, element.value + "( " + index + " )");<br>
+	});
+	</code>
+	This LISTBOX_1 has now following values entries:<br>
+		<ul><li>key: 0; value: k1 ( 0 )</li>
+		<<li>key: 1; value: k2 ( 1 )</li>
+		<li>key: 2; value: k3 ( 2 )</li></ul>
+	</example>
+	*/
 	org.kalisz.karol.scn.pack.StringArray getValuesAsStringArray (
 			/**max members*/ optional int maxMembers) {*
 		var s = this.items;  
@@ -738,6 +978,7 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		
 		return a;
 	*}
+
 	/**
 	Generates an array of integers for use in BIAL forEach statement in order to emulate a traditional for loop.
 	<example>
@@ -760,6 +1001,18 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		}
 		return a;
 	*}
+
+	/**
+	Returns all values as String separated by given optional separator. default separator is comma ,
+	<example>
+	You have an array with 3 values ["v1", "v2", "v3"]:
+	<code>
+	var valuesAsString = ARRAY_1.getValues ("|");<br>
+	</code>
+	
+	The "valuesAsString" has now "v1|v2|v3" as content.
+	</example>
+	*/
 	String getValues (
 			/*separator*/ optional String separator) {*  
 		var s = this.items;  
@@ -777,6 +1030,16 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		return a.join(separator);  
 	*}
 	
+	/**
+	Creates an array of requested length with integers as values (starting at 0). 
+	<example>
+	You want an array with length 7:
+	<code>
+	ARRAY_1.createArray(7);<br>
+	</code>
+	This array has now following values: 0,1,2,3,4,5,6,7
+	</example>
+	*/
 	void createArray (
 			/**length*/ int lenght) {*
 		var items = [];
@@ -792,9 +1055,19 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		this.items = JSON.stringify(items);  
 	*}
 	
+	/**
+	Sets values of the array by string. Optionally a given separator can be specified. This implementation of array allows duplicate keys.
+	<example>
+	You want to set the string "k1;k2;k3" array:
+	<code>
+	ARRAY_1.setValues("k1;k2;k3", ";");<br>
+	</code>
+	This array has now following values: k1,k2,k3
+	</example>
+	*/
 	void setValues (
-			/*values*/ String values,
-			/*separator*/ optional String separator) {*  
+			/**values*/ String values,
+			/**separator*/ optional String separator) {*  
 		var items = [];
 	
 		if(separator == undefined) {
@@ -812,8 +1085,20 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		}
 		
 		this.items = JSON.stringify(items);  
-	*}  
+	*}
 
+	/**
+	Adds a value to new or existing array. This implementation of array allows duplicate keys.
+	<example>
+	You want to create an "k1,k2,k3" array:
+	<code>
+	ARRAY_1.addValue("k1");<br>
+	ARRAY_1.addValue("k2");<br>
+	ARRAY_1.addValue("k3");<br>
+	</code>
+	This array has now following values: k1,k2,k3
+	</example>
+	*/
 	void addValue (
 			/*value*/ String value) {*  
 		
@@ -830,6 +1115,9 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		this.items = JSON.stringify(a);  
 	*}
 	
+	/**
+	 * Returns length of current array
+	 */
 	int getLength() {*  
 		var s = this.items;  
 		var a = [];  
@@ -838,12 +1126,22 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		return a.length;  
 	*}  
 
+	/**
+	Returns value by given index. Indices are 0-based. In case the index does not exist, "N/A" is given back.
+	<example>
+	You have an "k1,k2,k3" array and want to get value at index 1:
+	<code>
+	var value1 = ARRAY_1.getValueByIndex(1);<br>
+	</code>
+	Now "value1" is set to "k2".
+	</example>
+	*/
 	String getValueByIndex ( 
 			/* index */ int index) {*  
 		var s = this.items;  
 		var a = JSON.parse(s);  
 		
-		var r = "NA";  
+		var r = "N/A";  
 		if(a.length>index){  
 			r = a[index].value;  
 		}
