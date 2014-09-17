@@ -395,80 +395,6 @@ class org.kalisz.karol.scn.pack.FishEye extends Component {
 }
 
 /**
-	Holder for Key, Label, Value. You can access the content as in below example.
-	<br>
-	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
-	
-	// a loop for all entries<br>
-	// content is of type org.kalisz.karol.scn.pack.KeyLabelValueArray<br>
-	content.forEach(function(element, index) {<br>
-	
-		// element is of type org.kalisz.karol.scn.pack.KeyLabelValue<br>
-		var elKey = element.key;<br>
-		var elLabel = element.label;<br>
-	 	var elValue = "( " + element.value + " )");<br>
-	});
-*/
-class org.kalisz.karol.scn.pack.KeyLabelValue {
-  String key;
-  String label;
-  float value;
-}
-
-/**
-	Array for org.kalisz.karol.scn.pack.KeyLabelValue. You can use this array as in below example.
-	<br>
-	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
-	<br>
-	// a loop for all entries<br>
-	// content is of type org.kalisz.karol.scn.pack.KeyLabelValueArray<br>
-	content.forEach(function(element, index) {<br>
-	
-		// element is of type org.kalisz.karol.scn.pack.KeyLabelValue<br>
-		var elKey = element.key;<br>
-		var elLabel = element.label;<br>
-	 	var elValue = "( " + element.value + " )");<br>
-	});
- */
-class org.kalisz.karol.scn.pack.KeyLabelValueArray extends Array {
-	org.kalisz.karol.scn.pack.KeyLabelValueArray (org.kalisz.karol.scn.pack.KeyLabelValue b);
-}
-
-/**
-	Holder for value. You can use the content as in below example.
-	<br>
-	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
-	<br>
-	// a loop for all entries<br>
-	// content is of type org.kalisz.karol.scn.pack.StringArray<br>
-	content.forEach(function(element, index) {<br>
-	
-		// element is of type org.kalisz.karol.scn.pack.String<br>
-		var elValue = element.value;<br>
-	});
-*/
-class org.kalisz.karol.scn.pack.String {
-  String value;
-}
-
-/**
-	Array for org.kalisz.karol.scn.pack.String. You can use this array as in below example.
-	<br>
-	var content = ARRAY_1.getAsKeyLabelValueArray();<br>
-	<br>
-	// a loop for all entries<br>
-	// content is of type org.kalisz.karol.scn.pack.StringArray<br>
-	content.forEach(function(element, index) {<br>
-	
-		// element is of type org.kalisz.karol.scn.pack.String<br>
-		var elValue = element.value;<br>
-	});
-*/
-class org.kalisz.karol.scn.pack.StringArray extends Array {
-	org.kalisz.karol.scn.pack.String (org.kalisz.karol.scn.pack.String b);
-}
-
-/**
  * Component created with collaboration with Michael Howles
  * http://scn.sap.com/people/mike.howles4
  * 
@@ -478,6 +404,18 @@ class org.kalisz.karol.scn.pack.StringArray extends Array {
  */
 class org.kalisz.karol.scn.pack.Collection extends Component {  
 	
+	void sortByKey (org_scn_pack_SortDirectionEnumfield direction) {*
+		 APPLICATION.createInfoMessage("Direction: " + direction); // debug
+	
+		if(direction == org_scn_pack_SortDirection.ASCENDING) {
+			APPLICATION.createInfoMessage("Direction: " + direction); // debug
+		}
+
+		if(direction == "ASCENDING") {
+			APPLICATION.createInfoMessage("Direction: " + direction); // debug
+		}
+	*}
+
 	/**
 	Returns the collection content as loopable array.
 	<example>
@@ -496,7 +434,7 @@ class org.kalisz.karol.scn.pack.Collection extends Component {
 		<li>key: k3; value: l3 ( 94.2 )</li></ul>
 	</example>
 	*/
-	org.kalisz.karol.scn.pack.KeyLabelValueArray getAsKeyLabelValueArray (
+	org.scn.pack.KeyLabelValueArray getAsKeyLabelValueArray (
 			/**max members*/ optional int maxMembers) {*
 		var s = this.items;  
 		var items = JSON.parse(s);
@@ -955,7 +893,7 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 		<li>key: 2; value: k3 ( 2 )</li></ul>
 	</example>
 	*/
-	org.kalisz.karol.scn.pack.StringArray getValuesAsStringArray (
+	org.scn.pack.StringArray getValuesAsStringArray (
 			/**max members*/ optional int maxMembers) {*
 		var s = this.items;  
 		var items = JSON.parse(s);

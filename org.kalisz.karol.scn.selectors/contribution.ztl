@@ -1,0 +1,88 @@
+/**
+ * Copyright 2014 Karol Kalisz
+ * 
+ * Original Source Code Location:
+ *  https://github.com/KarolKalisz/DesignStudioSdkPack
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ *  
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License. 
+ */
+
+/**
+ * Class for DateRangeSlider
+ */
+class org.kalisz.karol.scn.selectors.DateRangeSlider extends Component {
+
+	/**
+	 * minimum Date of the Slider
+	 */
+	void setMinimumDate (
+			/** minimum date */
+			int minimumDate) {*
+		this.minimumDate = minimumDate;
+	*}
+
+	/**
+	 * Returns minimum Date of the Slider
+	 */
+	int getMinimumDate () {*
+		return this.minimumDate;
+	*}
+
+	/**
+	 * maximum Date of the Slider
+	 */
+	void setMaximumDate (
+			/** maximum date */
+			int maximumDate) {*
+		this.maximumDate = maximumDate;
+	*}
+
+	/**
+	 * Returns maximum Date of the Slider
+	 */
+	int getMaximumDate () {*
+		return this.maximumDate;
+	*}
+
+	/**
+	 * low selection date of the Slider
+	 */
+	void setLowSelectedDate (
+			/** low selection date */
+			int lowSelectedDate) {*
+		this.lowSelectedDate = lowSelectedDate;
+	*}
+
+	/**
+	 * Returns low selection date of the Slider
+	 */
+	int getLowSelectedDate () {*
+		return this.lowSelectedDate;
+	*}
+
+	/**
+	 * high selection date of the Slider
+	 */
+	void setHighSelectedDate (
+			/** high selection date */
+			int highSelectedDate) {*
+		this.highSelectedDate = highSelectedDate;
+	*}
+
+	/**
+	 * Returns high selection date of the Slider
+	 */
+	int getHighSelectedDate () {*
+		return this.highSelectedDate;
+	*}
+}
