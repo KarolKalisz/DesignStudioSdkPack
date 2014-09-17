@@ -188,10 +188,6 @@
 	<group
 		id="KarolsComponents"
 		title="Design Studio Karol's Components"/>
-
-	<group
-		id="KarolsUtils"
-		title="Design Studio Karol's Utils"/>
 		
 	<component
 		id="NotificationBar"
@@ -490,62 +486,170 @@
 
 		</component>
 		
- <component
-		id="Collection"
-		title="Collection Utility"
-		icon="res/_ut/cu/Collection.png"
-		handlerType="div"
-		group="KarolsUtils">
+  <component
+		id="KpiView"
+		title="Kpi View"
+		icon="res/kpi/KpiView.png"
+		handlerType="sapui5"
+		group="KarolsComponents"
+		databound="true">
 		
-		<jsInclude>res/_ut/cu/Collection.js</jsInclude>
-
-		<property 
-			id="items" 
-			type="String" 
-			title="Technical proprty for list of items" 
-			group="Display" 
-			visible="false" />
+		<stdInclude kind="cvom"/>
+		
+		<jsInclude>res/kpi/KpiView.js</jsInclude>
+		<cssInclude>res/kpi/KpiView.css</cssInclude>
+		
+		<property
+			id="data"
+			title="Data Value"
+			type="ResultCell"
+			group="DataBinding">
+    </property>
+		<property
+			id="headerText"
+			title="Header"
+			type="String"
+			group="Display"/>
+		<property
+			id="headerCssClass"
+			title="Header CSS Class"
+			type="String"
+			group="Display"/>
+		<property
+			id="titleText"
+			title="Title"
+			type="String"
+			group="Display"/>
+		<property
+			id="titleCssClass"
+			title="Title CSS Class"
+			type="String"
+			group="Display"/>
+		<property
+			id="valuePrefixText"
+			title="Value Prefix"
+			type="String"
+			group="Display"/>
+		<property
+			id="valuePrefixCssClass"
+			title="Value Prefix CSS Class"
+			type="String"
+			group="Display"/>
+		<property
+			id="valueText"
+			title="Value"
+			type="String"
+			group="Display"/>
+		<property
+			id="valueHAlign"
+			title="Value Horizontal Alignment"
+			type="String"
+			group="Display">
+			<possibleValue>left</possibleValue>
+			<possibleValue>right</possibleValue>
+		</property>
+		<property
+			id="valueCssClass"
+			title="Value CSS Class"
+			type="String"
+			group="Display"/>
+		<property
+			id="valueDecimalPlaces"
+			title="Value Decimal Places"
+			type="int"
+			group="Display">
+			<possibleValue>0</possibleValue>
+			<possibleValue>1</possibleValue>
+			<possibleValue>2</possibleValue>
+			<possibleValue>3</possibleValue>
+			<possibleValue>4</possibleValue>
+			<possibleValue>5</possibleValue>
+			<possibleValue>6</possibleValue>
+			<possibleValue>7</possibleValue>
+			<possibleValue>8</possibleValue>
+			<possibleValue>9</possibleValue>
+		</property>
+		<property
+			id="valueSuffixText"
+			title="Value Suffix"
+			type="String"
+			group="Display"/>
+		<property
+			id="valueSuffixCssClass"
+			title="Value Suffix CSS Class"
+			type="String"
+			group="Display"/>
+		<property
+			id="footerText"
+			title="Footer"
+			type="String"
+			group="Display"/>
+		<property
+			id="footerHAlign"
+			title="Footer Horizontal Alignment"
+			type="String"
+			group="Display">
+			<possibleValue>left</possibleValue>
+			<possibleValue>right</possibleValue>
+		</property>
+		<property
+			id="footerCssClass"
+			title="Footer CSS Class"
+			type="String"
+			group="Display"/>
+		<property
+			id="linkText"
+			title="Text for the Link"
+			type="String"
+			group="Display">
+		</property>
+		<property
+			id="linkTooltip"
+			title="Tooltip for the Link"
+			type="String"
+			group="Display">
+		</property>
+		<property
+			id="image"
+			title="Url for the Image"
+			type="Url"
+			group="Display">
+		</property>
+		<property
+			id="imageSize"
+			title="Size of the Image"
+			type="String"
+			group="Display">
+			<possibleValue>16px</possibleValue>
+			<possibleValue>32px</possibleValue>
+			<possibleValue>64px</possibleValue>
+			<possibleValue>128px</possibleValue>
+		</property>
+		<property
+			id="onClick"
+			title="On Click"
+			type="ScriptText"
+			group="Events"/>
+		<property
+			id="onLinkClick"
+			title="On Click"
+			type="ScriptText"
+			group="Events"/>
 
 		<initialization>
-				<defaultValue property="WIDTH">300</defaultValue>
-				<defaultValue property="HEIGHT">100</defaultValue>
-				<defaultValue property="TOP_MARGIN">0</defaultValue>
-				<defaultValue property="LEFT_MARGIN">0</defaultValue>
-				<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
-				<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
-
-				<defaultValue property="items"></defaultValue>
-				
-		</initialization>
-
-		</component>
-		
- <component
-		id="Array"
-		title="Array Utility"
-		icon="res/_ut/ar/Array.png"
-		handlerType="div"
-		group="KarolsUtils">
-		
-		<jsInclude>res/_ut/ar/Array.js</jsInclude>
-
-		<property 
-			id="items" 
-			type="String" 
-			title="Technical proprty for list of items" 
-			group="Display" 
-			visible="false" />
-
-		<initialization>
-				<defaultValue property="WIDTH">300</defaultValue>
-				<defaultValue property="HEIGHT">100</defaultValue>
-				<defaultValue property="TOP_MARGIN">0</defaultValue>
-				<defaultValue property="LEFT_MARGIN">0</defaultValue>
-				<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
-				<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
-
-				<defaultValue property="items"></defaultValue>
-				
+			<defaultValue property="WIDTH">220</defaultValue>
+			<defaultValue property="HEIGHT">190</defaultValue>
+			
+			<defaultValue property="headerText">Header</defaultValue>
+			<defaultValue property="headerVisible">true</defaultValue>
+			<defaultValue property="titleText">Title</defaultValue>
+			<defaultValue property="valuePrefixText"></defaultValue>
+			<defaultValue property="valueText">Value</defaultValue>
+			<defaultValue property="valueSuffixText"> M$</defaultValue>
+			<defaultValue property="valueHAlign">left</defaultValue>
+			<defaultValue property="valueDecimalPlaces">0</defaultValue>
+			<defaultValue property="footerText">Footer</defaultValue>
+			<defaultValue property="footerHAlign">left</defaultValue>
 		</initialization>
 
 		</component>
