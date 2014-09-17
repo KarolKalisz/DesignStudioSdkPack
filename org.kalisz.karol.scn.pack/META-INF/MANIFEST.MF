@@ -3,5 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Design Studio Karol's Components
 Bundle-SymbolicName: org.kalisz.karol.scn.pack;singleton:=true
 Bundle-Version: 1.0.7.qualifier
-Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk;bundle-version="13.0.1"
+Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk;bundle-version="13.0.1",
+ org.kalisz.karol.scn.constants;bundle-version="1.0.0"
 Bundle-Vendor: Karol Kalisz
