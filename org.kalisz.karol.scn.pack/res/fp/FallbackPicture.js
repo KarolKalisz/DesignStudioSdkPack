@@ -17,40 +17,35 @@
  * limitations under the License. 
  */
 
+(function() {
+/** code for recognition of script path */
+var myScript = $("script:last")[0].src;
+_readScriptPath = function () {
+	if(myScript) {
+		var myScriptSuffix = "res/fp/";
+		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
+ 		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
+ 		return ownScriptPath;
+	}
+		
+	return "";
+},
+/** end of path recognition */
+
 jQuery.sap.require("sap.ui.commons.Image");
-
-// 1.0.0, implemented as in http://scn.sap.com/message/15268917#15268917
-// 1.0.1, avoid collisions on global variables - later needs to implement the other way as in thread http://scn.sap.com/community/businessobjects-design-studio/blog/2014/08/15/sdk-tips-and-tricks-resources-and-images
-
-var org_kalisz_karol_scn_pack_FallbackPicture_lastScriptCalled = $("script:last");
-var org_kalisz_karol_scn_pack_FallbackPicture_fullUrlOfLastScriptCalled = org_kalisz_karol_scn_pack_FallbackPicture_lastScriptCalled.attr("src");
-var org_kalisz_karol_scn_pack_FallbackPicture_cutIndexOnMainEntryPoint = org_kalisz_karol_scn_pack_FallbackPicture_fullUrlOfLastScriptCalled.indexOf("res/nb/");
-var org_kalisz_karol_scn_pack_FallbackPicture_accessUrlForRes = org_kalisz_karol_scn_pack_FallbackPicture_fullUrlOfLastScriptCalled.substring(0, org_kalisz_karol_scn_pack_FallbackPicture_cutIndexOnMainEntryPoint) + "res/nb/";
-
+	
 sap.ui.commons.Image.extend("org.kalisz.karol.scn.pack.FallbackPicture", {
 
-	setPicture : function(value) {
-		if(this._Picture == value) {
-			return;
-		} else {
-			this._Picture = value;
-		}
-	},
-
-	getPicture : function() {
-		return this._Picture;
+	metadata: {
+        properties: {
+              "picture": {type: "string"},
+              "fallbackPicture": {type: "string"},
+        }
 	},
 	
-	setFallbackPicture : function(value) {
-		if(this._FallbackPicture == value) {
-			return;
-		} else {
-			this._FallbackPicture = value;
-		}
-	},
-
-	getFallbackPicture : function() {
-		return this._FallbackPicture;
+	initDesignStudio: function() {
+		var that = this;
+		this._ownScript = _readScriptPath();
 	},
 	
 	renderer: {},
@@ -87,5 +82,5 @@ sap.ui.commons.Image.extend("org.kalisz.karol.scn.pack.FallbackPicture", {
 			requestForPicture.send();
 		}
 	}
-
 });
+})();

@@ -26,13 +26,22 @@
  * 
  */
 
-jQuery.sap.require("sap.ui.commons.layout.AbsoluteLayout");
+(function() {
+/** code for recognition of script path */
+var myScript = $("script:last")[0].src;
+_readScriptPath = function () {
+	if(myScript) {
+		var myScriptSuffix = "res/fe/";
+		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
+ 		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
+ 		return ownScriptPath;
+	}
+		
+	return "";
+},
+/** end of path recognition */
 
-var org_kalisz_karol_scn_pack_FishEye_resourcePrefix = "res/fe/";
-var org_kalisz_karol_scn_pack_FishEye_lastScriptCalled = $("script:last");
-var org_kalisz_karol_scn_pack_FishEye_fullUrlOfLastScriptCalled = org_kalisz_karol_scn_pack_FishEye_lastScriptCalled.attr("src");
-var org_kalisz_karol_scn_pack_FishEye_cutIndexOnMainEntryPoint = org_kalisz_karol_scn_pack_FishEye_fullUrlOfLastScriptCalled.indexOf(org_kalisz_karol_scn_pack_FishEye_resourcePrefix);
-var org_kalisz_karol_scn_pack_FishEye_accessUrlForRes = org_kalisz_karol_scn_pack_FishEye_fullUrlOfLastScriptCalled.substring(0, org_kalisz_karol_scn_pack_FishEye_cutIndexOnMainEntryPoint) + org_kalisz_karol_scn_pack_FishEye_resourcePrefix;
+jQuery.sap.require("sap.ui.commons.layout.AbsoluteLayout");
 
 sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.FishEye", {
 
@@ -58,8 +67,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.FishEye",
   
 	initDesignStudio: function() {
 		var that = this;
-
-		
+		this._ownScript = _readScriptPath();
 	},
 		
 	renderer: {},
@@ -125,7 +133,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.FishEye",
 			if(this._pImagePrefix != undefined && this._pImagePrefix != ""){
 				iImageUrl = this._pImagePrefix + iImageUrl;
 			} else {
-				iImageUrl = org_kalisz_karol_scn_pack_FishEye_accessUrlForRes + "FishEye.png";
+				iImageUrl = this._ownScript + "FishEye.png";
 			}
 		}
 	
@@ -340,3 +348,4 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.FishEye",
 	}
 
 })
+})();

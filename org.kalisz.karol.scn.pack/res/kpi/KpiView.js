@@ -17,11 +17,22 @@
  * limitations under the License. 
  */
 
-var org_kalisz_karol_scn_pack_KpiView_resourcePrefix = "res/kpi/";
-var org_kalisz_karol_scn_pack_KpiView_lastScriptCalled = $("script:last");
-var org_kalisz_karol_scn_pack_KpiView_fullUrlOfLastScriptCalled = org_kalisz_karol_scn_pack_KpiView_lastScriptCalled.attr("src");
-var org_kalisz_karol_scn_pack_KpiView_cutIndexOnMainEntryPoint = org_kalisz_karol_scn_pack_KpiView_fullUrlOfLastScriptCalled.indexOf(org_kalisz_karol_scn_pack_KpiView_resourcePrefix);
-var org_kalisz_karol_scn_pack_KpiView_accessUrlForRes = org_kalisz_karol_scn_pack_KpiView_fullUrlOfLastScriptCalled.substring(0, org_kalisz_karol_scn_pack_KpiView_cutIndexOnMainEntryPoint) + org_kalisz_karol_scn_pack_KpiView_resourcePrefix;
+(function() {
+/** code for recognition of script path */
+var myScript = $("script:last")[0].src;
+_readScriptPath = function () {
+	if(myScript) {
+		var myScriptSuffix = "res/kpi/";
+		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
+ 		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
+ 		return ownScriptPath;
+	}
+		
+	return "";
+},
+/** end of path recognition */
+
+jQuery.sap.require("sap.ui.commons.layout.AbsoluteLayout");
 
 sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.KpiView", {
 
@@ -71,7 +82,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.KpiView",
 
 	initDesignStudio: function() {
 		var that = this;
-		
+		this._ownScript = _readScriptPath();
+
 		this.addStyleClass("scn-pack-KpiView");
 		this.addStyleClass("scn-pack-KpiView-Bottom");
 		
@@ -271,3 +283,4 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.KpiView",
 		return valueFormatted;
 	}
 });
+})();

@@ -17,15 +17,22 @@
  * limitations under the License. 
  */
 
+(function() {
+/** code for recognition of script path */
+var myScript = $("script:last")[0].src;
+_readScriptPath = function () {
+	if(myScript) {
+		var myScriptSuffix = "res/nb/";
+		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
+ 		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
+ 		return ownScriptPath;
+	}
+		
+	return "";
+},
+/** end of path recognition */
+
 jQuery.sap.require("sap.ui.ux3.NotificationBar");
-
-// 1.0.0, implemented as in http://scn.sap.com/message/15268917#15268917
-// 1.0.1, avoid collisions on global variables - later needs to implement the other way as in thread http://scn.sap.com/community/businessobjects-design-studio/blog/2014/08/15/sdk-tips-and-tricks-resources-and-images
-
-var org_kalisz_karol_scn_pack_NotificationBar_lastScriptCalled = $("script:last");
-var org_kalisz_karol_scn_pack_NotificationBar_fullUrlOfLastScriptCalled = org_kalisz_karol_scn_pack_NotificationBar_lastScriptCalled.attr("src");
-var org_kalisz_karol_scn_pack_NotificationBar_cutIndexOnMainEntryPoint = org_kalisz_karol_scn_pack_NotificationBar_fullUrlOfLastScriptCalled.indexOf("res/nb/");
-var org_kalisz_karol_scn_pack_NotificationBar_accessUrlForRes = org_kalisz_karol_scn_pack_NotificationBar_fullUrlOfLastScriptCalled.substring(0, org_kalisz_karol_scn_pack_NotificationBar_cutIndexOnMainEntryPoint) + "res/nb/";
 
 sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 
@@ -134,7 +141,9 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		this._oNotificationBar = this;
 		var that = this._oNotificationBar;
 		
-		this._pAccessPath = org_kalisz_karol_scn_pack_NotificationBar_accessUrlForRes;
+		this._ownScript = _readScriptPath();
+		
+		this._pAccessPath = this._ownScript;
 		
 		this._oCommonNotifier = new sap.ui.ux3.Notifier({
 			title : "Common Notifications",
@@ -456,3 +465,4 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 		}
 	}
 });
+})();

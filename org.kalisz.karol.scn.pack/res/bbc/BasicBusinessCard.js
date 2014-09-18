@@ -17,13 +17,22 @@
  * limitations under the License. 
  */
 
-jQuery.sap.require("sap.ui.commons.layout.AbsoluteLayout");
+(function() {
+/** code for recognition of script path */
+var myScript = $("script:last")[0].src;
+_readScriptPath = function () {
+	if(myScript) {
+		var myScriptSuffix = "res/bbc/";
+		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
+ 		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
+ 		return ownScriptPath;
+	}
+		
+	return "";
+},
+/** end of path recognition */
 
-var org_kalisz_karol_scn_pack_BasicBusinessCard_resourcePrefix = "res/bbc/";
-var org_kalisz_karol_scn_pack_BasicBusinessCard_lastScriptCalled = $("script:last");
-var org_kalisz_karol_scn_pack_BasicBusinessCard_fullUrlOfLastScriptCalled = org_kalisz_karol_scn_pack_BasicBusinessCard_lastScriptCalled.attr("src");
-var org_kalisz_karol_scn_pack_BasicBusinessCard_cutIndexOnMainEntryPoint = org_kalisz_karol_scn_pack_BasicBusinessCard_fullUrlOfLastScriptCalled.indexOf(org_kalisz_karol_scn_pack_BasicBusinessCard_resourcePrefix);
-var org_kalisz_karol_scn_pack_BasicBusinessCard_accessUrlForRes = org_kalisz_karol_scn_pack_BasicBusinessCard_fullUrlOfLastScriptCalled.substring(0, org_kalisz_karol_scn_pack_BasicBusinessCard_cutIndexOnMainEntryPoint) + org_kalisz_karol_scn_pack_BasicBusinessCard_resourcePrefix;
+jQuery.sap.require("sap.ui.commons.layout.AbsoluteLayout");
 
 sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.BasicBusinessCard", {
 
@@ -37,6 +46,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.BasicBusi
   
   	initDesignStudio: function() {
 		var that = this;
+		this._ownScript = _readScriptPath();
 		
 		this.addStyleClass("scn-pack-BasicBusinessCard-Card");
 		
@@ -90,3 +100,4 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.BasicBusi
 		this._lText.setText (this.getTitle());
 	}
 });
+})();

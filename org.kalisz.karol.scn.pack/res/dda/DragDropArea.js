@@ -22,7 +22,7 @@
 var myScript = $("script:last")[0].src;
 _readScriptPath = function () {
 	if(myScript) {
-		var myScriptSuffix = "res/ic/";
+		var myScriptSuffix = "res/dda/";
 		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
  		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
  		return ownScriptPath;
@@ -32,10 +32,18 @@ _readScriptPath = function () {
 },
 /** end of path recognition */
 
-jQuery.sap.require("sap.ui.commons.Carousel");
+sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropArea", {
 
-sap.ui.commons.Carousel.extend("org.kalisz.karol.scn.pack.ImageCarousel", {
-
+	metadata: {
+        properties: {
+              "dragKey": {type: "string"},
+              "dragContext": {type: "string"},
+              "dropId": {type: "string"},
+              "dropKey": {type: "string"},
+              "dropContext": {type: "string"}
+        }
+	},
+	
 	setDefaultImage : function(value) {
 		this._DefaultImage = value;
 		
@@ -73,6 +81,16 @@ sap.ui.commons.Carousel.extend("org.kalisz.karol.scn.pack.ImageCarousel", {
 	initDesignStudio: function() {
 		var that = this;
 		this._ownScript = _readScriptPath();
+
+		this._lLayout = new sap.ui.layout.HorizontalLayout({
+			width : "100%",
+			height : "100%"
+		});
+
+		this.addContent(
+			this._lLayout,
+			{left: "0px", top: "0px"}
+		);
 	},
 	
 	renderer: {},
@@ -85,14 +103,66 @@ sap.ui.commons.Carousel.extend("org.kalisz.karol.scn.pack.ImageCarousel", {
 			var lElementsToRenderArray = JSON.parse(lElementsToRender);
 
 			// Destroy old content
-			this.destroyContent();
+			this._lLayout.destroyContent();
 
+			this.addDropArea();
+			
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var lImageElement = this.createImageElement(lElementsToRenderArray[i].key, lElementsToRenderArray[i].text, lElementsToRenderArray[i].url);
-				this.addContent(lImageElement);
+				this._lLayout.addContent(lImageElement);
+				
+				this.addDropArea();
 			}
 			
 		}
+	},
+	
+	addDropArea : function () {
+		var that = this;
+		
+		var oDrop = new sap.ui.commons.layout.AbsoluteLayout ({
+			width : "18px",
+			height : "20px"
+		});
+
+		oDrop.addStyleClass("scn-pack-DragDropArea-Drop");
+		
+		oDrop.onAfterRendering = function () {
+			var jqThis = this.$();
+			
+			jqThis.bind('dragover', function(evt) {
+			      evt.preventDefault();
+			   })
+			   .bind('dragleave',function(evt) {
+			      evt.preventDefault();
+			   })
+			   .bind('dragenter',function(evt) {
+			      evt.preventDefault();
+			   })
+				
+			   /** process drop event **/
+			   .bind('drop',function(evt) {
+				  var id = evt.dataTransfer.getData('id'); 
+			      var key = evt.dataTransfer.getData('key'); 
+			      var context = evt.dataTransfer.getData('context');
+
+			      that.setDropId(id);
+			      that.setDropKey(key);
+			      that.setDropContext(context);
+			      
+			      that.fireDesignStudioPropertiesChanged(["dropId"]);
+			      that.fireDesignStudioPropertiesChanged(["dropKey"]);
+			      that.fireDesignStudioPropertiesChanged(["dropContext"]);
+			      
+				  that.fireDesignStudioEvent("onDrop");
+			      
+			      evt.stopPropagation();
+			      
+			      return false;
+	       });
+		};
+		
+		this._lLayout.addContent(oDrop);
 	},
 	
 	createImageElement: function (iImageKey, iImageText, iImageUrl) {
@@ -106,24 +176,23 @@ sap.ui.commons.Carousel.extend("org.kalisz.karol.scn.pack.ImageCarousel", {
 			if(this._pImagePrefix != undefined && this._pImagePrefix != ""){
 				iImageUrl = this._pImagePrefix + iImageUrl;
 			} else {
-				iImageUrl = this._ownScript + "ImageCarousel.png";
+				iImageUrl = this._ownScript + "DragDropArea.png";
 			}
 		}
 
-		var oImage = new sap.ui.commons.Image ({
-			src : iImageUrl,
-			width : "100%",
-			height : "100%",
-			alt : iImageText,
+		var oImage = new sap.ui.commons.TextView ({
+			width : "120px",
+			height : "30px",
+			text : iImageText,
 			tooltip : iImageText,
 		});
 
-		oImage.addStyleClass("scn-pack-ImageCarousel-Image");
+		oImage.addStyleClass("scn-pack-DragDropArea-Image");
 		
 		oImage.internalKey = iImageKey;
 		
 		if(this.getSelectedKey() == iImageKey) {
-			oImage.addStyleClass("scn-pack-ImageCarousel-SelectedImage");
+			oImage.addStyleClass("scn-pack-DragDropArea-SelectedImage");
 		}
 		
 		oImage.attachBrowserEvent('click', function() {
@@ -135,6 +204,17 @@ sap.ui.commons.Carousel.extend("org.kalisz.karol.scn.pack.ImageCarousel", {
 			that.fireDesignStudioEvent("onSelectionChanged");
 			}
 		);
+
+		oImage.onAfterRendering = function () {
+			var jqThis = this.$();
+			jqThis.attr("draggable", "true");
+
+			jqThis.bind('dragstart', function(evt) {
+				evt.dataTransfer.setData('id', oImage.internalKey);
+				evt.dataTransfer.setData('key', that.getDragKey());
+				evt.dataTransfer.setData('context', that.getDragContext());
+			});
+		};
 		
 		return oImage;
 	},
@@ -146,9 +226,9 @@ sap.ui.commons.Carousel.extend("org.kalisz.karol.scn.pack.ImageCarousel", {
 			var lImage = lContent [i];
 			
 			if(iSelectedKey == lImage.internalKey){
-				lImage.addStyleClass("scn-pack-ImageCarousel-SelectedImage");
+				lImage.addStyleClass("scn-pack-DragDropArea-SelectedImage");
 			} else {
-				lImage.removeStyleClass("scn-pack-ImageCarousel-SelectedImage");
+				lImage.removeStyleClass("scn-pack-DragDropArea-SelectedImage");
 			};
 		};
 	}
