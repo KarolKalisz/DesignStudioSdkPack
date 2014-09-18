@@ -720,7 +720,7 @@
 
   <component
 		id="DragDropArea"
-		title="Drag Drop Area"
+		title="(preview) Drag Drop Area"
 		icon="res/dda/DragDropArea.png"
 		handlerType="sapui5"
 		group="KarolsComponents">
@@ -736,13 +736,24 @@
 			tooltip="Url for Default Image (must be set)"
 			group="Display" 
 			visible="true"/>
-		
+
 		<property 
-			id="selectedKey" 
+			id="orientation" 
 			type="String" 
-			title="Technical proprty for Selected Key" 
+			title="Orientation" 
 			group="Display" 
-			visible="false"/>
+			visible="true">
+				<possibleValue>horizontal</possibleValue>
+				<possibleValue>vertical</possibleValue>
+		</property>
+
+		<property 
+			id="itemWidth" 
+			type="int" 
+			title="Width of the Item" 
+			group="Display" 
+			visible="true">
+		</property>
 
 		<property 
 			id="elements" 
@@ -752,22 +763,16 @@
 			visible="false" />
 
 		<property 
-			id="onSelectionChanged" 
-			type="ScriptText" 
-			title="Event for On Selection Changed" 
-			group="Events" />
-
-		<property 
 			id="dragKey" 
 			type="String" 
-			title="Drag drop key" 
+			title="Drag Drop Key" 
 			group="Display" 
 			visible="true"/>
 
 		<property 
 			id="dragContext" 
 			type="String" 
-			title="Drag drop context" 
+			title="Drag Drop Context" 
 			group="Display" 
 			visible="true"/>
 
@@ -791,7 +796,21 @@
 			title="Drop Context" 
 			group="Display" 
 			visible="false"/>
-			
+
+		<property 
+			id="dropAfterKey" 
+			type="String" 
+			title="Technical proprty for Drop After Key" 
+			group="Display" 
+			visible="false"/>
+
+		<property 
+			id="dropIndex" 
+			type="int" 
+			title="Technical proprty for Drop Index" 
+			group="Display" 
+			visible="false"/>
+
 		<property 
 			id="onDrop" 
 			type="ScriptText" 
@@ -806,8 +825,9 @@
 				<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
 				<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
 				<defaultValue property="defaultImage"></defaultValue>
-				<defaultValue property="selectedKey"></defaultValue>
 				<defaultValue property="elements"></defaultValue>
+				<defaultValue property="orientation">horizontal</defaultValue>
+				<defaultValue property="itemWidth">120</defaultValue>
 				
 		</initialization>
 

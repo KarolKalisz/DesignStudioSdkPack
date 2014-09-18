@@ -216,6 +216,7 @@ class org.kalisz.karol.scn.pack.ImageCarousel extends Component {
 			if (elementsJson[i].key == elementKey) {
 				elementsJson[i].text = elementText;
 				elementsJson[i].url = imageUrl;
+				break;
 			}
 		}
 		
@@ -239,6 +240,24 @@ class org.kalisz.karol.scn.pack.ImageCarousel extends Component {
 		}
 
 		this.elements = JSON.stringify(newElementsJson);
+	*}
+	
+	/** returns key at given index */
+	String getKeyAtIndex (int index) {*		
+		if (this.elements === undefined || this.elements === "" || this.elements === "<delete>"){
+			this.elements = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.elements);
+		var newElementsJson = [];
+		
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index == i) {
+				return elementsJson[i].key;
+			}
+		}
+		
+		return "";
 	*}
 	
 	/** returns the selected key */
@@ -358,6 +377,7 @@ class org.kalisz.karol.scn.pack.FishEye extends Component {
 			if (elementsJson[i].key == elementKey) {
 				elementsJson[i].text = elementText;
 				elementsJson[i].url = imageUrl;
+				break;
 			}
 		}
 		
@@ -381,6 +401,24 @@ class org.kalisz.karol.scn.pack.FishEye extends Component {
 		}
 
 		this.elements = JSON.stringify(newElementsJson);
+	*}
+	
+	/** returns key at given index */
+	String getKeyAtIndex (int index) {*		
+		if (this.elements === undefined || this.elements === "" || this.elements === "<delete>"){
+			this.elements = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.elements);
+		var newElementsJson = [];
+		
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index == i) {
+				return elementsJson[i].key;
+			}
+		}
+		
+		return "";
 	*}
 	
 	/** returns the selected key */
@@ -1321,6 +1359,7 @@ class org.kalisz.karol.scn.pack.DragDropArea extends Component {
 			if (elementsJson[i].key == elementKey) {
 				elementsJson[i].text = elementText;
 				elementsJson[i].url = imageUrl;
+				break;
 			}
 		}
 		
@@ -1346,14 +1385,22 @@ class org.kalisz.karol.scn.pack.DragDropArea extends Component {
 		this.elements = JSON.stringify(newElementsJson);
 	*}
 	
-	/** returns the selected key */
-	String getSelectedKey () {*
-		return this.selectedKey;	
-	*}
-	
-	/** sets the selected key */
-	String setSelectedKey (String key) {*
-		this.selectedKey = key;	
+	/** returns key at given index */
+	String getKeyAtIndex (int index) {*		
+		if (this.elements === undefined || this.elements === "" || this.elements === "<delete>"){
+			this.elements = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.elements);
+		var newElementsJson = [];
+		
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (index == i) {
+				return elementsJson[i].key;
+			}
+		}
+		
+		return "";
 	*}
 	
 	/* Returns the Drag Key. */
@@ -1369,5 +1416,25 @@ class org.kalisz.karol.scn.pack.DragDropArea extends Component {
 	/* Returns the Drop Key. */
 	String getDropContext () {*
 		return this.dropContext;	
+	*}
+	
+	/* Returns the Drop After Key. */
+	String getDropAfterKey () {*
+		return this.dropAfterKey;	
+	*}
+	
+	/* Returns the Drop After Key. */
+	int getDropIndex () {*
+		return this.dropIndex;	
+	*}
+
+	/* Returns the Drag Key. */
+	String getDragKey () {*
+		return this.dragKey;	
+	*}
+	
+	/* Returns the Drag Key. */
+	String getDragContext () {*
+		return this.dragContext;	
 	*}
 }

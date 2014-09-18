@@ -38,65 +38,60 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
         properties: {
               "dragKey": {type: "string"},
               "dragContext": {type: "string"},
+
               "dropId": {type: "string"},
               "dropKey": {type: "string"},
-              "dropContext": {type: "string"}
+              "dropContext": {type: "string"},
+              
+              "defaultImage": {type: "string"},
+              "dropAfterKey": {type: "string"},
+              "dropIndex": {type: "int"},
+
+              "elements": {type: "string"},
+              "orientation": {type: "string"},
+              "itemWidth": {type: "int"}
         }
-	},
-	
-	setDefaultImage : function(value) {
-		this._DefaultImage = value;
-		
-		if(value != undefined && value != "")  {
-			this._pImagePrefix = value.substring(0, value.lastIndexOf("/") + 1);	
-		}
-	},
-
-	getDefaultImage : function() {
-		return this._DefaultImage;
-	},
-
-	setSelectedKey : function(value) {		
-		if (value !== undefined || value !== "") {
-			this._SelectedKey = value;
-		}
-	},
-
-	getSelectedKey : function() {
-		return this._SelectedKey;
-	},
-
-	setElements : function(value) {
-		if(this._Elements == value) {
-			return;
-		} else {
-			this._Elements = value;
-		}
-	},
-
-	getElements : function() {
-		return this._Elements;
 	},
 	
 	initDesignStudio: function() {
 		var that = this;
 		this._ownScript = _readScriptPath();
-
-		this._lLayout = new sap.ui.layout.HorizontalLayout({
-			width : "100%",
-			height : "100%"
-		});
-
-		this.addContent(
-			this._lLayout,
-			{left: "0px", top: "0px"}
-		);
 	},
 	
 	renderer: {},
 	
 	afterDesignStudioUpdate : function() {
+		if(!this._pImagePrefix) {
+			var defaultImage = this.getDefaultImage();
+			if(defaultImage != undefined && defaultImage != "")  {
+				this._pImagePrefix = value.substring(0, value.lastIndexOf("/") + 1);	
+			}
+		}
+		
 		var that = this;
+
+		if(!this._lLayout) {
+			if(this.getOrientation() == "horizontal") {
+				this._lLayout = new sap.ui.layout.HorizontalLayout({
+					width : "100%",
+					height : "100%"
+				});
+			} else {
+				this._lLayout = new sap.ui.layout.VerticalLayout({
+					width : "100%",
+					height : "100%"
+				});
+			}
+
+			this._lLayout.addStyleClass("scn-pack-DragDropArea-Layout");
+			
+			this.addContent(
+				this._lLayout,
+				{left: "5px", top: "5px"}
+			);
+		}
+		
+		this.addStyleClass("scn-pack-DragDropArea");
 		
 		var lElementsToRender = this.getElements();
 		if(lElementsToRender != null && lElementsToRender != undefined && lElementsToRender != ""){
@@ -105,35 +100,52 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 			// Destroy old content
 			this._lLayout.destroyContent();
 
-			this.addDropArea();
+			this.addDropArea("", 0, lElementsToRenderArray.length == 0);
 			
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var lImageElement = this.createImageElement(lElementsToRenderArray[i].key, lElementsToRenderArray[i].text, lElementsToRenderArray[i].url);
 				this._lLayout.addContent(lImageElement);
 				
-				this.addDropArea();
+				this.addDropArea(lImageElement.internalKey, i + 1, i == lElementsToRenderArray.length - 1);
 			}
 			
 		}
 	},
 	
-	addDropArea : function () {
+	addDropArea : function (dropAfterKey, dropIndex, isLast) {
 		var that = this;
 		
+		var width = "18px";
+		var height = "24px";
+		
+		var orientation = this.getOrientation();
+		
+		if(orientation != "horizontal") {
+			width = this.getItemWidth() + "px";
+			height = "18px";
+		}
+
 		var oDrop = new sap.ui.commons.layout.AbsoluteLayout ({
-			width : "18px",
-			height : "20px"
+			width : width,
+			height : height
 		});
 
 		oDrop.addStyleClass("scn-pack-DragDropArea-Drop");
+		
+		oDrop.dropAfterKey = dropAfterKey;
+		oDrop.dropIndex = dropIndex;
 		
 		oDrop.onAfterRendering = function () {
 			var jqThis = this.$();
 			
 			jqThis.bind('dragover', function(evt) {
+				  oDrop.addStyleClass("scn-pack-DragDropArea-DropEffect");
+				
 			      evt.preventDefault();
 			   })
 			   .bind('dragleave',function(evt) {
+				  oDrop.removeStyleClass("scn-pack-DragDropArea-DropEffect");
+				   
 			      evt.preventDefault();
 			   })
 			   .bind('dragenter',function(evt) {
@@ -149,10 +161,15 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 			      that.setDropId(id);
 			      that.setDropKey(key);
 			      that.setDropContext(context);
+			      that.setDropAfterKey(oDrop.dropAfterKey);
+			      that.setDropIndex(oDrop.dropIndex);
 			      
 			      that.fireDesignStudioPropertiesChanged(["dropId"]);
 			      that.fireDesignStudioPropertiesChanged(["dropKey"]);
 			      that.fireDesignStudioPropertiesChanged(["dropContext"]);
+			      
+			      that.fireDesignStudioPropertiesChanged(["dropAfterKey"]);
+			      that.fireDesignStudioPropertiesChanged(["dropIndex"]);
 			      
 				  that.fireDesignStudioEvent("onDrop");
 			      
@@ -180,43 +197,31 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 			}
 		}
 
-		var oImage = new sap.ui.commons.TextView ({
-			width : "120px",
-			height : "30px",
+		var oDrag = new sap.ui.commons.ToggleButton({
 			text : iImageText,
-			tooltip : iImageText,
-		});
+			tooltip: iImageText,
+			width : this.getItemWidth() + "px",
+			height : "24px",
+			styled: false,
+			enabled: false
+		}).addStyleClass("myButton");
+		
+		oDrag.addStyleClass("scn-pack-DragDropArea-Drag");
+		
+		oDrag.internalKey = iImageKey;
 
-		oImage.addStyleClass("scn-pack-DragDropArea-Image");
-		
-		oImage.internalKey = iImageKey;
-		
-		if(this.getSelectedKey() == iImageKey) {
-			oImage.addStyleClass("scn-pack-DragDropArea-SelectedImage");
-		}
-		
-		oImage.attachBrowserEvent('click', function() {
-			that.setSelectedKey(oImage.internalKey);
-			
-			that.updateSelection(oImage.internalKey);
-			
-			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-			that.fireDesignStudioEvent("onSelectionChanged");
-			}
-		);
-
-		oImage.onAfterRendering = function () {
+		oDrag.onAfterRendering = function () {
 			var jqThis = this.$();
 			jqThis.attr("draggable", "true");
 
 			jqThis.bind('dragstart', function(evt) {
-				evt.dataTransfer.setData('id', oImage.internalKey);
+				evt.dataTransfer.setData('id', oDrag.internalKey);
 				evt.dataTransfer.setData('key', that.getDragKey());
 				evt.dataTransfer.setData('context', that.getDragContext());
 			});
 		};
 		
-		return oImage;
+		return oDrag;
 	},
 	
 	updateSelection: function (iSelectedKey) {
