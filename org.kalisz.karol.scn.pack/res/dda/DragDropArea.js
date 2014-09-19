@@ -64,7 +64,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 		if(!this._pImagePrefix) {
 			var defaultImage = this.getDefaultImage();
 			if(defaultImage != undefined && defaultImage != "")  {
-				this._pImagePrefix = value.substring(0, value.lastIndexOf("/") + 1);	
+				this._pImagePrefix = defaultImage.substring(0, defaultImage.lastIndexOf("/") + 1);	
 			}
 		}
 		
@@ -103,10 +103,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 			this.addDropArea("", 0, lElementsToRenderArray.length == 0);
 			
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
-				var lImageElement = this.createImageElement(lElementsToRenderArray[i].key, lElementsToRenderArray[i].text, lElementsToRenderArray[i].url);
-				this._lLayout.addContent(lImageElement);
-				
-				this.addDropArea(lImageElement.internalKey, i + 1, i == lElementsToRenderArray.length - 1);
+				this.addDragArea(lElementsToRenderArray[i].key, lElementsToRenderArray[i].text, lElementsToRenderArray[i].url);
+				this.addDropArea(lElementsToRenderArray[i].key, i + 1, i == lElementsToRenderArray.length - 1);
 			}
 			
 		}
@@ -115,19 +113,22 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 	addDropArea : function (dropAfterKey, dropIndex, isLast) {
 		var that = this;
 		
-		var width = "18px";
+		var width = "12px";
 		var height = "24px";
 		
 		var orientation = this.getOrientation();
 		
 		if(orientation != "horizontal") {
 			width = this.getItemWidth() + "px";
-			height = "18px";
+			height = "12px";
 		}
 
-		var oDrop = new sap.ui.commons.layout.AbsoluteLayout ({
+		var oDrop = new sap.ui.commons.ToggleButton({
+			text : "",
 			width : width,
-			height : height
+			height : height,
+			styled: false,
+			enabled: false
 		});
 
 		oDrop.addStyleClass("scn-pack-DragDropArea-Drop");
@@ -182,7 +183,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 		this._lLayout.addContent(oDrop);
 	},
 	
-	createImageElement: function (iImageKey, iImageText, iImageUrl) {
+	addDragArea: function (iImageKey, iImageText, iImageUrl) {
 		var that = this;
 		
 		// in case starts with http, keep as is 
@@ -190,21 +191,23 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 			// no nothing
 		} else {
 			// in case of repository, add the prefix from repository
-			if(this._pImagePrefix != undefined && this._pImagePrefix != ""){
+			if(this._pImagePrefix != undefined && this._pImagePrefix != "" && iImageUrl != ""){
 				iImageUrl = this._pImagePrefix + iImageUrl;
 			} else {
-				iImageUrl = this._ownScript + "DragDropArea.png";
+				// no image if not specified
+				// iImageUrl = this._ownScript + "DragDropArea.png";
 			}
 		}
 
 		var oDrag = new sap.ui.commons.ToggleButton({
 			text : iImageText,
 			tooltip: iImageText,
+			icon: iImageUrl,
 			width : this.getItemWidth() + "px",
 			height : "24px",
 			styled: false,
 			enabled: false
-		}).addStyleClass("myButton");
+		});
 		
 		oDrag.addStyleClass("scn-pack-DragDropArea-Drag");
 		
@@ -221,7 +224,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.DragDropA
 			});
 		};
 		
-		return oDrag;
+		this._lLayout.addContent(oDrag);
 	},
 	
 	updateSelection: function (iSelectedKey) {

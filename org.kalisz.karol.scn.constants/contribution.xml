@@ -185,4 +185,52 @@
       of your accepting any such warranty or additional liability.
   </license>
 
+	<group
+		id="CommonUtils"
+		title="Design Studio Common Utils"/>
+
+  <component
+		id="OpenWindowPost"
+		title="Open Window by Post"
+		icon="res/_ut/ow/OpenWindowPost.png"
+		handlerType="sapui5"
+		group="CommonUtils">
+		
+		<jsInclude>res/_ut/ow/OpenWindowPost.js</jsInclude>
+
+		<property 
+			id="url" 
+			type="String" 
+			title="Url To Open by Post" 
+			group="Display" 
+			visible="true" />
+
+		<property 
+			id="trigger" 
+			type="String" 
+			title="Just as Simple Triger" 
+			group="Display" 
+			visible="false" />
+
+		<property 
+			id="parameters" 
+			type="String" 
+			title="Technical proprty for list of parameters (name/value)" 
+			group="Display" 
+			visible="false" />
+
+		<initialization>
+				<defaultValue property="WIDTH">300</defaultValue>
+				<defaultValue property="HEIGHT">100</defaultValue>
+				<defaultValue property="TOP_MARGIN">0</defaultValue>
+				<defaultValue property="LEFT_MARGIN">0</defaultValue>
+				<defaultValue property="RIGHT_MARGIN">auto</defaultValue>
+				<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
+
+				<defaultValue property="items"></defaultValue>
+				
+		</initialization>
+
+		</component>
+
 </sdkExtension>

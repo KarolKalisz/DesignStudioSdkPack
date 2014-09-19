@@ -344,7 +344,7 @@
 		<property 
 			id="elements" 
 			type="String" 
-			title="Technical proprty for list of elements" 
+			title="Technical property for list of elements" 
 			group="Display" 
 			visible="false" />
 
@@ -720,7 +720,7 @@
 
   <component
 		id="DragDropArea"
-		title="(preview) Drag Drop Area"
+		title="Drag Drop Area"
 		icon="res/dda/DragDropArea.png"
 		handlerType="sapui5"
 		group="KarolsComponents">

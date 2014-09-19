@@ -186,15 +186,15 @@
   </license>
 
 	<group
-		id="KarolsComponents"
-		title="Design Studio Karol's Components"/>
+		id="CommonUtils"
+		title="Design Studio Common Utils"/>
 		
 	<component
 		id="SimpleDateObject"
 		title="Simple Date Object"
 		icon="res/sd/SimpleDate.png"
 		handlerType="div"
-		group="KarolsComponents">
+		group="CommonUtils">
 	<jsInclude>res/sd/SimpleDate.js</jsInclude>
 
 	<property

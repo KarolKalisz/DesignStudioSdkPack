@@ -107,3 +107,47 @@ class org_scn_pack_SortDirection extends Enum {
        /** DESCENDING */
 	org_scn_pack_SortDirectionEnumfield DESCENDING;
 }
+
+/**
+ * 
+ */
+
+class org.kalisz.karol.scn.constants.OpenWindowPost extends Component {
+	
+	/**
+	 * Set URL (will be deleted once triggered)
+	 */
+	void triggerExecution () {*
+		this.trigger = "GO";
+	*}
+
+	/** 
+	 * Add parameter
+	 * 
+	 */
+	void removeAllParameters () {*
+		this.parameters = "";
+	*}
+			
+	/** 
+	 * Add parameter
+	 * 
+	 */
+	void addParameter (
+			/**name*/String name, 
+			/**value*/String value) {*
+		var itemDef = { 
+				"name": name,
+				"value": value 
+				};
+	
+		if (this.parameters === undefined || this.parameters === "" || this.parameters === "<delete>"){
+			this.parameters = "[]";
+		}
+		
+		var parametersJson = JSON.parse(this.parameters);
+		parametersJson.push(itemDef)
+	
+		this.parameters = JSON.stringify(parametersJson);
+	*}
+}

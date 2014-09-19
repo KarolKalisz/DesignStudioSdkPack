@@ -186,15 +186,15 @@
   </license>
    
 	<group
-		id="KarolsComponents"
-		title="Design Studio Karol's Components"/>
+		id="CommonUtils"
+		title="Design Studio Common Utils"/>
 		
 	<component
 		id="DateObject"
 		title="Date Object"
 		icon="res/date/Date.png"
 		handlerType="div"
-		group="KarolsComponents">
+		group="CommonUtils">
 	<jsInclude>res/date/Date.js</jsInclude>
 
 	<initialization>
