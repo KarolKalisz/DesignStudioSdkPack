@@ -58,6 +58,57 @@ class org.scn.pack.KeyLabelValueArray extends Array {
 }
 
 /**
+Holder for Key, Label, Value + param1, param2, param3. You can access the content as in below example.
+<br>
+var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
+
+// a loop for all entries<br>
+// content is of type org.scn.pack.KeyLabelValueArray<br>
+content.forEach(function(element, index) {<br>
+
+	// element is of type org.scn.pack.KeyLabelValue<br>
+	var elKey = element.key;<br>
+	var elLabel = element.label;<br>
+ 	var elValue = "( " + element.value + " )");<br>
+ 	<br>
+ 	var param1 = element.param1;<br>
+ 	var param2 = element.param2;<br>
+ 	var param3 = element.param3;<br>
+});
+*/
+class org.scn.pack.KeyLabelValueExtended {
+	String key;
+	String label;
+	float value;
+	String param1;
+	String param2;
+	String param3;
+}
+
+/**
+Array for org.scn.pack.KeyLabelValue. You can use this array as in below example.
+<br>
+var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
+<br>
+// a loop for all entries<br>
+// content is of type org.scn.pack.KeyLabelValueArray<br>
+content.forEach(function(element, index) {<br>
+
+	// element is of type org.scn.pack.KeyLabelValue<br>
+	var elKey = element.key;<br>
+	var elLabel = element.label;<br>
+ 	var elValue = "( " + element.value + " )");<br>
+ 	<br>
+ 	var param1 = element.param1;<br>
+ 	var param2 = element.param2;<br>
+ 	var param3 = element.param3;<br>
+ });
+*/
+class org.scn.pack.KeyLabelValueExtendedArray extends Array {
+	org.scn.pack.KeyLabelValueExtendedArray (org.scn.pack.KeyLabelValueExtended b);
+}
+
+/**
 	Holder for value. You can use the content as in below example.
 	<br>
 	var content = COLLECTION_1.getAsKeyLabelValueArray();<br>
