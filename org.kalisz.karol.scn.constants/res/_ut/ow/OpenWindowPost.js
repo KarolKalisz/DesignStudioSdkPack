@@ -35,6 +35,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.kalisz.karol.scn.constants.Ope
 	
 	afterDesignStudioUpdate : function() {
 		
+		var lParameters = this.getParameters();
+		
 		if(this.getUrl() != "" && this.getTrigger() == "GO") {
 			
 			var newWindow = window.open(this.getUrl(), "Post Call");
@@ -46,7 +48,6 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.kalisz.karol.scn.constants.Ope
 			
 			
 			// read local created new Notifications
-			var lParameters = this.getParameters();
 			if((lParameters != undefined || lParameters != undefined) && lParameters != "" && lParameters != "<delete>"){
 				var lParametersArray = JSON.parse(lParameters);
 
@@ -58,17 +59,13 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.kalisz.karol.scn.constants.Ope
 			html += "</form><script type='text/javascript'>document.getElementById(\"formid\").submit()</sc"+"ript></body></html>";
 
 			newWindow.document.write(html);
-			
-			// return newWindow;
 		}
 
 		
-		// clean up
-		this.setParameters("<delete>");
+		// clean up the trigger
 		this.setTrigger("");
 		
 		// fire event to rerender
-		this.fireDesignStudioPropertiesChanged(["parameters"]);
 		this.fireDesignStudioPropertiesChanged(["trigger"]);
 
 	}
