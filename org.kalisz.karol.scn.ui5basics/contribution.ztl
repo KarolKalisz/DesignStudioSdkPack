@@ -361,3 +361,30 @@ class org.kalisz.karol.scn.ui5basics.RangeSlider extends Component {
 		return this.smallStepWidth;
 	*}
 }
+
+/**
+ * Class for TextArea
+ */
+class org.kalisz.karol.scn.ui5basics.TextArea extends Component {
+	
+	/** Sets the editable value */
+	void setEditable(
+		/** Editable value */ boolean editable) {*
+		this.editable = editable;
+	*}
+	
+	/** Returns the editable value */
+	boolean isEditable() {*
+		return this.editable;
+	*}
+
+	/** sets the value */
+	String setValue (String value) {*
+		this.value = value;	
+	*}
+
+	/** returns the value */
+	String getValue () {*
+		return this.value;	
+	*}
+}
