@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Karol's SDK UI5 Basic Components
 Bundle-SymbolicName: org.kalisz.karol.scn.ui5basics;singleton:=true
 Bundle-Version: 1.0.2.qualifier
-Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk;bundle-version="13.0.1"
+Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk;bundle-version="13.1.0"
 Bundle-Vendor: Karol Kalisz

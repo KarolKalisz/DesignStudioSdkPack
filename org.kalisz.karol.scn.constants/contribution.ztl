@@ -17,6 +17,44 @@
  * limitations under the License. 
  */
 
+
+/**
+	Holder for Key, Label. You can access the content as in below example.
+	<br>
+	var content = COMPONENT.getSelectedElementsArray();<br>
+	
+	// a loop for all entries<br>
+	// content is of type org.scn.pack.KeyLabelArray<br>
+	content.forEach(function(element, index) {<br>
+	
+		// element is of type org.scn.pack.KeyLabel<br>
+		var elKey = element.key;<br>
+		var elLabel = element.label;<br>
+	});
+*/
+class org.scn.pack.KeyLabel {
+  String key;
+  String label;
+}
+
+/**
+	Array for org.scn.pack.KeyLabel. You can use this array as in below example.
+	<br>
+	var content = COMPONENT.getSelectedElementsArray();<br>
+	<br>
+	// a loop for all entries<br>
+	// content is of type org.scn.pack.KeyLabelArray<br>
+	content.forEach(function(element, index) {<br>
+	
+		// element is of type org.scn.pack.KeyLabelValue<br>
+		var elKey = element.key;<br>
+		var elLabel = element.label;<br>
+	});
+ */
+class org.scn.pack.KeyLabelArray extends Array {
+	org.scn.pack.KeyLabelArray (org.scn.pack.KeyLabel b);
+}
+
 /**
 	Holder for Key, Label, Value. You can access the content as in below example.
 	<br>
