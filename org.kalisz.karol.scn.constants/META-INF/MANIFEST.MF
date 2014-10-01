@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Design Studio Common ZTL Constants and Objects
 Bundle-SymbolicName: org.kalisz.karol.scn.constants;singleton:=true
 Bundle-Version: 1.0.1.qualifier
-Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk;bundle-version="13.1.0"
+Require-Bundle: com.sap.ip.bi.zen.rt.components.sdk
 Bundle-Vendor: Karol Kalisz

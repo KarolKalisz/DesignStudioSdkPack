@@ -2,7 +2,7 @@
 <feature
       id="org.kalisz.karol.scn.sdk"
       label="Design Studio Karol&apos;s Components"
-      version="1.0.13.qualifier"
+      version="1.0.15.qualifier"
       provider-name="Karol Kalisz">
 
    <description url="https://github.com/KarolKalisz/DesignStudioSdkPack/blob/stable/README.md">
@@ -224,31 +224,35 @@ http://www.apache.org/licenses/
    </url>
 
    <requires>
-      <import plugin="com.sap.ip.bi.zen.rt.components.sdk.eclipse" version="13.0.1" match="greaterOrEqual"/>
+      <import plugin="com.sap.ip.bi.zen.rt.components.sdk.eclipse" version="13.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
          id="org.kalisz.karol.scn.ui5basics"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.kalisz.karol.scn.pack"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.kalisz.karol.scn.simpledate"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.kalisz.karol.scn.constants"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
