@@ -2016,7 +2016,7 @@ class org.kalisz.karol.scn.pack.Accordion extends Component {
 	/** Adds a root element containing Key, Text, Image Url information.
 
  	<example>
-	You want to add 2 root elements, second one is a child of fist one
+	You want to add 2 root elements, second one is a sibling of first one
 	<code>
 	ACCORDION_1.addElement("ROOT_KEY1", "First Root Element", "");<br>
 	ACCORDION_1.addElement("ROOT_KEY2", "Second Root Element", "");<br>
