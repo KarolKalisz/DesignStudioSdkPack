@@ -36,6 +36,17 @@ jQuery.sap.require("sap.ui.ux3.NotificationBar");
 
 sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 
+	metadata: {
+        properties: {
+              "width": {type: "string"},
+              "height": {type: "string"},
+              "leftMargin": {type: "string"},
+              "rightMargin": {type: "string"},
+              "topMargin": {type: "string"},
+              "bottomMargin": {type: "string"}
+        }
+	},
+	
 	setCategories : function(value) {
 		if(this._Categories == value) {
 			return;
@@ -233,6 +244,26 @@ sap.ui.ux3.NotificationBar.extend("org.kalisz.karol.scn.pack.NotificationBar", {
 			that.attachResize(this._oResizeListener);
 			
 			this.__notifiersInitialized = true;
+		}
+		
+		// resize fix, not active yet
+		var tryToFixResize = false;
+		if(tryToFixResize) {
+			this.oComponentProperties.height = "40";
+			this.oComponentProperties.width = "auto";
+			this.oComponentProperties.rightmargin = "0";
+			this.oComponentProperties.leftmargin = "0";
+			this.oComponentProperties.bottommargin = "0";
+			this.oComponentProperties.topmargin = "auto";
+			
+			this.setHeight("40");
+			this.setWidth("auto");
+			this.setRightMargin("0");
+			this.setLeftMargin("0");
+			this.setBottomMargin("0");
+			this.setTopMargin("auto");
+			
+			this.fireDesignStudioPropertiesChanged(["width", "height", "topMargin", "bottomMargin", "leftMargin", "rightMargin"]);
 		}
 		
 		if(!this._oWCustomCategoryNotifier) {

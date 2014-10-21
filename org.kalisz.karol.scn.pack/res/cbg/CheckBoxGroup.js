@@ -94,10 +94,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.CheckBoxG
 		}
 	},
 	
-	createCheckBoxElement: function (index, iImageKey, iImageText, iPicture, selected) {
+	createCheckBoxElement: function (index, iKey, iText, iImageUrl, selected) {
 		var that = this;
-		
-		var iImageUrl = iPicture;
 		
 		// in case starts with http, keep as is 
 		if(iImageUrl.indexOf("http") == 0) {
@@ -137,19 +135,19 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.CheckBoxG
 		});
 		
 		oLayout.addStyleClass("scn-pack-CheckBoxGroup-Layout");
-		oLayout.internalKey = iImageKey;
+		oLayout.internalKey = iKey;
 
 		var oImage = new sap.ui.commons.Image ({
 			src : iImageUrl,
 			width : pictureSize,
 			height : pictureSize,
-			alt : iImageText,
-			tooltip : iImageText,
+			alt : iText,
+			tooltip : iText,
 		});
 
 		if(withPicture) {
 			oImage.addStyleClass("scn-pack-CheckBoxGroup-Picture");
-			oImage.internalKey = iImageKey;
+			oImage.internalKey = iKey;
 		
 			oLayout.addContent(
 					oImage,
@@ -183,7 +181,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.CheckBoxG
 			}
 		});
 		
-		oCheckBox.setText(iImageText);
+		oCheckBox.setText(iText);
 		oCheckBox.setChecked(selected);
 		oCheckBox.addStyleClass("scn-pack-CheckBoxGroup-CheckBox");
 		

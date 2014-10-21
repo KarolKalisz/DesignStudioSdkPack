@@ -206,20 +206,6 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.LeaderBoa
 			that.fireDesignStudioEvent("onPress");
 		});
 
-		oImage.attachBrowserEvent('click', function () {
-			that.setSelectedKey(oImage.internalKey);
-			that.updateSelection(oImage.internalKey);
-			
-			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-			that.fireDesignStudioEvent("onSelectionChanged");
-		});
-		oText.attachBrowserEvent('click', function () {
-			that.setSelectedKey(oImage.internalKey);
-			that.updateSelection(oImage.internalKey);
-			
-			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-			that.fireDesignStudioEvent("onSelectionChanged");
-		});
 		oLayout.attachBrowserEvent('click', function () {
 			if(that._linkEvent == true) {
 				that._linkEvent = false;

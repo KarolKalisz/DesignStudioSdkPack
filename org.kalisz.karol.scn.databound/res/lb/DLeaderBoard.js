@@ -137,7 +137,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 	_getElements : function (data, metadata) {
 		var list = [];
 		
-		if(lData == undefined) {
+		if(data == undefined) {
 			return list;
 		}
 		

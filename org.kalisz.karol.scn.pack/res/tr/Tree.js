@@ -118,15 +118,20 @@ sap.ui.commons.Tree.extend("org.kalisz.karol.scn.pack.Tree", {
 		for (lNodeKey in this._oNodes) {
 			var lNode = this._oNodes[lNodeKey];
 			if(lNode._childrenRequested) {
-				var nodes = lNode.getNodes();
-				lNode.removeNode(nodes[0]);
-				nodes[0].destroy();
-				
-				if(lNode.getNodes() == 0) {
-					lNode.setHasExpander(false);
+				if(lNode._childrenRequestedFinished) {
+					var nodes = lNode.getNodes();
+					lNode.removeNode(nodes[0]);
+					nodes[0].destroy();
+					
+					if(lNode.getNodes() == 0) {
+						lNode.setHasExpander(false);
+					}
+					
+					lNode._childrenRequestedFinished = false;
+					lNode._childrenRequested = false;
+				} else {
+					lNode._childrenRequestedFinished = true;
 				}
-				
-				lNode._childrenRequested = false;
 			}
 		}
 	},
