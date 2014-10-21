@@ -106,6 +106,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		}
 		
 		this._maxValue = undefined;
+		this._maxDelta = -1;
 		
 		var lData = this._data;
 		var lMetadata = this._metadata;
@@ -133,7 +134,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		// distribute content
 		for (var i = 0; i < lElementsToRenderArray.length; i++) {
 			var element = lElementsToRenderArray[i];
-			var lImageElement = this.createLeaderElement(i, element.key, element.text, element.url, element.value, element.valueS, element.counter);
+			var lImageElement = this.createLeaderElement(i, element.key, element.text, element.url, element.value, element.valueS, element.counter, element.delta);
 			this._lLayout.addContent(lImageElement);
 		}
 
@@ -204,6 +205,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		var max = this.getMaxNumber();
 		var newList = [];
 		
+		this._maxDelta = 0;
+		
 		var counter = 0;
 		if(this.getTopBottom() == "Top X") {
 			for (var i = 0; i < list.length; i++) {
@@ -212,6 +215,14 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 				}
 				
 				list[i].counter = (i+1);
+				list[i].delta = (list[i].value - this._Average);
+				
+				if(list[i].delta > 0 && list[i].delta > this._maxDelta) {
+					this._maxDelta = list[i].delta;	
+				}
+				if(list[i].delta < 0 && (list[i].delta * -1) > this._maxDelta) {
+					this._maxDelta = (list[i].delta * -1);	
+				}
 				
 				newList.push(list[i]);
 				counter = counter + 1;
@@ -229,6 +240,14 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 				}
 				
 				list[i].counter = (i+1);
+				list[i].delta = (list[i].value - this._Average);
+				
+				if(list[i].delta > 0 && list[i].delta > this._maxDelta) {
+					this._maxDelta = list[i].delta;	
+				}
+				if(list[i].delta < 0 && (list[i].delta * -1) > this._maxDelta) {
+					this._maxDelta = (list[i].delta * -1);	
+				}
 				
 				newList.push(list[i]);
 				counter = counter + 1;
@@ -240,6 +259,14 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 				}
 				
 				list[i].counter = (i+1);
+				list[i].delta = (list[i].value - this._Average);
+				
+				if(list[i].delta > 0 && list[i].delta > this._maxDelta) {
+					this._maxDelta = list[i].delta;	
+				}
+				if(list[i].delta < 0 && (list[i].delta * -1) > this._maxDelta) {
+					this._maxDelta = (list[i].delta * -1);	
+				}
 				
 				newList.push(list[i]);
 				counter = counter + 1;
@@ -262,6 +289,14 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 				}
 				
 				list[i].counter = (i+1);
+				list[i].delta = (list[i].value - this._Average);
+				
+				if(list[i].delta > 0 && list[i].delta > this._maxDelta) {
+					this._maxDelta = list[i].delta;	
+				}
+				if(list[i].delta < 0 && (list[i].delta * -1) > this._maxDelta) {
+					this._maxDelta = (list[i].delta * -1);	
+				}
 				
 				newList.push(list[i]);
 				counter = counter + 1;
@@ -271,7 +306,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		return newList;
 	},
 	
-	createLeaderElement: function (index, iImageKey, iImageText, iImageUrl, value, valueAsString, counter) {
+	createLeaderElement: function (index, iImageKey, iImageText, iImageUrl, value, valueAsString, counter, delta) {
 		var that = this;
 		
 		// in case starts with http, keep as is 
@@ -312,8 +347,16 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 			height: "40px"
 		});
 		
-		var lSizeValueBackground = (225 - 120) * this._maxValue / this._maxValue;
-		var lSizeValue = (225 - 120) * value / this._maxValue;
+		if(this._maxDelta == 0) {
+			this._maxDelta = 1;
+		}
+		
+		if(delta < 0) {
+			delta = delta * -1;
+		}
+		
+		var lSizeValueBackground = (225 - 120) * this._maxDelta / this._maxDelta;
+		var lSizeValue = (225 - 120) * delta / this._maxDelta;
 		
 		var oValueLayout = new sap.ui.commons.layout.AbsoluteLayout ({
 			width: lSizeValue + "px",
