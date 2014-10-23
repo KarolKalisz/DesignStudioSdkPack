@@ -2,7 +2,7 @@
 <feature
       id="org.kalisz.karol.scn.sdk"
       label="Design Studio Karol&apos;s Components"
-      version="1.0.18.qualifier"
+      version="1.0.19.qualifier"
       provider-name="Karol Kalisz">
 
    <description url="https://github.com/KarolKalisz/DesignStudioSdkPack/blob/stable/README.md">
