@@ -125,28 +125,22 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 			);
 		}
 		
-		var lData = this._data;
-		var lMetadata = this._metadata;
-		
-		var lElementsToRenderArray = this._getElements(lData, lMetadata);
-
-		var lElementsToRenderArrayString = JSON.stringify(lElementsToRenderArray);
-		
 		var rerender = false;
-		var propertiesNow = "";
-		if(lElementsToRenderArrayString != this._lastElementsToRenderArrayString) {
-			this._lastElementsToRenderArrayString = lElementsToRenderArrayString;
-			rerender = true;
-		} else {
-			propertiesNow = this._serializeProperites("selectedKey;pressedKey");
-		}
+		var propertiesNow = this._serializeProperites("selectedKey;pressedKey");
 		
 		if(this._serializedPropertiesAfter != propertiesNow) {
 			this._serializedPropertiesAfter = propertiesNow;
 			rerender = true;
 		}
-		
+
 		if(rerender) {
+			this._oElements = {};
+
+			var lData = this._data;
+			var lMetadata = this._metadata;
+			
+			var lElementsToRenderArray = this._getElements(lData, lMetadata);
+			
 			// Destroy old content
 			this._lLayout.destroyContent();
 
@@ -744,8 +738,13 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		  }
 		}
 		
+		// size
 		serialization = serialization + "W->" + this.oComponentProperties.width;
-	
+		serialization = serialization + "H->" + this.oComponentProperties.height;
+		// data
+		serialization = serialization + "DATA->" + JSON.stringify(this._data);
+		serialization = serialization + "METADATA->" + JSON.stringify(this._metadata);
+
 		return serialization;
 	},
 

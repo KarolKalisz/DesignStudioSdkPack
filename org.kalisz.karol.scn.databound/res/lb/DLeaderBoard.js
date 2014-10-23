@@ -82,6 +82,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		var that = this;
 		this._ownScript = _readScriptPath();
 		
+		this._oElements = {};
+		
 		this.addStyleClass("scn-pack-DataLeaderBoard");
 	},
 	
@@ -101,37 +103,58 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 			);
 		}
 		
-		this._maxValue = undefined;
+		var rerender = false;
+		if(this._serializedPropertiesAfter != propertiesNow) {
+		  this._serializedPropertiesAfter = propertiesNow;
+		  rerender = true;
+		}
 		
-		var lData = this._data;
-		var lMetadata = this._metadata;
-		
-		var lElementsToRenderArray = this._getElements(lData, lMetadata);
+		if(rerender) {
+			this._oElements = {};
+			
+			this._maxValue = undefined;
+			
+			var lData = this._data;
+			var lMetadata = this._metadata;
+			
+			var lElementsToRenderArray = this._getElements(lData, lMetadata);
 
-		// Destroy old content
-		this._lLayout.destroyContent();
+			// Destroy old content
+			this._lLayout.destroyContent();
 
-		// find highest value
-		for (var i = 0; i < lElementsToRenderArray.length; i++) {
-			var element = lElementsToRenderArray[i];
-			if(this._maxValue == undefined) {
-				this._maxValue = element.value;
+			// find highest value
+			for (var i = 0; i < lElementsToRenderArray.length; i++) {
+				var element = lElementsToRenderArray[i];
+				if(this._maxValue == undefined) {
+					this._maxValue = element.value;
+				}
+				if(element.value > this._maxValue) {
+					this._maxValue = element.value;
+				}
 			}
-			if(element.value > this._maxValue) {
-				this._maxValue = element.value;
+			
+			if(this._maxValue == 0) {
+				this._maxValue = 1;
+			}
+			
+			// distribute content
+			for (var i = 0; i < lElementsToRenderArray.length; i++) {
+				var element = lElementsToRenderArray[i];
+				var lImageElement = this.createLeaderElement(i, element.key, element.text, element.url, element.value, element.valueS);
+				this._lLayout.addContent(lImageElement);
+			}
+		} else {
+			for (lElementKey in this._oElements) {
+				var lElement = this._oElements[lElementKey];
+				
+				if(this.getSelectedKey() == lElement.internalKey) {
+					lElement.addStyleClass("scn-pack-DataTopFlop-SelectedValue");
+				} else {
+					lElement.removeStyleClass("scn-pack-DataTopFlop-SelectedValue");
+				}
 			}
 		}
-		
-		if(this._maxValue == 0) {
-			this._maxValue = 1;
-		}
-		
-		// distribute content
-		for (var i = 0; i < lElementsToRenderArray.length; i++) {
-			var element = lElementsToRenderArray[i];
-			var lImageElement = this.createLeaderElement(i, element.key, element.text, element.url, element.value, element.valueS);
-			this._lLayout.addContent(lImageElement);
-		}
+
 	},
 	
 	_getElements : function (data, metadata) {
@@ -387,7 +410,26 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		
 		var valueFormatted = sap.common.globalization.NumericFormatManager.format(value, strFormat);
 		return valueFormatted;
-	}
+	},
+	
+	_serializeProperites : function (excluding){
+		var props = this.oComponentProperties.content.control;
+
+		if(excluding == undefined) {
+			excluding = "";
+		}
+
+		var serialization = "";
+		for (var key in props) {
+		  if (props.hasOwnProperty(key) && excluding.indexOf(key) == -1) {
+			  serialization = serialization + key + "->" + props[key] + ";";
+		  }
+		}
+		
+		serialization = serialization + "W->" + this.oComponentProperties.width;
+	
+		return serialization;
+	},
 
 });
 })();
