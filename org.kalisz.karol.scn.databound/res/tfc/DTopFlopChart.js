@@ -731,7 +731,6 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 	},
 	
 	_serializeProperites : function (excluding){
-		var k = 0;
 		var props = this.oComponentProperties.content.control;
 
 		if(excluding == undefined) {
@@ -745,7 +744,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		  }
 		}
 		
-		serialization = serialization + "W->" + this._width;
+		serialization = serialization + "W->" + this.oComponentProperties.width;
 	
 		return serialization;
 	},
