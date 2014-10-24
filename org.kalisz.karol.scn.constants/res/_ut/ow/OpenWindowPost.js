@@ -23,12 +23,17 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.kalisz.karol.scn.constants.Ope
         properties: {
               "url": {type: "string"},
               "trigger": {type: "string"},
-              "parameters": {type: "string"}
+              "parameters": {type: "string"},
+              "formId": {type: "string"},
+              "fallbackSencario": {type: "string"},
         }
 	},
 
 	initDesignStudio: function() {
 		var that = this;
+		
+		this._oWindows = {};
+		this._oCounter = 0;
 	},
 	
 	renderer: {},
@@ -37,14 +42,32 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.kalisz.karol.scn.constants.Ope
 		
 		var lParameters = this.getParameters();
 		
+		var formId = this.getFormId();
+
 		if(this.getUrl() != "" && this.getTrigger() == "GO") {
 			
-			var newWindow = window.open(this.getUrl(), "Post Call");
+			if(this._oWindows[formId]) {
+				// exists already...
+				
+				var fallbackSencario = this.getFallbackSencario();
+				
+				if(fallbackSencario == "New Window") {
+					formId = formId + this._oCounter;
+					this._oCounter = this._oCounter + 1;
+				} else if(fallbackSencario == "Close and Reopen") {
+					this._oWindows[formId].close();
+				}
+			}
+
+			var newWindow = window.open(this.getUrl(), formId);
 			
 			if (!newWindow) return false;
 			
+			this._oWindows[formId] = newWindow;
+			
 			var html = "";
-			html += "<html><head></head><body><form id='formid' method='post' action='" + this.getUrl() +"'>";
+			
+			html += "<html><head></head><body><form id='"+formId+"' method='post' action='" + this.getUrl() +"'>";
 			
 			
 			// read local created new Notifications
@@ -56,7 +79,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend ("org.kalisz.karol.scn.constants.Ope
 				}
 			}
 			
-			html += "</form><script type='text/javascript'>document.getElementById(\"formid\").submit()</sc"+"ript></body></html>";
+			html += "</form><script type='text/javascript'>document.getElementById(\""+formId+"\").submit()</sc"+"ript></body></html>";
 
 			newWindow.document.write(html);
 		}

@@ -206,11 +206,28 @@
 			visible="true" />
 
 		<property 
+			id="formId" 
+			type="String" 
+			title="Form Id for the Open by Post Form and Window" 
+			group="Display" 
+			visible="true" />
+
+		<property 
 			id="trigger" 
 			type="String" 
 			title="Just as Simple Triger" 
 			group="Display" 
 			visible="false" />
+
+		<property 
+			id="fallbackSencario" 
+			type="String" 
+			title="Fallback if Window already Open" 
+			group="Display" 
+			visible="true">
+			<possibleValue>Close and Reopen</possibleValue>
+			<possibleValue>New Window</possibleValue>
+		</property>
 
 		<property 
 			id="parameters" 
@@ -228,7 +245,8 @@
 				<defaultValue property="BOTTOM_MARGIN">auto</defaultValue>
 
 				<defaultValue property="items"></defaultValue>
-				
+				<defaultValue property="formId">OpenWindow</defaultValue>
+				<defaultValue property="fallbackSencario">Close and Reopen</defaultValue>
 		</initialization>
 
 		</component>

@@ -204,10 +204,26 @@ class org_scn_pack_SortDirection extends Enum {
 class org.kalisz.karol.scn.constants.OpenWindowPost extends Component {
 	
 	/**
-	 * Set URL (will be deleted once triggered)
+	 * Trigger Execution of the given URL and parameter list
 	 */
 	void triggerExecution () {*
 		this.trigger = "GO";
+	*}
+	
+	/**
+	 * Set URL 
+	 */
+	void setUrl (
+			/**url*/String url) {*
+		this.url = url;
+	*}
+	
+	/**
+	 * Set Window Id 
+	 */
+	void setWindowId (
+			/**window id*/String windowId) {*
+		this.formId = windowId;
 	*}
 
 	/** 

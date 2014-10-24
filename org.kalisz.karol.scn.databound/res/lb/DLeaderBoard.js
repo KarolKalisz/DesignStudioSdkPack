@@ -103,6 +103,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 			);
 		}
 		
+		var propertiesNow = this._serializeProperites("selectedKey;pressedKey");
+
 		var rerender = false;
 		if(this._serializedPropertiesAfter != propertiesNow) {
 		  this._serializedPropertiesAfter = propertiesNow;
@@ -426,7 +428,12 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 		  }
 		}
 		
+		// size
 		serialization = serialization + "W->" + this.oComponentProperties.width;
+		serialization = serialization + "H->" + this.oComponentProperties.height;
+		// data
+		serialization = serialization + "DATA->" + JSON.stringify(this._data);
+		serialization = serialization + "METADATA->" + JSON.stringify(this._metadata);
 	
 		return serialization;
 	},
