@@ -79,3 +79,24 @@ class org.kalisz.karol.scn.databound.DataTopFlopChart extends Component {
 		return this.pressedKey;	
 	*}
 }
+
+/**
+ * Class for DataLeaderBoard
+ */
+class org.kalisz.karol.scn.databound.DataMap extends Component {
+
+	/** returns the selected key */
+	String getSelectedKey () {*
+		return this.selectedKey;	
+	*}
+	
+	/** sets the selected key */
+	String setSelectedKey (String key) {*
+		this.selectedKey = key;	
+	*}
+
+	/** returns the pressed key */
+	String getPressedKey () {*
+		return this.pressedKey;	
+	*}
+}

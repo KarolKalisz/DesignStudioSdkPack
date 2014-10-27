@@ -98,6 +98,10 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 		}
 		
 		for (lElementKey in this._oElements) {
+			if(lElementKey.indexOf("-SUB") > -1) {
+				continue;
+			}
+			
 			var lElement = this._oElements[lElementKey];
 			if(lElement._Placed != true) {
 				var parentKey = lElement._ParentKey;
@@ -105,7 +109,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 				if(parentKey == "ROOT") {
 					this._addRoot(lElement);
 				} else {
-					var parentElement = this._oElements[parentKey];
+					var parentElement = this._oElements[parentKey + "-SUB"];
 					if(parentElement != undefined) {
 						this._addChild(parentElement, lElement);
 					}
@@ -116,8 +120,6 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 				// need to code update?
 			}
 		}
-		
-		this._cleanUpAfterUpdate();
 	},
 	
 
@@ -129,34 +131,15 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 		
 		this._oMenuBar = new sap.ui.commons.MenuBar();
 		
-		that._oMenuBar.attachSectionOpen(function(oControlEvent, oControl) {
-			var lElementId = oControlEvent.getParameters().openSectionId;
-			lElementId = lElementId.replace(that.getId() + "-sec-", "");
-			
-			var lElement = that._oElements[lElementId];
-			
-			if(that.getExpandedKey() != lElement._Key) {
-				that.setExpandedKey(lElement._Key);
-				that._lastExpanded = that.getExpandedKey();
-
-				that.fireDesignStudioPropertiesChanged(["expandedKey"]);
-			}
-			
-			if(lElement._childrenRequested == undefined) {
-				lElement._childrenRequested = true;
-
-				that.fireDesignStudioEvent("onFirstExpand");
-			}
-		});
-		
+				
 		this.onAfterRendering = function () {
 			if(that._oMenuBarPlaced != true) {
 				var jqThis = that.$();
 				
-				that._containerWidth = (jqThis.outerWidth(true) - 6) + "px";
+				that._containerWidth = (jqThis.outerWidth(true)) + "px";
 				that._containerHeight = jqThis.outerHeight(true) + "px";
 
-				this.addContent(
+				that.addContent(
 						this._oMenuBar,
 						{left: "0px", top: "0px"}
 				);
@@ -164,8 +147,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 				this._oMenuBar.setWidth(that._containerWidth);
 				
 				that._oMenuBarPlaced = true;
-			}
-		}
+			};
+		};
 	},
 	
 	/**
@@ -187,50 +170,14 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 	 * Specific Function for Adding Root Elements
 	 */
 	_addRoot : function(iElement) {
-		this._oMenuBar.addSection(iElement);
+		this._oMenuBar.addItem(iElement);
 	},
 	
 	/**
 	 * Specific Function for Adding Child Elements
 	 */
 	_addChild : function(iParent, iElement) {
-		iParent.addContent(iElement);
-	},
-	
-	/**
-	 * Specific Function for CleanUp (if required)
-	 */
-	_cleanUpAfterUpdate : function () {
-		// clean up "loading" element
-		for (lElementKey in this._oElements) {
-			var lElement = this._oElements[lElementKey];
-			if(lElement._childrenRequested) {
-				var elements = lElement.getContent();
-				lElement.removeContent(elements[0]);
-				elements[0].destroy();
-				
-				lElement._childrenRequested = false;
-			}
-		}
-		
-		// make once
-		if(this.getExpandedKey() != this._lastExpanded) {
-			var lElement = this._oElements[this.getExpandedKey()];
-			if(lElement) {
-				if(lElement._childrenRequested == undefined) {
-					var elements = lElement.getContent();
-					lElement.removeContent(elements[0]);
-					elements[0].destroy();
-					
-					lElement._childrenRequested = false;
-				}
-				
-				lElement.setCollapsed(false);
-				this._oMenuBar.setOpenedSectionsId(this.getExpandedKey());	
-			}
-		}
-		
-		this._lastExpanded = this.getExpandedKey();
+		iParent.addItem(iElement);
 	},
 
 	_createElement: function (index, iElementKey, iElementText, iImageUrl, iParentKey, isLeaf) {
@@ -249,7 +196,11 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 		var lElement = undefined;
 		
 		if(isLeaf){
-			lElement = this._creatLabelElement(iElementKey, iElementText, iImageUrl);
+			lElement = new sap.ui.unified.MenuItem({
+					id: this.getId() + "-sec-" +  iElementKey,
+					text: iElementText,
+					icon: iImageUrl
+				});
 		} else {
 			lElement = new sap.ui.unified.MenuItem({
 					id: this.getId() + "-sec-" +  iElementKey,
@@ -262,116 +213,26 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 		lElement._ParentKey = iParentKey;
 		
 		if(!isLeaf) {
-			var oLoadingElement = new sap.ui.unified.MenuItem( 
-					{text: "loading..."});
+			var oSubMenu = new sap.ui.commons.Menu({
+				id: this.getId() + "-sub-" +  iElementKey
+			});
+			lElement.setSubmenu(oSubMenu);
 			
-			lElement.addContent(oLoadingElement);
+			this._oElements[iElementKey + "-SUB"] = oSubMenu;
 		} else {
 			
 		}
+
+		var handleSelect = function(oEvent){
+			that.setSelectedKey(lElement._Key);
+			
+			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
+			that.fireDesignStudioEvent("onSelectionChanged");
+		};
+
+		lElement.attachSelect(handleSelect);
 		
 		return lElement;
-	},
-	
-	_creatLabelElement: function (iKey, iText, iImageUrl) {
-		var that = this;
-
-		var imageSize = this.getImageSize();
-		var withImage = this.getWithImage();
-
-		var height = "20px";
-		var topImage = "5px";
-
-		var topText = "1px";
-		var leftText = "5px";
-		
-		if(withImage && imageSize.indexOf("32") > -1) {
-			// for 32px
-			height = "40px";
-			topText = "11px";
-			leftText = "42px";
-		} else if(withImage) {
-			// for 16px
-			leftText = "26px";
-			topImage = "2px";
-		} 
-
-		var oLayout = new sap.ui.commons.layout.AbsoluteLayout ({
-			height: height
-		});
-		
-		oLayout.addStyleClass("scn-pack-MenuBar-Layout");
-		oLayout._Key = iKey;
-
-		var oImage = new sap.ui.commons.Image ({
-			src : iImageUrl,
-			width : imageSize,
-			height : imageSize,
-			alt : iText,
-			tooltip : iText,
-		});
-
-		if(withImage) {
-			oImage.addStyleClass("scn-pack-MenuBar-Image");
-			oImage._Key = iKey;
-		
-			oLayout.addContent(
-					oImage,
-					{left: "4px", top: topImage}
-			);
-		}
-
-		var oLabel = new sap.ui.commons.Label({
-			text: iText
-		});
-		
-		oLayout.addStyleClass("scn-pack-MenuBar-Label");
-		oLayout._Key = iKey;
-		
-		oLayout.addContent(
-				oLabel,
-				{left: leftText, top: topText}
-		);
-		
-		if(withImage) {
-			if(this.getSelectedKey() == iKey) {
-				oLayout.addStyleClass("scn-pack-MenuBar-SelectedValue");
-			}
-			
-			oImage.setSrc(iImageUrl);
-		}
-
-		oLayout.attachBrowserEvent('click', function () {
-			if(that.getSelectedKey() != oLayout._Key) {
-				that.setSelectedKey(oLayout._Key);
-				that._updateSelection(oLayout._Key);
-				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
-			}
-		});
-		
-		oImage.attachBrowserEvent('click', function () {
-			if(that.getSelectedKey() != oLayout._Key) {
-				that.setSelectedKey(oLayout._Key);
-				that._updateSelection(oLayout._Key);
-				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
-			}
-		});
-		
-		oLabel.attachBrowserEvent('click', function () {
-			if(that.getSelectedKey() != oLayout._Key) {
-				that.setSelectedKey(oLayout._Key);
-				that._updateSelection(oLayout._Key);
-				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioEvent("onSelectionChanged");
-			}
-		});
-
-		return oLayout;
 	},
 	
 	_updateSelection : function (iSelectedKey) {
