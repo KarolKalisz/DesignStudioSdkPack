@@ -324,7 +324,7 @@
 		
 		<stdInclude kind="cvom"/>
 		
-		<jsInclude>res/tf/DTopFLop.js</jsInclude>
+		<jsInclude>res/tf/DTopFlop.js</jsInclude>
 		<cssInclude>res/tf/DTopFlop.css</cssInclude>
 		
 		<property

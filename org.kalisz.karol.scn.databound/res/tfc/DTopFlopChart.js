@@ -218,7 +218,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 	_getElements : function (data, metadata) {
 		var list = [];
 		
-		if(data == undefined) {
+		if(!data || data == "" || data == undefined) {
 			return list;
 		}
 		
@@ -689,6 +689,10 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.databound.Data
 	},
 	
 	_fFormatNumber : function (value) {
+		if(!this._metadata) {
+			return value;
+		}
+		
 		sap.common.globalization.NumericFormatManager.setPVL(this._metadata.locale);
 		var strFormat = "#"+sap.common.globalization.NumericFormatManager.getThousandSeparator()+"##0";
 		
