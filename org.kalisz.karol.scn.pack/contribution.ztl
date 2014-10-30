@@ -1054,6 +1054,58 @@ class org.kalisz.karol.scn.pack.Array extends Component {
 	*}
 
 	/**
+	Returns the array content as loopable array. The element is directly containing the string value.
+	Pro: compatible to the API in other scripts where object "StringArray" is expected.
+	<example>
+	You want to loop at the "k1;k2;k3" array:
+	<code>
+	var content = ARRAY_1.getValuesAsSimpleStringArray();<br>
+	<br>
+	// a loop for all values<br>
+	content.forEach(function(element, index) {<br>
+		LISTBOX_1.addItem(""+ index, element + "( " + index + " )");<br>
+	});
+	</code>
+	This LISTBOX_1 has now following values entries:<br>
+		<ul><li>key: 0; value: k1 ( 0 )</li>
+		<<li>key: 1; value: k2 ( 1 )</li>
+		<li>key: 2; value: k3 ( 2 )</li></ul>
+	</example>
+	
+	<example>
+	You want to pass the content of the array directly to chart selection.
+	<code>
+	var valuesAsArray = ARRAY_1.getValuesAsSimpleStringArray();<br>
+	CHART_1.setDataSelection( {<br>
+ 		"<your dimension>": valuesAsArray<br>
+	});<br>
+	</code>
+	This CHART will get the corresponding selection<br>
+	</example>
+	*/
+	StringArray getValuesAsSimpleStringArray (
+			/**max members*/ optional int maxMembers) {*
+		var s = this.items;  
+		var items = JSON.parse(s);
+		
+		var a = [];
+		
+		// APPLICATION.createInfoMessage("Max: " + maxMembers); // debug
+		
+		if(maxMembers == undefined || maxMembers <= 0) {
+			maxMembers = items.length;
+		}
+		
+		for(var i=0;i<maxMembers;i++){
+			var itemDef = items[i].value;
+			
+			a.push(itemDef);
+		}
+		
+		return a;
+	*}
+	
+	/**
 	Generates an array of integers for use in BIAL forEach statement in order to emulate a traditional for loop.
 	<example>
 	Fill a list box with 10 values:

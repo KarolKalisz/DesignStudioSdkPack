@@ -691,4 +691,71 @@
 
 		</component>
 
+  <component
+		id="DataSlider"
+		title="Data Slider"
+		icon="res/sl/DSlider.png"
+		handlerType="sapui5"
+		group="KarolsDataBoundComponents"
+		databound="true">
+		
+		<stdInclude kind="cvom"/>
+		
+		<jsInclude>res/_ut/DataUtils.js</jsInclude>
+		<jsInclude>res/sl/DSlider.js</jsInclude>
+		<cssInclude>res/sl/DSlider.css</cssInclude>
+		
+		<property
+			id="data"
+			title="Data List"
+			type="ResultCellList"
+			group="DataBinding">
+    </property>
+
+		<property
+			id="maxNumber"
+			title="Maximum Number"
+			type="int"
+			group="Display"/>
+
+		<property
+			id="topBottom"
+			title="Top X, Bottom X or Both"
+			type="String"
+			group="Display">
+			<possibleValue>Top X</possibleValue>
+			<possibleValue>Bottom X</possibleValue>
+			<possibleValue>Both</possibleValue>
+		</property>
+		
+		<property
+			id="vertical"
+			title="Change to Vertical Orientation"
+			type="boolean"/>
+
+		<property 
+			id="selectedKey" 
+			type="String" 
+			title="Technical proprty for Selected Key" 
+			group="Display" 
+			visible="false"/>
+		
+		<property 
+			id="onSelectionChanged" 
+			type="ScriptText" 
+			title="Event for On Selection Changed" 
+			group="Events" />
+	
+		<initialization>
+			<defaultValue property="WIDTH">60</defaultValue>
+			<defaultValue property="HEIGHT">600</defaultValue>
+			
+			<defaultValue property="topBottom">Both</defaultValue>
+			<defaultValue property="maxNumber">3</defaultValue>
+			<defaultValue property="vertical">false</defaultValue>
+			
+		</initialization>
+
+		</component>
+		
 </sdkExtension>
