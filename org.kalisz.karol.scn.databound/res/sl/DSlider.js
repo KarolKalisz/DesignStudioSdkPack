@@ -42,6 +42,8 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
               "maxNumber": {type: "int"},
               "topBottom": {type: "string"},
               "selectedKey": {type: "string"},
+              "selectedText": {type: "string"},
+              "doRefresh": {type: "boolean"},
         }
 	},
 	
@@ -52,25 +54,28 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 			var value = that.getValue();
 			
 			var key = that._lLabelKeys[value];
+			var text = that._lLabels[value];
 			
 			var updateRequired = false;
 			if(that._SavedKey == undefined) {
 				that._SavedKey = key;
 				updateRequired = true;
-			}
+			};
 			
 			if(!updateRequired && that._SavedKey != key) {
 				updateRequired = true;
-			}
+			};
 
 			if(updateRequired) {
 				that._SavedKey = key;
 				
 				that.setSelectedKey(key);
+				that.setSelectedText(text);
 				
 				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
+				that.fireDesignStudioPropertiesChanged(["selectedText"]);
 				that.fireDesignStudioEvent("onSelectionChanged");
-			}
+			};
 		});
 		
 		this.addStyleClass("scn-pack-DataSlider-NO-UiSliHiLi");
@@ -82,41 +87,45 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 		var lData = this._data;
 		var lMetadata = this._metadata;
 		
-		var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements (lData, lMetadata, this.getMaxNumber(), this.getTopBottom());
-		
-		this._lLabels = []; 
-		this._lLabelKeys = [];
-		
-		this._lLabels.push("Not Selected");
-		this._lLabelKeys.push("-N/A-");
-		
-		for (var i = 0; i < lElementsToRenderArray.length; i++) {
-			var element = lElementsToRenderArray[i];
+		if(this.getDoRefresh()){
+			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements (lData, lMetadata, this.getMaxNumber(), this.getTopBottom());
 			
-			this._lLabels.push(element.text);
-			this._lLabelKeys.push(element.key);
+			this._lLabels = []; 
+			this._lLabelKeys = [];
+			
+			this._lLabels.push("Not Selected");
+			this._lLabelKeys.push("-N/A-");
+
+			for (var i = 0; i < lElementsToRenderArray.length; i++) {
+				var element = lElementsToRenderArray[i];
+				
+				this._lLabels.push(element.text);
+				this._lLabelKeys.push(element.key);
+			};
+			
+			
+			this.setMin(0);
+			this.setMax(this._lLabels.length - 1);
+
+			this.setTotalUnits(this._lLabels.length - 1);
+			
+			this.setSmallStepWidth(1);
+			this.setStepLabels(true);
+			
+			this.setLabels(this._lLabels);
 		};
 		
-		this.setMin(0);
-		this.setMax(this._lLabels.length - 1);
 		
 		if(this.getSelectedKey() != "") {
 			for (var i = 0; i < this._lLabelKeys.length; i++) {
 				if(this._lLabelKeys[i] == this.getSelectedKey()) {
 					this.setValue(i);
 					break;
-				}
-			}
+				};
+			};
 		} else {
 			this.setValue(0);	
-		}
-		
-		this.setTotalUnits(this._lLabels.length - 1);
-		
-		this.setSmallStepWidth(1);
-		this.setStepLabels(true);
-		
-		this.setLabels(this._lLabels);
+		};
 	},
 		
 });

@@ -734,12 +734,26 @@
 			type="boolean"/>
 
 		<property 
+			id="doRefresh" 
+			type="boolean" 
+			title="Technical proprty for pause refresh" 
+			group="Display" 
+			visible="false"/>
+		
+		<property 
 			id="selectedKey" 
 			type="String" 
 			title="Technical proprty for Selected Key" 
 			group="Display" 
 			visible="false"/>
-		
+
+		<property 
+			id="selectedText" 
+			type="String" 
+			title="Technical proprty for Selected Text" 
+			group="Display" 
+			visible="false"/>			
+
 		<property 
 			id="onSelectionChanged" 
 			type="ScriptText" 
@@ -753,6 +767,7 @@
 			<defaultValue property="topBottom">Both</defaultValue>
 			<defaultValue property="maxNumber">3</defaultValue>
 			<defaultValue property="vertical">false</defaultValue>
+			<defaultValue property="doRefresh">true</defaultValue>
 			
 		</initialization>
 

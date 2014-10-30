@@ -94,4 +94,24 @@ class org.kalisz.karol.scn.databound.DataSlider extends Component {
 	String setSelectedKey (String key) {*
 		this.selectedKey = key;	
 	*}
+	
+	/** returns the selected text */
+	String getSelectedText () {*
+		return this.selectedText;	
+	*}
+	
+	/** sets the selected text */
+	String setSelectedText (String text) {*
+		this.selectedText = text;	
+	*}
+	
+	/** sets the pause refresh flag */
+	String pauseRefresh () {*
+		this.doRefresh = false;	
+	*}
+
+	/** sets the pause refresh flag */
+	String allowRefresh () {*
+		this.doRefresh = true;	
+	*}
 }

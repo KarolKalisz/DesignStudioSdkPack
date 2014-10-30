@@ -38,10 +38,11 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 	var dimesnsionEndIndex = -1;
 
 	// column or row (more rows as columns, means a column)
-	var isAColumn = (data.rowCount > data.columnCount);
+	// 1.3 release does not bring rowCount and columnCount...
+	var isARow = (data.rowCount && data.columnCount && data.rowCount < data.columnCount);
 	
-	if (isAColumn) {
-		// search for the last dimension
+	if (!isARow) {
+		// search for the last dimension in rows
 		for (var i = 0; i < metadata.dimensions.length; i++) {
 			var dimension = metadata.dimensions[i];
 
