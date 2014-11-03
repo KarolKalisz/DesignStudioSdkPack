@@ -24,7 +24,7 @@
  */
 var org_kalisz_karol_scn_pack = {};
 
-org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxNumber, iTopBottom) {
+org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates) {
 	var list = [];
 	
 	if(!data || data == "" || data == undefined) {
@@ -67,6 +67,8 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 		}
 	}
 	
+	var allKeys = "" + "|";
+	
 	for (var i = 0; i < data.data.length; i++) {
 		var tupel = data.tuples[i]; 
 		var isResult = metadata.dimensions[dimesnsionEndIndex].members[tupel[dimesnsionEndIndex]].type == "RESULT";
@@ -79,6 +81,15 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 			if(text.indexOf("|") > -1) {
 				text = text.replace("|", " | ");
 			}
+			
+			if(iDuplicates=="Ignore Duplicates") {
+				if(allKeys.indexOf("|" + key + "|") > -1) {
+					// key already in the array...
+					continue;
+				}
+			} 
+			
+			allKeys = allKeys + key + "|";
 			
 			var value = data.data[i];
 
@@ -96,7 +107,9 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 		}
 	}
 	
-	list.sort(function(a,b) { return parseFloat(b.value) - parseFloat(a.value); } );
+	if(iSortBy!="Default") {
+		list.sort(function(a,b) { return parseFloat(b.value) - parseFloat(a.value); } );
+	}
 
 	var lAverage = 0;
 	for (var i = 0; i < lValues.length; i++) {
@@ -127,8 +140,10 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 				this._maxDelta = (list[i].delta * -1);	
 			}
 			
-			if(list[i].delta < 0) {
-				break;
+			if(iSortBy!="Default") { // break criteria only for sorted lists
+				if(list[i].delta < 0) {
+					break;
+				}
 			}
 			
 			newList.push(list[i]);
@@ -156,8 +171,10 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 				this._maxDelta = (list[i].delta * -1);	
 			}
 			
-			if(list[i].delta > 0) {
-				continue;
+			if(iSortBy!="Default") { // break criteria only for sorted lists
+				if(list[i].delta > 0) {
+					continue;
+				}
 			}
 			
 			newList.push(list[i]);
@@ -179,8 +196,10 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 				this._maxDelta = (list[i].delta * -1);	
 			}
 
-			if(list[i].delta < 0) {
-				break;
+			if(iSortBy!="Default") { // break criteria only for sorted lists
+				if(list[i].delta < 0) {
+					break;
+				}
 			}
 			
 			newList.push(list[i]);
@@ -212,9 +231,11 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 			if(list[i].delta < 0 && (list[i].delta * -1) > this._maxDelta) {
 				this._maxDelta = (list[i].delta * -1);	
 			}
-			
-			if(list[i].delta > 0) {
-				continue;
+
+			if(iSortBy!="Default") { // break criteria only for sorted lists
+				if(list[i].delta > 0) {
+					continue;
+				}
 			}
 			
 			newList.push(list[i]);

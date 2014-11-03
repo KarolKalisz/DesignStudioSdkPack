@@ -17,8 +17,8 @@
  * limitations under the License. 
  */
 
-sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
-	
+sap.ui.commons.RangeSlider.extend("org.kalisz.karol.scn.databound.DataRangeSlider", {
+
 	setData : function(value) {
 		this._data = value;
 		return this;
@@ -44,10 +44,13 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
               "sorting": {type: "string"},
               "selectedKey": {type: "string"},
               "selectedText": {type: "string"},
+              "selectedKey2": {type: "string"},
+              "selectedText2": {type: "string"},
+              "selectedKeys": {type: "string"},
               "doRefresh": {type: "boolean"},
         }
 	},
-	
+
 	initDesignStudio: function() {
 		var that = this;
 		
@@ -57,29 +60,51 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 			var key = that._lLabelKeys[value];
 			var text = that._lLabels[value];
 			
-			var updateRequired = false;
-			if(that._SavedKey == undefined) {
-				that._SavedKey = key;
-				updateRequired = true;
-			};
+			var value2 = that.getValue2();
 			
-			if(!updateRequired && that._SavedKey != key) {
+			var key2 = that._lLabelKeys[value2];
+			var text2 = that._lLabels[value2];
+			
+			var updateRequired = false;
+			
+			if(that._SavedKey == undefined) {
+				that._SavedValue = value;
 				updateRequired = true;
-			};
+			}
+			
+			if(that._SavedValue2 == undefined) {
+				that._SavedKey2 = value2;
+				updateRequired = true;
+			}
+			
+			if(!updateRequired && (that._SavedKey != key || that._SavedKey2 != key2)) {
+				updateRequired = true;
+			}
 
 			if(updateRequired) {
+				var selectedKeys = "";
+				for (var i = value; i <= value2; i++) {
+					var onekey = that._lLabelKeys[i];
+					selectedKeys = selectedKeys + ";" + onekey;
+				}
+				
+				selectedKeys = selectedKeys.substring(1);
+				
 				that._SavedKey = key;
+				that._SavedKey2 = key2;
 				
 				that.setSelectedKey(key);
 				that.setSelectedText(text);
+				that.setSelectedKey2(key2);
+				that.setSelectedText2(text2);
 				
-				that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-				that.fireDesignStudioPropertiesChanged(["selectedText"]);
+				that.setSelectedKeys(selectedKeys);
+				
+				that.fireDesignStudioPropertiesChanged(["selectedKeys", "selectedKey", "selectedText", "selectedKey2", "selectedText2"]);
+
 				that.fireDesignStudioEvent("onSelectionChanged");
-			};
+			}
 		});
-		
-		this.addStyleClass("scn-pack-DataSlider-NO-UiSliHiLi");
 	},
 	
 	renderer: {},
@@ -89,13 +114,13 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 		var lMetadata = this._metadata;
 		
 		if(this.getDoRefresh()){
-			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements (lData, lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "KEEP");
+			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements (lData, lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "IGNORE");
 			
 			this._lLabels = []; 
 			this._lLabelKeys = [];
 			
 			this._lLabels.push("Not Selected");
-			this._lLabelKeys.push("-N/A-");
+			this._lLabelKeys.push("-N/A-1");
 
 			for (var i = 0; i < lElementsToRenderArray.length; i++) {
 				var element = lElementsToRenderArray[i];
@@ -104,7 +129,9 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 				this._lLabelKeys.push(element.key);
 			};
 			
-			
+			this._lLabels.push("Not Selected");
+			this._lLabelKeys.push("-N/A-2");
+
 			this.setMin(0);
 			this.setMax(this._lLabels.length - 1);
 
@@ -125,8 +152,17 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 				};
 			};
 		} else {
-			this.setValue(0);	
+			this.setValue(0);
+		};
+		if(this.getSelectedKey2() != "") {
+			for (var i = 0; i < this._lLabelKeys.length; i++) {
+				if(this._lLabelKeys[i] == this.getSelectedKey2()) {
+					this.setValue2(i);
+					break;
+				};
+			};
+		} else {
+			this.setValue2(this._lLabelKeys.length);
 		};
 	},
-		
 });
