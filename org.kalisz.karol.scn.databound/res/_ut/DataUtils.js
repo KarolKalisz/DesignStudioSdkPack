@@ -22,7 +22,7 @@
  * iMaxNumber - integer, > 0
  * iTopBottom - string, "Top X" | "Bottom X" | "Both"
  */
-var org_kalisz_karol_scn_pack = {};
+var org_kalisz_karol_scn_pack = org_kalisz_karol_scn_pack || {};
 
 org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates) {
 	var list = [];

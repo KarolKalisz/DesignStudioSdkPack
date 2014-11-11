@@ -265,7 +265,7 @@ class org.kalisz.karol.scn.pack.ImageCarousel extends Component {
 	*}
 	
 	/** sets the selected key */
-	String setSelectedKey (String key) {*
+	void setSelectedKey (String key) {*
 		this.selectedKey = key;	
 	*}
 }
@@ -281,7 +281,7 @@ class org.kalisz.karol.scn.pack.BasicBusinessCard extends Component {
 	*}
 	
 	/** sets the image url */
-	String setImage (String imageUrl) {*
+	void setImage (String imageUrl) {*
 		this.image = imageUrl;	
 	*}
 
@@ -291,7 +291,7 @@ class org.kalisz.karol.scn.pack.BasicBusinessCard extends Component {
 	*}
 	
 	/** sets the name */
-	String setName (String name) {*
+	void setName (String name) {*
 		this.name = name;	
 	*}
 
@@ -301,7 +301,7 @@ class org.kalisz.karol.scn.pack.BasicBusinessCard extends Component {
 	*}
 	
 	/** sets the title */
-	String setTitle (String title) {*
+	void setTitle (String title) {*
 		this.title = title;	
 	*}
 }
@@ -427,7 +427,7 @@ class org.kalisz.karol.scn.pack.FishEye extends Component {
 	*}
 	
 	/** sets the selected key */
-	String setSelectedKey (String key) {*
+	void setSelectedKey (String key) {*
 		this.selectedKey = key;	
 	*}
 }
@@ -1720,7 +1720,7 @@ class org.kalisz.karol.scn.pack.LeaderBoard extends Component {
 	*}
 	
 	/** sets the selected key */
-	String setSelectedKey (String key) {*
+	void setSelectedKey (String key) {*
 		this.selectedKey = key;	
 	*}
 
@@ -2311,6 +2311,97 @@ class org.kalisz.karol.scn.pack.OSMap extends Component {
 			/**key which schould be moved to*/String key) {*
 		this.moveAction = this.moveAction + 1;
 		this.moveTo = key
+	*}
+	
+	/** returns the selected key */
+	String getSelectedKey () {*
+		return this.selectedKey;	
+	*}
+}
+
+/**
+ * Class for MenuButton
+ */
+class org.kalisz.karol.scn.pack.MenuButton extends Component {
+	
+	/** remove all elements */
+	void removeAllElements () {*		
+			var elementsArray = [];
+			this.elementsContent = JSON.stringify(elementsArray);
+			
+			this.cleanAll = true;
+	*}
+	
+	/** Adds an element containing Key, Text, Image Url, Parent Element and is Leaf information.
+	 * You need to specify a unique and existing parent element.
+	 * if Parent Element is set to "ROOT" then the element will be inserted as root element.  
+
+ 	<example>
+	You want to add 2 elements, second one is a child of first one
+	<code>
+	ACCORDION_1.addElement("KEY1", "First Element", "", "ROOT", true);<br>
+	ACCORDION_1.addElement("KEY2", "First Element Child", "", "KEY1", true);<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void addSubMenuItem (
+			/**Element Key (must be unique)*/String elementKey, 
+			/**Element text*/String elementText, 
+			/**Image URL, if not set, no image*/String imageUrl, 
+			/**The Key of the parent Element*/String parentElementKey, 
+			/**Leafs do not have expand option by default*/optional boolean isLeaf) {*		
+		
+		if(isLeaf == undefined) {
+			isLeaf = true;
+		}
+		
+		var itemDef = { 
+			"key": elementKey, 
+			"text": elementText, 
+			"url": imageUrl,
+			"parent": parentElementKey,
+			"leaf": isLeaf
+			};
+	
+		if (this.elementsContent === undefined || this.elementsContent === "" || this.elementsContent === "<delete>"){
+			this.elementsContent = "[]";
+		}
+		
+		var elementsJson = JSON.parse(this.elementsContent);
+		
+		var alreadyFound = false;
+		for (var i = 0; i < elementsJson.length ; i++){
+			if (elementsJson[i].key == elementKey) {
+				alreadyFound = true;
+				break;
+			}
+		}
+		
+		if(!alreadyFound) {
+			elementsJson.push(itemDef);
+		}
+	
+		this.elementsContent = JSON.stringify(elementsJson);
+	*}
+	
+	/** Adds a root element containing Key, Text, Image Url information.
+
+ 	<example>
+	You want to add 2 root elements, second one is a sibling of first one
+	<code>
+	ACCORDION_1.addSection("ROOT_KEY1", "First Root Element", "");<br>
+	ACCORDION_1.addSection("ROOT_KEY2", "Second Root Element", "");<br>
+	<br>
+	</code>
+	</example>
+	 */
+	void addMenuItem (
+			/**Element Key (must be unique)*/String elementKey, 
+			/**Element text*/String elementText, 
+			/**Image URL, if not set, no image*/String imageUrl) {*		
+		
+		this.addSubMenuItem(elementKey, elementText, imageUrl, "ROOT", false);
 	*}
 	
 	/** returns the selected key */

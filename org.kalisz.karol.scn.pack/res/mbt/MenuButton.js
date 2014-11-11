@@ -22,7 +22,7 @@
 var myScript = $("script:last")[0].src;
 _readScriptPath = function () {
 	if(myScript) {
-		var myScriptSuffix = "res/mb/";
+		var myScriptSuffix = "res/mbt/";
 		var mainScriptPathIndex = myScript.indexOf(myScriptSuffix);
  		var ownScriptPath = myScript.substring(0, mainScriptPathIndex) + myScriptSuffix;
  		return ownScriptPath;
@@ -32,7 +32,7 @@ _readScriptPath = function () {
 },
 /** end of path recognition */
 
-sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar", {
+sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuButton", {
 
 	setDefaultImage : function(value) {
 		this._DefaultImage = value;
@@ -48,6 +48,10 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 	
 	metadata: {
         properties: {
+        	  "text": {type: "string"},
+        	  "tooltip": {type: "string"},
+        	  "enabled": {type: "boolean"},
+        	  "icon": {type: "string"},
         	  "withImage": {type: "boolean"},
               "imageSize": {type: "string"},
               "selectedKey": {type: "string"},
@@ -61,7 +65,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 		var that = this;
 		this._ownScript = _readScriptPath();
 		
-		this.addStyleClass("scn-pack-MenuBar");
+		this.addStyleClass("scn-pack-MenuButton");
 		
 		this._oElements = {};
 		
@@ -76,6 +80,11 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 		if(that._oResize) {
 			that._oResize();	
 		}
+		
+		this._oMenuButton.setText(this.getText());
+		this._oMenuButton.setTooltip(this.getTooltip());
+		this._oMenuButton.setIcon(this.getIcon());
+		this._oMenuButton.setEnabled(this.getEnabled());
 		
 		if(this.getCleanAll()) {
 			this._destroyAll();
@@ -133,11 +142,46 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 	_initComponent : function() {
 		var that = this;
 		
-		this._oMenuBar = new sap.ui.commons.MenuBar();
+		this._oMenuButton = new sap.ui.commons.MenuButton();
 		
+		var handleSelect = function(oEvent){
+			var lElementKey = oEvent.getParameter("itemId");
+			// prepare the ID
+			lElementKey = lElementKey.replace(that.getId(), "");
+			lElementKey = lElementKey.replace("-sub-", "");
+			lElementKey = lElementKey.replace("-sec-", "");
+			
+			var lElement = that._oElements[lElementKey];
+			that.setSelectedKey(lElement._Key);
+			
+			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
+			that.fireDesignStudioEvent("onSelectionChanged");
+		};
+
+		this._oMenuButton.attachItemSelected(handleSelect);
+		
+//		var handlePress = function(oEvent){
+//			var lElementKey = oEvent.getParameter("itemId");
+//			// prepare the ID
+//			lElementKey = lElementKey.replace(that.getId(), "");
+//			lElementKey = lElementKey.replace("-sub-", "");
+//			lElementKey = lElementKey.replace("-sec-", "");
+//			
+//			var lElement = that._oElements[lElementKey];
+//			that.setPressedKey(lElement._Key);
+//			
+//			that.fireDesignStudioPropertiesChanged(["pressedKey"]);
+//			that.fireDesignStudioEvent("onPressed");
+//		};
+//
+//		this._oMenuButton.attachPress(handlePress);
+		
+		this._oMainMenu = new sap.ui.commons.Menu("menu", {ariaDescription: "", tooltip: ""});
+		this._oMenuButton.setMenu(this._oMainMenu);
+
 		// resize function
 		this.onAfterRendering = function() {
-			org_kalisz_karol_scn_pack.resizeContentAbsoluteLayout(that, this._oMenuBar);
+			org_kalisz_karol_scn_pack.resizeContentAbsoluteLayout(that, this._oMenuButton);
 		};
 	},
 	
@@ -150,8 +194,8 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 			lElement.destroy();
 		}
 		
-		this._oMenuBar.removeAllItems();
-		this._oMenuBar.destroyItems();
+		this._oMainMenu.removeAllItems();
+		this._oMainMenu.destroyItems();
 		
 		this._oElements = {};
 	},
@@ -160,7 +204,7 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 	 * Specific Function for Adding Root Elements
 	 */
 	_addRoot : function(iElement) {
-		this._oMenuBar.addItem(iElement);
+		this._oMainMenu.addItem(iElement);
 	},
 	
 	/**
@@ -207,20 +251,13 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 				id: this.getId() + "-sub-" +  iElementKey
 			});
 			lElement.setSubmenu(oSubMenu);
+
+			oSubMenu._lElement = lElement;
 			
 			this._oElements[iElementKey + "-SUB"] = oSubMenu;
 		} else {
 			
 		}
-
-		var handleSelect = function(oEvent){
-			that.setSelectedKey(lElement._Key);
-			
-			that.fireDesignStudioPropertiesChanged(["selectedKey"]);
-			that.fireDesignStudioEvent("onSelectionChanged");
-		};
-
-		lElement.attachSelect(handleSelect);
 		
 		return lElement;
 	},
@@ -230,9 +267,9 @@ sap.ui.commons.layout.AbsoluteLayout.extend("org.kalisz.karol.scn.pack.MenuBar",
 			var lElement = this._oElements[lElementKey];
 			if(lElement.addStyleClass) {
 				if(iSelectedKey == lElement._Key){
-					lElement.addStyleClass("scn-pack-MenuBar-SelectedValue");
+					lElement.addStyleClass("scn-pack-MenuButton-SelectedValue");
 				} else {
-					lElement.removeStyleClass("scn-pack-MenuBar-SelectedValue");
+					lElement.removeStyleClass("scn-pack-MenuButton-SelectedValue");
 				};
 			}
 		};
