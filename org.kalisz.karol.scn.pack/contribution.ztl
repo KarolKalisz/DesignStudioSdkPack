@@ -2337,10 +2337,10 @@ class org.kalisz.karol.scn.pack.MenuButton extends Component {
 	 * if Parent Element is set to "ROOT" then the element will be inserted as root element.  
 
  	<example>
-	You want to add 2 elements, second one is a child of first one
+	You want to add 2 items, second one is a child of first one
 	<code>
-	ACCORDION_1.addElement("KEY1", "First Element", "", "ROOT", true);<br>
-	ACCORDION_1.addElement("KEY2", "First Element Child", "", "KEY1", true);<br>
+	MENUBUTTON_1.addSubMenuItem("KEY1", "First Element", "", "ROOT", true);<br>
+	MENUBUTTON_1.addSubMenuItem("KEY2", "First Element Child", "", "KEY1", true);<br>
 	<br>
 	</code>
 	</example>
@@ -2390,8 +2390,8 @@ class org.kalisz.karol.scn.pack.MenuButton extends Component {
  	<example>
 	You want to add 2 root elements, second one is a sibling of first one
 	<code>
-	ACCORDION_1.addSection("ROOT_KEY1", "First Root Element", "");<br>
-	ACCORDION_1.addSection("ROOT_KEY2", "Second Root Element", "");<br>
+	MENUBUTTON_1.addMenuItem("ROOT_KEY1", "First Root Element", "");<br>
+	MENUBUTTON_1.addMenuItem("ROOT_KEY2", "Second Root Element", "");<br>
 	<br>
 	</code>
 	</example>

@@ -17,14 +17,58 @@
  * limitations under the License. 
  */
 
+var org_kalisz_karol_scn_pack = org_kalisz_karol_scn_pack || {};
+
+org_kalisz_karol_scn_pack.getTopBottomElementsForDimension = function (data, requestedDimensionKey, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates) {
+
+	var dimesnsionStartIndex = -1;
+	var dimesnsionEndIndex = -1;
+
+	// column or row (more rows as columns, means a column, vertical)
+	// 1.3 release does not bring rowCount and columnCount...
+	var isARow = (data.rowCount && data.columnCount && data.rowCount < data.columnCount);
+
+	for (var i = 0; i < metadata.dimensions.length; i++) {
+		var dimension = metadata.dimensions[i];
+
+		if(dimension.key == requestedDimensionKey) {
+			dimesnsionStartIndex = i;
+			dimesnsionEndIndex = i;
+
+			if(dimension.axis == "ROWS") {
+				isARow = false;
+			}
+			if(dimension.axis == "COLUMNS") {
+				isARow = true;
+			}
+			break;
+		}
+	}
+
+	// if dimension is not in the resultset, empty list back
+	if(dimesnsionStartIndex == -1) {
+		return [];
+	}
+	
+	return org_kalisz_karol_scn_pack.getTopBottomElementsByIndex (data, dimesnsionStartIndex, dimesnsionEndIndex, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates);
+};
+
 /**
  * Global Function for getting Top / Bottom from data
  * iMaxNumber - integer, > 0
  * iTopBottom - string, "Top X" | "Bottom X" | "Both"
+ * iSortBy - string, "Default" | <some other string>
+ * iDuplicates - string, "Ignore Duplicates" | <some other string>
  */
-var org_kalisz_karol_scn_pack = org_kalisz_karol_scn_pack || {};
-
 org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates) {
+
+	var dimesnsionStartIndex = -1;
+	var dimesnsionEndIndex = -1;
+
+	return org_kalisz_karol_scn_pack.getTopBottomElementsByIndex (data, dimesnsionStartIndex, dimesnsionEndIndex, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates);
+};
+
+org_kalisz_karol_scn_pack.getTopBottomElementsByIndex = function (data, dimesnsionStartIndex, dimesnsionEndIndex, metadata, iMaxNumber, iTopBottom, iSortBy, iDuplicates) {
 	var list = [];
 	
 	if(!data || data == "" || data == undefined) {
@@ -33,10 +77,6 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 	
 	var lValues = [];
 	
-	
-	var dimesnsionStartIndex = -1;
-	var dimesnsionEndIndex = -1;
-
 	// column or row (more rows as columns, means a column)
 	// 1.3 release does not bring rowCount and columnCount...
 	var isARow = (data.rowCount && data.columnCount && data.rowCount < data.columnCount);
@@ -50,7 +90,9 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 				if(dimesnsionStartIndex == -1) {
 					dimesnsionStartIndex = i;	
 				}
-				dimesnsionEndIndex = i;
+				if(dimesnsionEndIndex == -1) {
+					dimesnsionEndIndex = i;
+				}
 			}
 		}
 	} else {
@@ -62,7 +104,9 @@ org_kalisz_karol_scn_pack.getTopBottomElements = function (data, metadata, iMaxN
 				if(dimesnsionStartIndex == -1) {
 					dimesnsionStartIndex = i;	
 				}
-				dimesnsionEndIndex = i;
+				if(dimesnsionEndIndex == -1) {
+					dimesnsionEndIndex = i;
+				}
 			}
 		}
 	}

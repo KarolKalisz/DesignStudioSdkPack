@@ -85,11 +85,14 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 	renderer: {},
 		
 	afterDesignStudioUpdate: function() {
+		var that = this;
+		
 		var lData = this._data;
 		var lMetadata = this._metadata;
 		
 		if(this.getDoRefresh()){
-			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements (lData, lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "KEEP");
+			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements 
+			    (lData, lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "Ignore Duplicates");
 			
 			this._lLabels = []; 
 			this._lLabelKeys = [];
@@ -116,7 +119,18 @@ sap.ui.commons.Slider.extend("org.kalisz.karol.scn.databound.DataSlider", {
 			this.setLabels(this._lLabels);
 		};
 		
-		
+		if(this._oldContent == undefined || JSON.stringify(this._lLabels) != JSON.stringify(this._oldContent)) {
+			// if data has changed, remove always selected key!
+			this.setSelectedKey("-N/A-");
+			this.setSelectedText("");
+			this.setSelectedKeys("");
+			
+			that.fireDesignStudioPropertiesChanged(["selectedKeys", "selectedKey", "selectedText"]);
+			that.fireDesignStudioEvent("onDataChanged");
+			
+			this._oldContent = this._lLabels;
+		}
+
 		if(this.getSelectedKey() != "") {
 			for (var i = 0; i < this._lLabelKeys.length; i++) {
 				if(this._lLabelKeys[i] == this.getSelectedKey()) {

@@ -110,11 +110,14 @@ sap.ui.commons.RangeSlider.extend("org.kalisz.karol.scn.databound.DataRangeSlide
 	renderer: {},
 		
 	afterDesignStudioUpdate: function() {
+		var that = this;
+		
 		var lData = this._data;
 		var lMetadata = this._metadata;
 		
 		if(this.getDoRefresh()){
-			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements (lData, lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "IGNORE");
+			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElements 
+			    (lData, lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "Ignore Duplicates");
 			
 			this._lLabels = []; 
 			this._lLabelKeys = [];
@@ -143,6 +146,19 @@ sap.ui.commons.RangeSlider.extend("org.kalisz.karol.scn.databound.DataRangeSlide
 			this.setLabels(this._lLabels);
 		};
 		
+		if(this._oldContent == undefined || JSON.stringify(this._lLabels) != JSON.stringify(this._oldContent)) {
+			// if data has changed, remove always selected key!
+			this.setSelectedKey("-N/A-1");
+			this.setSelectedText("");
+			this.setSelectedKey2("-N/A-2");
+			this.setSelectedText2("");
+			this.setSelectedKeys("");
+			
+			that.fireDesignStudioPropertiesChanged(["selectedKeys", "selectedKey", "selectedText", "selectedKey2", "selectedText2"]);
+			that.fireDesignStudioEvent("onDataChanged");
+			
+			this._oldContent = this._lLabels;
+		}
 		
 		if(this.getSelectedKey() != "") {
 			for (var i = 0; i < this._lLabelKeys.length; i++) {
