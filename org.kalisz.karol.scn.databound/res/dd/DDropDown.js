@@ -108,7 +108,7 @@ sap.ui.commons.DropdownBox.extend("org.kalisz.karol.scn.databound.DataDropDown",
 		
 		if(this.getDoRefresh()){
 			var lElementsToRenderArray = org_kalisz_karol_scn_pack.getTopBottomElementsForDimension 
-			     (lData, this.getDimension(), lMetadata, this.getMaxNumber(), this.getSorting(), this.getTopBottom(), "Ignore Duplicates");
+			     (lData, this.getDimension(), lMetadata, this.getMaxNumber(), this.getTopBottom(), this.getSorting(), "Ignore Duplicates");
 			
 			this._content = []; 
 			
